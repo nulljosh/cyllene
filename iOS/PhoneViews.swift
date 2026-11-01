@@ -226,7 +226,7 @@ struct Monthly: Hashable { let month: String, outcome: String, count: Int }
 struct AppDetail: View {
     let client: ASCClient
     let app: PhoneApp
-    enum Tab: String, CaseIterable { case versions = "Versions", builds = "Builds", reviews = "Reviews" }
+    enum Tab: String, CaseIterable { case versions = "Versions", builds = "Builds", testflight = "TestFlight", reviews = "Reviews" }
     @State private var tab = Tab(rawValue: ProcessInfo.processInfo.environment["HERMES_TAB"] ?? "") ?? .versions
     @State private var versions: [Doc<VersionAttrs>.Item] = []
     @State private var builds: [Doc<BuildAttrs>.Item] = []
@@ -290,6 +290,8 @@ struct AppDetail: View {
                             StateLine(state: a.processingState == "VALID" ? "READY_FOR_SALE" : (a.processingState ?? ""), text: "\(Theme.words(a.processingState ?? "")) · \(String((a.uploadedDate ?? "").prefix(10))) · min OS \(a.minOsVersion ?? "")")
                         }
                     }
+                case .testflight:
+                    BetaGroupsList(client: client, app: app.id)
                 case .reviews:
                     if reviews.isEmpty { Text("No reviews here yet.").foregroundStyle(Theme.muted) }
                     else { RatingsSummary(ratings: reviews.compactMap(\.attributes.rating)) }

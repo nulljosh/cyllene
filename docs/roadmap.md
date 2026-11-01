@@ -116,7 +116,7 @@ From the App Store screens of Helm, Apple's App Store Connect, AppFigures and Te
 | Star apps you care about, pinned to the top of Apps | App Store Connect | S | done 10.6 |
 | Edit What's New on a version and save it as a draft (asks first) | Helm, App Store Connect | M | done 10.9 |
 | Launch checklist per version: build, What's New, screenshots, review details | Helm | S | done 10.7 |
-| TestFlight groups and testers, add a tester | App Store Connect, Helm | M | open |
+| TestFlight groups and testers, add a tester | App Store Connect, Helm | M | done 10.10 |
 | Translate What's New into every listing language, on the device | Helm | M | open |
 | Reviews translated into your language, on the device | AppFigures | S | done 10.8 |
 | Sales and downloads at a glance with a sparkline | AppFigures | M | open |
