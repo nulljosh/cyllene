@@ -23,6 +23,8 @@ h1, h2, h3 { text-wrap: balance; }
 h1 { font-size: clamp(72px, 12vw, 176px); line-height: .95; font-weight: 700; letter-spacing: -.045em; }
 h2 { font-size: clamp(44px, 6vw, 96px); line-height: 1; font-weight: 700; letter-spacing: -.035em; }
 h3 { font-size: 28px; line-height: 32px; font-weight: 600; letter-spacing: -.02em; }
+/* the hero leads with the line that sells; the nav already carries the name */
+.hero-h1 { font-size: clamp(44px, 6.4vw, 88px); line-height: 1.02; max-width: 960px; margin: 0 auto; }
 .label { font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--sub); margin-bottom: var(--sp-4); }
 
 .btn { height: 40px; padding: 0 var(--sp-4); border-radius: var(--r-sq); display: inline-flex; align-items: center; font-weight: 600; font-size: 15px; text-decoration: none; border: 1px solid transparent; transition: background var(--motion), color var(--motion), border-color var(--motion); }
