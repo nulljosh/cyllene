@@ -106,7 +106,7 @@ Joshua: "Needs iOS app" and "Needs these features" (Helm iOS screenshots, notes/
 - [x] App Lock with Face ID or the passcode, locks again when the app leaves the screen
 - [x] Appearance: System, Light, Dark
 - [x] Accounts: more than one App Store Connect key, switch between them
-- [ ] Notifications: pick which app updates and TestFlight events notify you
+- [x] Notifications: review changes (approved, rejected, in review), background check about every 15 minutes. TestFlight events still open
 - [ ] Translations of app metadata, on the device
 - [ ] Text improvements for store copy, on the device (the Mac Writer)
 - [ ] Setup export: your Hermes settings as one file

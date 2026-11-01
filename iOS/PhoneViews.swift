@@ -1,6 +1,7 @@
 import Charts
 import SwiftUI
 import UniformTypeIdentifiers
+import UserNotifications
 
 // MARK: - Key
 
@@ -88,6 +89,7 @@ struct PhoneApp: Identifiable, Hashable {
                 }
             }
             apps = list
+            ReviewWatch.check(list)
             error = nil
         } catch { self.error = error.localizedDescription }
     }
@@ -139,6 +141,7 @@ struct SettingsView: View {
     @AppStorage("signature") private var signature = ""
     @AppStorage("appLock") private var appLock = false
     @AppStorage("appearance") private var appearance = "system"
+    @AppStorage("notifyReview") private var notifyReview = false
     @State private var confirm = false
 
     func masked(_ s: String) -> String { String(repeating: "•", count: max(0, min(s.count, 12) - 4)) + s.suffix(4) }
@@ -172,10 +175,17 @@ struct SettingsView: View {
                 } header: { Text("Hermes") }
                 Section {
                     Toggle("App Lock", isOn: $appLock)
+                    Toggle("Review notifications", isOn: $notifyReview)
+                        .onChange(of: notifyReview) { _, on in
+                            guard on else { return }
+                            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { ok, _ in
+                                DispatchQueue.main.async { if ok { ReviewWatch.schedule() } else { notifyReview = false } }
+                            }
+                        }
                     Picker("Appearance", selection: $appearance) {
                         Text("System").tag("system"); Text("Light").tag("light"); Text("Dark").tag("dark")
                     }
-                } header: { Text("Privacy and look") } footer: { Text("App Lock asks for Face ID or your passcode each time Hermes opens.") }
+                } header: { Text("Privacy and look") } footer: { Text("App Lock asks for Face ID or your passcode each time Hermes opens. Review notifications tell you when an app is approved, rejected or moves in review; Hermes checks about every 15 minutes.") }
                 Section {
                     Link("Docs", destination: URL(string: "https://hermes.jaybulb.com/docs")!)
                     Link("Send feedback", destination: URL(string: "mailto:trommatic@icloud.com?subject=Hermes%20iOS")!)

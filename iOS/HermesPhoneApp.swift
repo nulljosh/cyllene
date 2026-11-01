@@ -16,6 +16,7 @@ struct HermesPhoneApp: App {
 
     var body: some Scene {
         WindowGroup { PhoneRoot() }
+            .backgroundTask(.appRefresh(ReviewWatch.task)) { await ReviewWatch.refresh() }
     }
 }
 
@@ -112,7 +113,7 @@ struct PhoneRoot: View {
                 SplashView { withAnimation(.easeOut(duration: 0.25)) { splashDone = true } }.transition(.opacity).zIndex(1)
             }
         }
-        .onChange(of: phase) { _, p in if p == .background { locked = true } }
+        .onChange(of: phase) { _, p in if p == .background { locked = true; ReviewWatch.schedule() } }
         .preferredColorScheme(appearance == "light" ? .light : appearance == "dark" ? .dark : nil)
         .tint(Theme.accent)
         .font(Theme.font(17))
