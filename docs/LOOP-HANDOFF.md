@@ -1,56 +1,38 @@
-# Cyllene loop handoff (2026-10-31, night)
+# Cyllene loop handoff (2026-10-31, evening)
 
 ## What the loop is
 
-Cyllene is a native SwiftUI Mac app for App Store Connect, driven by the `asc` CLI. The loop works through the open rows of the parity matrix in docs/roadmap.md, one item at a time, toward a one-to-one clone of Helm 2.3.9 with its own brand and code. Each tick takes the next item, checks the real `asc` flags with `--help` first, builds it, QAs it with launch arguments and screenshots, bumps the version, and pushes with a tag.
+Cyllene is a native SwiftUI Mac and iPhone app for App Store Connect, driven by the `asc` CLI. The loop works through the open rows of the iPhone gap matrix in docs/roadmap.md, one minor version at a time. Each tick takes the next open row, checks the real `asc` flags with `--help` first, builds it, QAs it in the simulator with screenshots, fixes anything below A+, and commits and pushes.
 
-Versioning is honest semver. A feature is a minor bump, a fix is a patch, and a major only on Joshua's call. The loop does not aim at any version number.
+Versioning is honest semver. A feature is a minor bump, a fix is a patch, and a major only on Joshua's call. Joshua's goal for this stretch is 11.0.0, but calling it 11.0.0 is his decision, so the loop stops and asks before it does.
 
 Rules that bite:
 
-- Stage by exact path. The working tree can hold other changes, including an untracked `.build/`. Leave those alone.
-- QA reads go through `asc --read-only`. Never mutate a live app without Joshua's yes.
+- Stage by exact path. The working tree holds an untracked `.build/`. Leave it alone.
+- Never run `asc-login`. The Apple web session is fresh; every attempt texts Joshua a code.
+- QA reads go through `asc --read-only`. Never mutate a live app, or send an Apple reply, without Joshua's yes.
 - Helm's assets, text and code stay out of the repo.
-- Long builds run in the background. One heavy job at a time.
-- Never open a fresh build headless. Test through the MCP or scripts/try-writer.sh.
+- Never launch a fresh Mac build headless. Each new build sets off macOS privacy prompts. Simulator QA is fine.
+- The bundle id, keychain services, `HERMES_*` env vars and the hermes Worker keep the old name on purpose.
 
 ## Where things stand
 
-- 2026-10-31 night: the iPhone app is on the App Store as **Cyllene** (Hermes was taken; record 6829353117, bundle com.nulljosh.hermes, SKU CYLLENEIOS). Free, Developer Tools, all territories, privacy "data not collected" published, age rating all none. 10.9.0 is uploaded and a background script uploads the renamed build, screenshots and review details, then submits. The iPhone already says Cyllene on screen; the repo, Mac app, landing (cyllene.jaybulb.com) and fonts still say Cyllene. The full rename to Cyllene is Joshua's ask and is next after Resolve All.
-- 10.5.0 to 10.9.0 shipped this evening on iPhone: ratings summary, starred apps, launch checklist, Translate on reviews, Liquid Glass pass, What's New editor (asks first). 10.9.0 Mac shipped: notarized DMG, GitHub release, cask, landing.
-- The Apple web session is fresh (signed in 2026-10-31 18:45 PDT). Do not run asc-login again; every attempt texts Joshua a code.
-- Blackcomb iOS 1.0.0 was rejected 2026-10-31 evening, on top of the UNRESOLVED_ISSUES list below.
-- App Store Connect has review submissions in UNRESOLVED_ISSUES across about 9 apps: Patois iOS, Mailbag Mac, Oohaah Mac and iOS, Scrounger iOS, Cartons iOS, Horula Mac and iOS, Atlin iOS, Airwell iOS, Blackcomb iOS. Sidewise is retired (deletion is on blocked-on-joshua).
-
-- Rejection reasons read 2026-10-31 night (full text in the session scratchpad, re-read with `asc web review show --app ID --plain-text`): 4.3(a) spam on Oohaah, Scrounger, Cartons, Horula, Atlin, Blackcomb (answer with the nine answers, change the build where it is thin); 2.1(a) bugs on Patois and a crash on Mailbag (read the steps, fix, new build); 2.3.8 on Airwell: Apple reviewed the old 1.0 build (202610031700) that still said Windgate on the home screen; current code says Airwell, so ship a fresh build of the current code (airwell repo, ios/) and reply that the name now matches.
+- The iPhone app is on the App Store as Cyllene (record 6829353117, bundle com.nulljosh.hermes). Version 10.9.0 is in Apple review.
+- iPhone 10.10.0 adds a TestFlight tab (groups, testers, public link, add a tester after asking). 10.11.0 translates What's New into every listing language on the device with Apple's Translation, and one yes saves all changed languages. Both are committed and not uploaded. They ship after 10.9.0 clears review.
+- The Mac app is 10.9.1: a notarized DMG on GitHub, and the cyllene Homebrew cask.
+- Done in the iPhone gap matrix: TestFlight groups and testers (10.10), translate What's New (10.11), reviews translated (10.8).
+- Open rows: sales and downloads at a glance with a sparkline (AppFigures), and a "new version out" share card.
+- Open roadmap items outside the matrix: translations of app metadata on the device, text improvements for store copy, setup export (mirrored as a GitHub issue on 2026-10-31), and shipping the iPhone app.
+- Every open App Store rejection was answered or resubmitted on 2026-10-31. Oohaah, Cartons, Horula and Atlin wait on Apple. Do not reply again without Joshua's yes.
+- Simulator QA helper: `qa/launch.sh` lives in the session scratchpad, not in this repo. It launches the iPhone app with `SIMCTL_CHILD_HERMES_*` hooks: `HERMES_OPEN_APP`, `HERMES_TAB`, `HERMES_OPEN_GROUP`, `HERMES_ANY_VERSION`, `HERMES_EDIT_WHATSNEW`, `HERMES_TRANSLATE`. The signing key values come from `~/.asc/config.json` and are never printed. If the script is gone, rebuild it from those hooks.
 
 ## Next, in order
 
-1. Goal: Resolve All actually works, and every app is resolved through it. Loop: read every open thread (`asc web review show --app ID`), draft each reply from the app's facts (Sources/Facts.swift, mcp/server.py app_facts), fix the app where the rejection is a real bug, then send through Resolve All. Joshua said yes to resolving all on 2026-10-31; still never resubmit an unchanged build and check the listing name first.
-2. Full rename Cyllene to Cyllene with the rename skill: repo, folder, Mac app, landing domain, fonts, docs.
-3. Remaining iPhone Mobbin rows in docs/roadmap.md: TestFlight groups and testers, translate What's New, sales at a glance, share card.
+1. Sales and downloads at a glance with a sparkline. Build it, QA it in the simulator with screenshots on iPhone (and iPad where the layout changes), fix anything below A+, commit and push.
+2. A "new version out" share card. Same QA and push.
+3. Stop and ask Joshua before calling the set 11.0.0.
 
 ## Restart prompt
-
-```
-/loop Cyllene: read docs/LOOP-HANDOFF.md and docs/roadmap.md. If Joshua has not yet signed in inside Cyllene, stop and ask him for that one sign-in. Otherwise do the next item as the next minor version (10.5.0 next). Versioning is honest semver: features are minors, fixes are patches, a major only on Joshua's call. QA each change on a real app, notarize the DMG for the GitHub release, and never mutate a live app or send an Apple reply without Joshua's yes.
-```
-
-## Update (2026-10-31, evening)
-
-Sent: Patois (asked Apple to approve now, Sign in with Apple fix next update; the iPhone app still signs in through Supabase, move it to jaybulb-api), Blackcomb (nine answers, Mac 1.0.0 approved). Cyllene 10.9.0 iOS is waiting for review. Airwell iOS build 202610311930 (installed name Airwell) submitted for the 2.3.8 fix; the first try attached the old Windgate build and was cancelled, so check the attached build is 202610311930. Oohaah, Cartons, Horula and Atlin are waiting on Apple after our replies; do not reply again. Scrounger got Apple's closing note, so it needs real changes before any resubmit. Mailbag Mac: Release build with `-demo YES` opens a black window locally, which is likely the crash Apple saw; debug that before a new build.
-
-## Update (2026-10-31, night)
-
-Every rejection is now answered or resubmitted. Patois iOS build 202610312030 moves sign-in to jaybulb-api, which fixes the Sign in with Apple error (Google sign-in removed, same as the web). Mailbag Mac build 202610312000 fixes the crash in Apple's log: the window resized itself in a loop when sign-in switched to the inbox, so the window now has a fixed size. Scrounger iOS build 202610312040 carries the 10-28 features; the change note is in its review notes because the old thread no longer takes replies. Airwell, Blackcomb and Cyllene are in review. Next: the full Cyllene to Cyllene rename, then the iPhone Mobbin rows.
-
-## Update (2026-10-31, late): renamed, TestFlight on iPhone
-
-Hermes is now Cyllene everywhere (repo nulljosh/cyllene, folder ~/Documents/Code/cyllene, cyllene.jaybulb.com, Mac 10.9.1 DMG and the cyllene cask; bundle id, keychain services, cache folders and HERMES_* env vars keep the old name on purpose). iPhone 10.10.0 adds the TestFlight tab, QA'd in the simulator on the real account (HERMES_OPEN_APP, HERMES_TAB, HERMES_OPEN_GROUP). It ships once 10.9.0 clears review. Simulator QA helper: launch with SIMCTL_CHILD_HERMES_KEY_ID, _ISSUER_ID and _KEY_PEM_B64 read from ~/.asc/config.json, never printed.
-
-Next loop: toward 11.0.0. Rows left: translate What's New on the device, sales and downloads with a sparkline, a "new version out" share card. QA every feature with screenshots (iPhone, iPad, Mac where it applies), fix what looks wrong, then ask Joshua before calling it 11.0.0.
-
-Restart prompt:
 
 ```
 /loop Cyllene to 11.0.0: build the open iPhone gap rows in docs/roadmap.md one minor at a time, QA every feature with simulator screenshots and fix anything below A+, send the screenshots, commit and push each
