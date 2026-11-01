@@ -23,7 +23,7 @@ struct KeyView: View {
                 } footer: { Text("App Store Connect, Users and Access, Integrations.") }
                 Section {
                     Button(pem.isEmpty ? "Import .p8 file" : "Key file loaded") { importing = true }
-                } footer: { Text("Your key stays in your Keychain. Hermes has no server.") }
+                } footer: { Text("Your key stays in your Keychain. Cyllene has no server.") }
                 if let error { Section { Text(error).foregroundStyle(Theme.bad) } }
                 Section {
                     Button { Task { await check() } } label: {
@@ -34,7 +34,7 @@ struct KeyView: View {
             }
             .scrollContentBackground(.hidden)
             .background(Theme.bg)
-            .navigationTitle("Hermes")
+            .navigationTitle("Cyllene")
             .fileImporter(isPresented: $importing, allowedContentTypes: [.data, .plainText]) { result in
                 guard let url = try? result.get(), url.startAccessingSecurityScopedResource() else { return }
                 defer { url.stopAccessingSecurityScopedResource() }

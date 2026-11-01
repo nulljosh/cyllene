@@ -147,7 +147,7 @@ struct LockView: View {
     var body: some View {
         VStack(spacing: 16) {
             Image(systemName: "lock.fill").font(.system(size: 44)).foregroundStyle(Theme.accent)
-            Text("Hermes is locked").font(Theme.font(22, .semibold))
+            Text("Cyllene is locked").font(Theme.font(22, .semibold))
             Group {
                 if #available(iOS 26, *) { Button("Unlock") { unlock() }.buttonStyle(.glassProminent) }
                 else { Button("Unlock") { unlock() }.buttonStyle(.borderedProminent) }
@@ -163,7 +163,7 @@ struct LockView: View {
     private func unlock() {
         let context = LAContext()
         guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil) else { unlocked(); return }
-        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Unlock Hermes") { ok, _ in
+        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Unlock Cyllene") { ok, _ in
             DispatchQueue.main.async { if ok { unlocked() } else { failed = true } }
         }
     }

@@ -50,7 +50,7 @@ struct SplashView: View {
                     .rotation3DEffect(.degrees(flip), axis: (x: 0, y: 1, z: 0), perspective: 0.6)
                     .scaleEffect(gather ? 1.25 : 1)
                 HStack(spacing: 10) {
-                    ForEach(Array("HERMES".enumerated()), id: \.offset) { i, ch in
+                    ForEach(Array("CYLLENE".enumerated()), id: \.offset) { i, ch in
                         Text(String(ch)).font(Theme.display(48))
                             .foregroundStyle(.white)
                             .opacity(i < letters ? 1 : 0)
@@ -95,7 +95,7 @@ struct OnboardingView: View {
 
     struct Page { let art: String, glyph: String, title: String, body: String }
     let pages = [
-        Page(art: "art-prax", glyph: "wing", title: "HERMES", body: "App Store Connect, on your iPhone."),
+        Page(art: "art-prax", glyph: "wing", title: "CYLLENE", body: "App Store Connect, on your iPhone."),
         Page(art: "art-goltzius", glyph: "caduceus", title: "EVERY APP", body: "Every version, build and review on your account, in one list."),
         Page(art: "art-carceri8", glyph: "letter", title: "ASKS FIRST", body: "Reply, submit and ship. Every change shows what it will do and waits for your yes."),
         Page(art: "art-ludovisi", glyph: "purse", title: "YOUR KEY", body: "Your API key stays in your Keychain. No server, no account."),

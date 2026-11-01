@@ -41,7 +41,7 @@ struct SettingsView: View {
                     TextField("Reply signature", text: $signature)
                     LabeledContent("Version", value: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "")
                     Button("Show the intro again") { onboarded = false }
-                } header: { Text("Hermes") }
+                } header: { Text("Cyllene") }
                 Section {
                     Toggle("App Lock", isOn: $appLock)
                     Toggle("Review notifications", isOn: $notifyReview)
@@ -54,10 +54,10 @@ struct SettingsView: View {
                     Picker("Appearance", selection: $appearance) {
                         Text("System").tag("system"); Text("Light").tag("light"); Text("Dark").tag("dark")
                     }
-                } header: { Text("Privacy and Appearance") } footer: { Text("App Lock asks for Face ID or your passcode each time Hermes opens. Review notifications tell you when an app is approved, rejected or moves in review; Hermes checks about every 15 minutes.") }
+                } header: { Text("Privacy and Appearance") } footer: { Text("App Lock asks for Face ID or your passcode each time Cyllene opens. Review notifications tell you when an app is approved, rejected or moves in review; Cyllene checks about every 15 minutes.") }
                 Section {
                     Link("Docs", destination: URL(string: "https://hermes.jaybulb.com/docs")!)
-                    Link("Send feedback", destination: URL(string: "mailto:trommatic@icloud.com?subject=Hermes%20iOS")!)
+                    Link("Send feedback", destination: URL(string: "mailto:trommatic@icloud.com?subject=Cyllene%20iOS")!)
                     Link("Source on GitHub", destination: URL(string: "https://github.com/nulljosh/hermes")!)
                     Link("Privacy", destination: URL(string: "https://hermes.jaybulb.com/privacy")!)
                 }

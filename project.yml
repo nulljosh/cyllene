@@ -55,7 +55,7 @@ targets:
         GENERATE_INFOPLIST_FILE: YES
         DEVELOPMENT_TEAM: QMM486NPYC
         CODE_SIGN_STYLE: Automatic
-        INFOPLIST_KEY_CFBundleDisplayName: Hermes
+        INFOPLIST_KEY_CFBundleDisplayName: Cyllene
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.developer-tools
         INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
