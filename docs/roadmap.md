@@ -107,3 +107,18 @@ Joshua: "Needs iOS app" and "Needs these features" (Helm iOS screenshots, notes/
 - [ ] Text improvements for store copy, on the device (the Mac Writer)
 - [ ] Setup export: your Hermes settings as one file
 - [ ] Ship the iPhone app to the App Store
+
+## iPhone gap matrix (Mobbin pass 2026-10-31)
+From the App Store screens of Helm, Apple's App Store Connect, AppFigures and TestFlight. One row per minor version, daily use first.
+| Gap | Who has it | Size | Status |
+|---|---|---|---|
+| Ratings summary on Reviews: average, star histogram, newest first | App Store Connect, AppFigures | S | done 10.5 |
+| Star apps you care about, pinned to the top of Apps | App Store Connect | S | open |
+| Edit What's New on a version and save it as a draft (asks first) | Helm, App Store Connect | M | open |
+| Launch checklist per version: build, What's New, screenshots, review details | Helm | S | open |
+| TestFlight groups and testers, add a tester | App Store Connect, Helm | M | open |
+| Translate What's New into every listing language, on the device | Helm | M | open |
+| Reviews translated into your language, on the device | AppFigures | S | open |
+| Sales and downloads at a glance with a sparkline | AppFigures | M | open |
+| Share a "new version out" card | App Store Connect | S | open |
+Skipped: Helm Passport (social), ad networks (AppFigures, no data).
