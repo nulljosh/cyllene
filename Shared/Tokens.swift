@@ -21,9 +21,9 @@ enum Theme {
     static let bad = Color(light: 0xC0392B, dark: 0xD9534F)
     static let idle = Color(light: 0x8A8D99, dark: 0x6F7488)
 
-    // Falls back to the system face if the bundled one is missing.
+    // System type only (SF Pro), like every app in the fleet.
     static func font(_ size: CGFloat, _ weight: Font.Weight = .regular) -> Font {
-        .custom("Cyllene Sans", size: size).weight(weight)
+        .system(size: size, weight: weight)
     }
 
     /// Big titles: the same face, bold. One family everywhere.

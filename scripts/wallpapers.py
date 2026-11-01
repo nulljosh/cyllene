@@ -8,7 +8,11 @@ from PIL import Image, ImageChops, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "brand" / "wallpapers"
-FONTS = ROOT / "fonts"
+SYSTEM_FONT = "/System/Library/Fonts/SFNS.ttf"   # system type only, no bundled face
+
+
+def face(weight, size):
+    f = ImageFont.truetype(SYSTEM_FONT, size); f.set_variation_by_name(weight); return f
 BAND, ART, SUB = (8, 71, 196), (169, 194, 247), (214, 224, 250)   # tokens.css: --band, --band-art, --band-sub
 
 
@@ -34,7 +38,7 @@ def mark_png(px):
 
 
 def caps(d, xy, text, size, fill, track=.22, weight="Medium"):
-    f = ImageFont.truetype(str(FONTS / f"CylleneSans-{weight}.ttf"), size); x, y = xy
+    f = face(weight, size); x, y = xy
     for ch in text:   # tiny caps with wide tracking, the Nous label
         d.text((x, y), ch, font=f, fill=fill); x += f.getlength(ch) + size * track
     return x
@@ -63,7 +67,7 @@ def wallpaper(kind):
         left, base, big, small, mk = 220, H - 300, 420, 44, 200
     else:
         left, base, big, small, mk = 92, H - 300, 210, 26, 120
-    f = ImageFont.truetype(str(FONTS / "CylleneSans-Bold.ttf"), big)
+    f = face("Bold", big)
     d.text((left - big * .06, base - big), "Cyllene", font=f, fill=(255, 255, 255, 255))
     caps(d, (left, base - big - small * 2.6), "MESSENGER OF THE GODS", small, SUB + (255,))
     img.alpha_composite(mark_png(mk), (int(left - mk * .12), int(base - big - small * 2.6 - mk - small * 1.2)))
