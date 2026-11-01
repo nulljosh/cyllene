@@ -59,6 +59,7 @@ struct SettingsView: View {
                         Text("System").tag("system"); Text("Light").tag("light"); Text("Dark").tag("dark")
                     }
                 } header: { Text("Privacy and Appearance") } footer: { Text("App Lock asks for Face ID or your passcode each time Cyllene opens. Review notifications tell you when an app is approved, rejected or moves in review; Cyllene checks about every 15 minutes.") }
+                Section { SetupFileButtons() } header: { Text("Settings File") } footer: { Text("One file with your appearance, notifications, signatures and starred apps. Keys are never in it.") }
                 Section {
                     Link("Docs", destination: URL(string: "https://cyllene.jaybulb.com/docs")!)
                     Link("Send feedback", destination: URL(string: "mailto:trommatic@icloud.com?subject=Cyllene%20iOS")!)

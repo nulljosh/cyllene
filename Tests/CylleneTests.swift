@@ -228,4 +228,16 @@ final class CylleneTests: XCTestCase {
         XCTAssertEqual(TimelineView.months(items), [.init(month: "2026-09", outcome: "live", count: 1), .init(month: "2026-09", outcome: "rejected", count: 1),
                                                     .init(month: "2026-10", outcome: "live", count: 2)])
     }
+
+    func testSetupFileRoundTripsSettingsAndNeverKeys() {
+        let a = UserDefaults(suiteName: "setup-a-\(UUID())")!, b = UserDefaults(suiteName: "setup-b-\(UUID())")!
+        a.set("dark", forKey: "appearance"); a.set(true, forKey: "notifyReview"); a.set("Thanks, Josh", forKey: "signature")
+        a.set("secret-profile", forKey: "profile")
+        let data = SetupFile.export(a)
+        XCTAssertFalse(String(decoding: data, as: UTF8.self).contains("secret-profile"))
+        XCTAssertEqual(SetupFile.apply(data, to: b), 3)
+        XCTAssertEqual(b.string(forKey: "appearance"), "dark")
+        XCTAssertEqual(b.bool(forKey: "notifyReview"), true)
+        XCTAssertNil(SetupFile.apply(Data("{\"appearance\":\"dark\"}".utf8), to: b))
+    }
 }

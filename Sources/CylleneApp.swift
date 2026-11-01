@@ -44,6 +44,7 @@ struct SettingsView: View {
             Toggle("Read-only mode", isOn: $readOnly)
             Text("While this is on, Cyllene can look at everything and change nothing. Turn it off to save, submit and release.")
                 .font(.caption).foregroundStyle(.secondary)
+            Section("Settings File") { SetupFileButtons() }
         }
         .formStyle(.grouped)
         .frame(width: 420)

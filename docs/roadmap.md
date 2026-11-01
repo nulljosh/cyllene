@@ -105,7 +105,7 @@ Ideas that Helm does not have: rejection history in one place (shipped 0.9), rel
 Joshua: "Needs iOS app" and "Needs these features" (Helm iOS screenshots, notes/attachments/2026-10-31/cyllene-1.png and cyllene-2.png). Free, no Pro paywall (the $1 rule).
 - [ ] Translations of app metadata, on the device
 - [ ] Text improvements for store copy, on the device (the Mac Writer)
-- [ ] Setup export: your Cyllene settings as one file
+- [x] Setup export: your Cyllene settings as one file (11-01: Settings File section on Mac and iPhone exports and imports appearance, notifications, read-only, signatures, vendor number, starred and view choices as JSON; never keys or profiles. Shared/SetupFile.swift, round-trip test)
 - [ ] Ship the iPhone app to the App Store
 
 ## iPhone gap matrix (Mobbin pass 2026-10-31)
