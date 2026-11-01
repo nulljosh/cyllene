@@ -103,7 +103,7 @@ Ideas that Helm does not have: rejection history in one place (shipped 0.9), rel
 
 ## Ingested 2026-10-31
 Joshua: "Needs iOS app" and "Needs these features" (Helm iOS screenshots, notes/attachments/2026-10-31/cyllene-1.png and cyllene-2.png). Free, no Pro paywall (the $1 rule).
-- [ ] Translations of app metadata, on the device
+- [x] Translations of app metadata, on the device (11-01, iPhone: the What's New editor now edits and translates description, promotional text and keywords too, with each field's limit, one save per language; What's New hides on a first version. Builds; not run against a live account)
 - [ ] Text improvements for store copy, on the device (the Mac Writer)
 - [x] Setup export: your Cyllene settings as one file (11-01: Settings File section on Mac and iPhone exports and imports appearance, notifications, read-only, signatures, vendor number, starred and view choices as JSON; never keys or profiles. Shared/SetupFile.swift, round-trip test)
 - [ ] Ship the iPhone app to the App Store

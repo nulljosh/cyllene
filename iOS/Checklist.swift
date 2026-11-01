@@ -64,8 +64,8 @@ struct ChecklistView: View {
                 }
                 item("Screenshots", c.screenshots)
                 item("Review contact", c.contact)
-                if !first { Button("Edit What's New", systemImage: "square.and.pencil") { editing = true }
-                    .font(Theme.font(14, .semibold)).foregroundStyle(Theme.accent).buttonStyle(.borderless).padding(.top, 4) }
+                Button(first ? "Edit Listing Text" : "Edit What's New and Listing Text", systemImage: "square.and.pencil") { editing = true }
+                    .font(Theme.font(14, .semibold)).foregroundStyle(Theme.accent).buttonStyle(.borderless).padding(.top, 4)
             } else if failed {
                 Text("Could not read the checklist.").font(Theme.font(13)).foregroundStyle(Theme.muted)
             } else {
@@ -74,7 +74,7 @@ struct ChecklistView: View {
         }
         .padding(.vertical, 4)
         .sheet(isPresented: $editing, onDismiss: { Task { list = try? await client.checklist(version: version.id) } }) {
-            WhatsNewEditor(client: client, version: version)
+            WhatsNewEditor(client: client, version: version, fields: first ? ListingField.allCases.filter { $0 != .whatsNew } : ListingField.allCases)
         }
         .task {
             do { list = try await client.checklist(version: version.id) } catch { failed = true }
