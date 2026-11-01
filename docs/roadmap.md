@@ -120,5 +120,5 @@ From the App Store screens of Helm, Apple's App Store Connect, AppFigures and Te
 | Translate What's New into every listing language, on the device | Helm | M | done 10.11 |
 | Reviews translated into your language, on the device | AppFigures | S | done 10.8 |
 | Sales and downloads at a glance with a sparkline | AppFigures | M | done 10.12 |
-| Share a "new version out" card | App Store Connect | S | open |
+| Share a "new version out" card | App Store Connect | S | done 10.13 |
 Skipped: Helm Passport (social), ad networks (AppFigures, no data).

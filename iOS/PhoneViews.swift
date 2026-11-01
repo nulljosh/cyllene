@@ -235,6 +235,8 @@ struct AppDetail: View {
     @State private var replying: Doc<ReviewAttrs>.Item?
     @State private var error: String?
 
+    static func live(_ a: VersionAttrs) -> Bool { (a.appVersionState ?? a.appStoreState ?? "").hasPrefix("READY_FOR") }
+
     var monthly: [Monthly] {
         var c: [String: [String: Int]] = [:]
         for v in versions {
@@ -279,9 +281,16 @@ struct AppDetail: View {
                     }
                     ForEach(versions) { v in
                         let a = v.attributes
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(a.versionString ?? "").font(Theme.font(16, .semibold))
-                            StateLine(state: a.appVersionState ?? a.appStoreState ?? "", text: "\(Theme.platform(a.platform ?? "")) · \(Theme.words(a.appVersionState ?? a.appStoreState ?? "")) · \(String((a.createdDate ?? "").prefix(10)))")
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(a.versionString ?? "").font(Theme.font(16, .semibold))
+                                StateLine(state: a.appVersionState ?? a.appStoreState ?? "", text: "\(Theme.platform(a.platform ?? "")) · \(Theme.words(a.appVersionState ?? a.appStoreState ?? "")) · \(String((a.createdDate ?? "").prefix(10)))")
+                            }
+                            Spacer()
+                            // Newest live version on its platform: share a "new version out" card.
+                            if versions.first(where: { $0.attributes.platform == a.platform && Self.live($0.attributes) })?.id == v.id {
+                                ShareVersionButton(name: app.name, version: a.versionString ?? "", appID: app.id, mac: a.platform == "MAC_OS", icon: icon ?? app.icon)
+                            }
                         }
                     }
                 case .builds:
