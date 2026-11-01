@@ -132,7 +132,9 @@ struct StatusView: View {
 
 struct SettingsView: View {
     let fleet: Fleet
+    var onSwitch: (ASCKey) -> Void
     var onDisconnect: () -> Void
+    @State private var adding = false
     @AppStorage("onboarded") private var onboarded = true
     @AppStorage("signature") private var signature = ""
     @AppStorage("appLock") private var appLock = false
@@ -150,6 +152,18 @@ struct SettingsView: View {
                     LabeledContent("Apps", value: "\(fleet.apps.count)")
                     Button("Disconnect key", role: .destructive) { confirm = true }
                 } header: { Text("App Store Connect") } footer: { Text("Your key lives in your Keychain and syncs only through iCloud Keychain.") }
+                Section {
+                    ForEach(KeyStore.all(), id: \.keyID) { k in
+                        Button { if k != fleet.client.key { onSwitch(k) } } label: {
+                            HStack {
+                                Text("Key \(masked(k.keyID))").foregroundStyle(.primary)
+                                Spacer()
+                                if k == fleet.client.key { Image(systemName: "checkmark").foregroundStyle(Theme.accent) }
+                            }
+                        }
+                    }
+                    Button("Add account") { adding = true }
+                } header: { Text("Accounts") } footer: { Text("Each App Store Connect team needs its own key. Tap one to switch.") }
                 Section {
                     LabeledContent("Changes", value: "Ask first")
                     TextField("Reply signature", text: $signature)
@@ -172,6 +186,7 @@ struct SettingsView: View {
             .scrollContentBackground(.hidden)
             .background(Theme.bg)
             .navigationTitle("Settings")
+            .sheet(isPresented: $adding) { KeyView { adding = false; onSwitch($0) } }
             .confirmationDialog("Disconnect this key?", isPresented: $confirm, titleVisibility: .visible) {
                 Button("Disconnect", role: .destructive, action: onDisconnect)
             } message: { Text("It is removed from this device's Keychain. Your account is not touched.") }

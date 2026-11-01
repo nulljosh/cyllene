@@ -105,7 +105,7 @@ Ideas that Helm does not have: rejection history in one place (shipped 0.9), rel
 Joshua: "Needs iOS app" and "Needs these features" (Helm iOS screenshots, notes/attachments/2026-10-31/hermes-1.png and hermes-2.png). Free, no Pro paywall (the $1 rule).
 - [x] App Lock with Face ID or the passcode, locks again when the app leaves the screen
 - [x] Appearance: System, Light, Dark
-- [ ] Accounts: more than one App Store Connect key, switch between them
+- [x] Accounts: more than one App Store Connect key, switch between them
 - [ ] Notifications: pick which app updates and TestFlight events notify you
 - [ ] Translations of app metadata, on the device
 - [ ] Text improvements for store copy, on the device (the Mac Writer)

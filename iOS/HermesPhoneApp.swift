@@ -31,7 +31,30 @@ enum KeyStore {
         return try? JSONDecoder().decode(ASCKey.self, from: d)
     }
 
+    /// Every account this device knows, kept beside the active key so switching never asks for the .p8 again.
+    private static let listQuery: [String: Any] = base.merging([kSecAttrAccount as String: "keys"]) { $1 }
+
+    static func all() -> [ASCKey] {
+        var q = listQuery; q[kSecReturnData as String] = true
+        var out: AnyObject?
+        if SecItemCopyMatching(q as CFDictionary, &out) == errSecSuccess, let d = out as? Data,
+           let keys = try? JSONDecoder().decode([ASCKey].self, from: d), !keys.isEmpty { return keys }
+        return load().map { [$0] } ?? []
+    }
+
+    private static func saveAll(_ keys: [ASCKey]) {
+        SecItemDelete(listQuery as CFDictionary)
+        var q = listQuery
+        q[kSecValueData as String] = try? JSONEncoder().encode(keys)
+        q[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock
+        SecItemAdd(q as CFDictionary, nil)
+    }
+
+    static func forget(_ key: ASCKey) { saveAll(all().filter { $0 != key }) }
+
     static func save(_ key: ASCKey) {
+        var keys = all()
+        if !keys.contains(key) { keys.append(key); saveAll(keys) }
         delete()
         var q = base
         q[kSecValueData as String] = try? JSONEncoder().encode(key)
@@ -74,9 +97,15 @@ struct PhoneRoot: View {
     var body: some View {
         ZStack {
             Group {
-                if let fleet { MainTabs(fleet: fleet) { KeyStore.delete(); key = nil; self.fleet = nil } }
+                if let fleet {
+                    MainTabs(fleet: fleet, onSwitch: use) {
+                        KeyStore.forget(fleet.client.key)
+                        if let next = KeyStore.all().first { use(next) } else { KeyStore.delete(); key = nil; self.fleet = nil }
+                    }
+                    .id(fleet.client.key.keyID + fleet.client.key.issuerID)
+                }
                 else if !onboarded || qaScreen == "onboarding" { OnboardingView { withAnimation { onboarded = true } } }
-                else { KeyView { KeyStore.save($0); key = $0; fleet = Fleet(client: ASCClient(key: $0)) } }
+                else { KeyView { use($0) } }
             }
             if appLock && locked && splashDone { LockView { locked = false }.zIndex(2) }
             if !splashDone {
@@ -89,10 +118,13 @@ struct PhoneRoot: View {
         .font(Theme.font(17))
         .onAppear { if let key, fleet == nil { fleet = Fleet(client: ASCClient(key: key)) } }
     }
+
+    private func use(_ k: ASCKey) { KeyStore.save(k); key = k; fleet = Fleet(client: ASCClient(key: k)) }
 }
 
 struct MainTabs: View {
     let fleet: Fleet
+    var onSwitch: (ASCKey) -> Void
     var onDisconnect: () -> Void
     @State private var tab = qaScreen == "status" ? 1 : qaScreen == "settings" ? 2 : 0
 
@@ -100,7 +132,7 @@ struct MainTabs: View {
         TabView(selection: $tab) {
             AppsView(fleet: fleet).tabItem { Label("Apps", systemImage: "square.grid.2x2") }.tag(0)
             StatusView(fleet: fleet).tabItem { Label("Status", systemImage: "circle.dotted.circle") }.tag(1)
-            SettingsView(fleet: fleet, onDisconnect: onDisconnect).tabItem { Label("Settings", systemImage: "gearshape") }.tag(2)
+            SettingsView(fleet: fleet, onSwitch: onSwitch, onDisconnect: onDisconnect).tabItem { Label("Settings", systemImage: "gearshape") }.tag(2)
         }
         .task { if fleet.apps.isEmpty { await fleet.load() } }
     }
