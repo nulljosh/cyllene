@@ -1,4 +1,4 @@
-# Hermes loop handoff (2026-10-30, 10.4.0)
+# Hermes loop handoff (2026-10-31, evening)
 
 ## What the loop is
 
@@ -16,6 +16,7 @@ Rules that bite:
 
 ## Where things stand
 
+- 2026-10-31: the iPhone companion got App Lock (Face ID or the passcode, locks again when the app leaves the screen) and an Appearance setting (System, Light, Dark). Committed; the iPhone build ships with the next version. Both roadmap rows are pruned.
 - 2026-10-30: 10.4.0. Hermes keeps the Apple password in its own Keychain item and passes it to asc on every web command. asc ran with its keychain bypassed, so it could not see its own saved password, which is why web sessions kept dying. Resolve All also signs itself back in once when the session expires, reading the 2FA code from Messages. Released as a notarized DMG on GitHub (v10.4.0). Not yet tested live.
 - 2026-10-30: 10.3.0 (Add to New Submission on an in-app event), 10.2.0 (Liquid Glass on Resolve All, macOS 26 only, plain fallback below), 10.1.0 (app icon, name and version at the top of Settings, Mercury wallpapers). All notarized on GitHub. 21 of 21 unit tests pass.
 - Issues #1 (custom font, system font only), #2 (Liquid Glass, closed by 10.2.0) and #3 (Product Hunt price, stays Free for now) are closed. The repo has no open issues or PRs.
