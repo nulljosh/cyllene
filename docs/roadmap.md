@@ -122,3 +122,17 @@ From the App Store screens of Helm, Apple's App Store Connect, AppFigures and Te
 | Sales and downloads at a glance with a sparkline | AppFigures | M | done 10.12 |
 | Share a "new version out" card | App Store Connect | S | done 10.13 |
 Skipped: Helm Passport (social), ad networks (AppFigures, no data).
+
+## iPhone gap matrix 11 (Mobbin pass 2026-10-31, after 11.0.0)
+From the App Store screens of Apple's App Store Connect, AppFigures and RevenueCat. One row per minor version, daily use first.
+| Gap | Who has it | Size | Status |
+|---|---|---|---|
+| Review filters: newest or lowest first, by territory, by platform | App Store Connect | S | open |
+| Versions grouped by platform, iOS and macOS in their own sections | App Store Connect | S | open |
+| Builds in a TestFlight group, add a build to a group (asks first) | App Store Connect | S | open |
+| Account dashboard: downloads, proceeds and ratings for every app, each with a sparkline | AppFigures, RevenueCat, App Store Connect | M | open |
+| Downloads chart with 7, 30 and 90 day ranges and a by-country list | AppFigures, RevenueCat | M | open |
+| A notice when yesterday's sales report is in | AppFigures | S | open |
+| Home Screen widget with the account's downloads and newest review | RevenueCat | M | open |
+| More share card styles: version out, featured, milestone | App Store Connect | S | open |
+Skipped: AI chat over metrics (RevenueCat, cloud), paywall editing and subscriptions (no IAPs), ad networks (no data), stickers.
