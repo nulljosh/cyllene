@@ -39,3 +39,7 @@ Rules that bite:
 ## Update (2026-10-31, evening)
 
 Sent: Patois (asked Apple to approve now, Sign in with Apple fix next update; the iPhone app still signs in through Supabase, move it to jaybulb-api), Blackcomb (nine answers, Mac 1.0.0 approved). Cyllene 10.9.0 iOS is waiting for review. Airwell iOS build 202610311930 (installed name Airwell) submitted for the 2.3.8 fix; the first try attached the old Windgate build and was cancelled, so check the attached build is 202610311930. Oohaah, Cartons, Horula and Atlin are waiting on Apple after our replies; do not reply again. Scrounger got Apple's closing note, so it needs real changes before any resubmit. Mailbag Mac: Release build with `-demo YES` opens a black window locally, which is likely the crash Apple saw; debug that before a new build.
+
+## Update (2026-10-31, night)
+
+Every rejection is now answered or resubmitted. Patois iOS build 202610312030 moves sign-in to jaybulb-api, which fixes the Sign in with Apple error (Google sign-in removed, same as the web). Mailbag Mac build 202610312000 fixes the crash in Apple's log: the window resized itself in a loop when sign-in switched to the inbox, so the window now has a fixed size. Scrounger iOS build 202610312040 carries the 10-28 features; the change note is in its review notes because the old thread no longer takes replies. Airwell, Blackcomb and Cyllene are in review. Next: the full Hermes to Cyllene rename, then the iPhone Mobbin rows.
