@@ -39,6 +39,13 @@ enum Theme {
         return idle
     }
 
+    /// Apple's state codes in plain words: WAITING_FOR_REVIEW reads "Waiting for review", a VALID build "Ready".
+    static func words(_ state: String) -> String {
+        if state == "VALID" { return "Ready" }
+        let s = state.lowercased().replacingOccurrences(of: "_", with: " ")
+        return s.prefix(1).uppercased() + s.dropFirst()
+    }
+
     static func platform(_ p: String) -> String {
         ["IOS": "iOS", "MAC_OS": "macOS", "TV_OS": "tvOS", "VISION_OS": "visionOS"][p] ?? p
     }

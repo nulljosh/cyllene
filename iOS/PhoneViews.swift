@@ -311,7 +311,7 @@ struct AppDetail: View {
         var c: [String: [String: Int]] = [:]
         for v in versions {
             let a = v.attributes, s = a.appVersionState ?? a.appStoreState ?? ""
-            let o = s.hasPrefix("READY_FOR") || s == "ACCEPTED" ? "live" : s.contains("REJECT") ? "rejected" : "other"
+            let o = s.hasPrefix("READY_FOR") || s == "ACCEPTED" ? "live" : s.contains("REJECT") ? "rejected" : Theme.stateColor(s) == Theme.pending ? "in review" : "other"
             c[String((a.createdDate ?? "").prefix(7)), default: [:]][o, default: 0] += 1
         }
         return c.keys.sorted().flatMap { m in c[m]!.keys.sorted().map { Monthly(month: m, outcome: $0, count: c[m]![$0]!) } }
@@ -330,23 +330,24 @@ struct AppDetail: View {
                 Picker("", selection: $tab) { ForEach(Tab.allCases, id: \.self) { Text($0.rawValue) } }.pickerStyle(.segmented)
             }
             .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
             if let error { Text(error).foregroundStyle(Theme.bad) }
             Section {
                 switch tab {
                 case .versions:
-                    if versions.count > 1 {
+                    if Set(monthly.map(\.month)).count > 1 {
                         // Versions per month by outcome (9.0 on the Mac).
                         Chart(monthly, id: \.self) { m in
                             BarMark(x: .value("Month", m.month), y: .value("Versions", m.count)).foregroundStyle(by: .value("Outcome", m.outcome))
                         }
-                        .chartForegroundStyleScale(["live": Theme.live, "rejected": Theme.bad, "other": Theme.idle])
+                        .chartForegroundStyleScale(["live": Theme.live, "in review": Theme.pending, "rejected": Theme.bad, "other": Theme.idle])
                         .frame(height: 140)
                     }
                     ForEach(versions) { v in
                         let a = v.attributes
                         VStack(alignment: .leading, spacing: 2) {
                             Text(a.versionString ?? "").font(Theme.font(16, .semibold))
-                            StateLine(state: a.appVersionState ?? a.appStoreState ?? "", text: "\(Theme.platform(a.platform ?? "")) · \(a.appVersionState ?? a.appStoreState ?? "") · \(String((a.createdDate ?? "").prefix(10)))")
+                            StateLine(state: a.appVersionState ?? a.appStoreState ?? "", text: "\(Theme.platform(a.platform ?? "")) · \(Theme.words(a.appVersionState ?? a.appStoreState ?? "")) · \(String((a.createdDate ?? "").prefix(10)))")
                         }
                     }
                 case .builds:
@@ -354,7 +355,7 @@ struct AppDetail: View {
                         let a = b.attributes
                         VStack(alignment: .leading, spacing: 2) {
                             Text(a.version ?? "").font(Theme.font(16, .semibold))
-                            StateLine(state: a.processingState == "VALID" ? "READY_FOR_SALE" : (a.processingState ?? ""), text: "\(a.processingState ?? "") · \(String((a.uploadedDate ?? "").prefix(10))) · min OS \(a.minOsVersion ?? "")")
+                            StateLine(state: a.processingState == "VALID" ? "READY_FOR_SALE" : (a.processingState ?? ""), text: "\(Theme.words(a.processingState ?? "")) · \(String((a.uploadedDate ?? "").prefix(10))) · min OS \(a.minOsVersion ?? "")")
                         }
                     }
                 case .reviews:
@@ -385,6 +386,7 @@ struct AppDetail: View {
             if app.icon == nil { icon = try? await client.icon(app.id) }
             async let v = client.versions(app.id), b = client.builds(app.id), r = client.reviews(app.id)
             (versions, builds, reviews) = try await (v, b, r)
+            versions.sort { ($0.attributes.createdDate ?? "") > ($1.attributes.createdDate ?? "") }
             error = nil
         } catch { self.error = error.localizedDescription }
     }
