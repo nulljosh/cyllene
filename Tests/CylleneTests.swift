@@ -202,6 +202,13 @@ final class CylleneTests: XCTestCase {
         XCTAssertEqual(Sales.totals(rows, app: "6782366555").proceeds, 4.95, accuracy: 0.001)
     }
 
+    func testSalesReportGunzips() {
+        // gzip of "Units\tApple Identifier\n3\t1\n" with a file name in the header, the way Apple sends reports.
+        let gz = Data([0x1f,0x8b,0x08,0x08,0x66,0xab,0xe6,0x6a,0x00,0x03,0x72,0x2e,0x74,0x78,0x74,0x00,0x0b,0xcd,0xcb,0x2c,0x29,0xe6,0x74,0x2c,0x28,0xc8,0x49,0x55,0xf0,0x4c,0x49,0xcd,0x2b,0xc9,0x4c,0xcb,0x4c,0x2d,0xe2,0x32,0xe6,0x34,0xe4,0x02,0x00,0xcf,0x39,0x5e,0x8b,0x1b,0x00,0x00,0x00])
+        XCTAssertEqual(Sales.text(gz), "Units\tApple Identifier\n3\t1\n")
+        XCTAssertEqual(Sales.text(Data("plain".utf8)), "plain")
+    }
+
     func testValidationDecodesAscOutput() throws {
         let j = #"{"platform":"MAC_OS","versionString":"1.0.0","summary":{"errors":0,"warnings":0,"infos":1,"blocking":0},"remediation":{"totalActionable":1,"steps":[{"order":1,"blocking":false,"severity":"info","message":"App Privacy publish state is not verifiable","remediation":"Confirm App Privacy is published"}]}}"#
         let v = try JSONDecoder().decode(Validation.self, from: Data(j.utf8))

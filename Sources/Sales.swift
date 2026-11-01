@@ -1,30 +1,8 @@
 import Charts
 import SwiftUI
 
-// Sales (4.0): last month's downloads and proceeds from Apple's monthly sales summary, through asc.
-enum Sales {
-    struct Row: Equatable { let appleId: String; let type: String; let units: Int; let proceeds: Double }
-    struct Totals: Equatable { var downloads = 0, redownloads = 0; var proceeds = 0.0 }
-
-    /// Apple's tab-separated summary. Product types starting 1 are first downloads, 3 redownloads; 7 (updates) is skipped.
-    static func parse(_ tsv: String) -> [Row] {
-        let lines = tsv.split(whereSeparator: \.isNewline).map { $0.split(separator: "\t", omittingEmptySubsequences: false).map(String.init) }
-        guard let head = lines.first, let id = head.firstIndex(of: "Apple Identifier"), let t = head.firstIndex(of: "Product Type Identifier"),
-              let u = head.firstIndex(of: "Units"), let p = head.firstIndex(of: "Developer Proceeds") else { return [] }
-        return lines.dropFirst().compactMap { c in
-            guard c.count > max(id, t, u, p) else { return nil }
-            return Row(appleId: c[id], type: c[t], units: Int(Double(c[u]) ?? 0), proceeds: (Double(c[p]) ?? 0) * (Double(c[u]) ?? 0))
-        }
-    }
-
-    static func totals(_ rows: [Row], app: String) -> Totals {
-        rows.filter { $0.appleId == app }.reduce(into: Totals()) { t, r in
-            if r.type.hasPrefix("1") || r.type == "F1" { t.downloads += r.units }
-            if r.type.hasPrefix("3") || r.type == "F3" { t.redownloads += r.units }
-            t.proceeds += r.proceeds
-        }
-    }
-
+// Sales (4.0): last month's downloads and proceeds from Apple's monthly sales summary, through asc. Parsing lives in Shared/SalesReport.swift.
+extension Sales {
     static var lastMonth: String { month(ago: 1) }
 
     /// "YYYY-MM" for n months back; Apple publishes a month's summary after it ends, so 1 is the newest there is.

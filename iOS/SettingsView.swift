@@ -11,6 +11,7 @@ struct SettingsView: View {
     @AppStorage("appLock") private var appLock = false
     @AppStorage("appearance") private var appearance = "system"
     @AppStorage("notifyReview") private var notifyReview = false
+    @AppStorage("vendorNumber") private var vendor = ""
     @State private var confirm = false
 
     func masked(_ s: String) -> String { String(repeating: "•", count: max(0, min(s.count, 12) - 4)) + s.suffix(4) }
@@ -36,6 +37,9 @@ struct SettingsView: View {
                     }
                     Button("Add account") { adding = true }
                 } header: { Text("Accounts") } footer: { Text("Each App Store Connect team needs its own key. Tap one to switch.") }
+                Section {
+                    TextField("Vendor number", text: $vendor).keyboardType(.numberPad)
+                } header: { Text("Sales") } footer: { Text("Find it in App Store Connect under Payments and Financial Reports. Sales need a key with the Finance or Sales role.") }
                 Section {
                     LabeledContent("Changes", value: "Ask first")
                     TextField("Reply signature", text: $signature)

@@ -259,6 +259,7 @@ struct AppDetail: View {
             }
             .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
+            Section { SalesGlance(client: client, app: app.id) }.listRowBackground(Theme.surface)
             if let error { Text(error).foregroundStyle(Theme.bad) }
             Section {
                 switch tab {
