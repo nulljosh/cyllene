@@ -1,0 +1,322 @@
+{
+ "out": "eleven.mp4",
+ "size": [
+  1920,
+  1080
+ ],
+ "fps": 30,
+ "font": "../../fonts/CylleneSans-Medium.ttf",
+ "font_bold": "../../fonts/CylleneSans-Bold.ttf",
+ "font_size": 100,
+ "palette": {
+  "paper": "#fdfdfd",
+  "ink": "#0b0d13",
+  "accent": "#0847c4",
+  "sky": "#0074D9"
+ },
+ "sky": "ink",
+ "glow": [
+  "paper",
+  "sky"
+ ],
+ "open": {
+  "secs": 1.6
+ },
+ "grain": 0.12,
+ "schedule": {
+  "count": 34,
+  "first": 1.05,
+  "last": 0.12
+ },
+ "words": [
+  [
+   12,
+   "Ship"
+  ],
+  [
+   16,
+   "from"
+  ],
+  [
+   18,
+   "anywhere."
+  ]
+ ],
+ "title": {
+  "text": "Cyllene 11",
+  "secs": 1.4
+ },
+ "end": {
+  "mark": "../../brand/icon-1024.png",
+  "name": "Cyllene",
+  "secs": 3.0
+ },
+ "pool": [
+  {
+   "image": "sales1.jpg",
+   "focus": [
+    0.78,
+    0.432
+   ],
+   "zoom": 1.7,
+   "sky": "ink"
+  },
+  {
+   "image": "card.jpg",
+   "focus": [
+    0.5,
+    0.4
+   ],
+   "zoom": 1.0,
+   "sky": "ink"
+  },
+  {
+   "image": "m1.jpg",
+   "focus": [
+    0.5,
+    0.26
+   ],
+   "zoom": 1.0,
+   "sky": "paper"
+  },
+  {
+   "image": "tf1.jpg",
+   "focus": [
+    0.25,
+    0.4
+   ],
+   "zoom": 1.0,
+   "sky": "ink"
+  },
+  {
+   "image": "wn1.jpg",
+   "focus": [
+    0.3,
+    0.245
+   ],
+   "zoom": 1.1,
+   "sky": "paper"
+  },
+  {
+   "image": "sales1.jpg",
+   "focus": [
+    0.32,
+    0.43
+   ],
+   "zoom": 1.15,
+   "sky": "ink"
+  },
+  {
+   "image": "status.jpg",
+   "focus": [
+    0.5,
+    0.36
+   ],
+   "zoom": 1.0,
+   "sky": "ink"
+  },
+  {
+   "image": "share1.jpg",
+   "focus": [
+    0.5,
+    0.8
+   ],
+   "zoom": 1.0,
+   "sky": "paper"
+  },
+  {
+   "image": "card.jpg",
+   "focus": [
+    0.5,
+    0.68
+   ],
+   "zoom": 1.3,
+   "sky": "ink"
+  },
+  {
+   "image": "m1.jpg",
+   "focus": [
+    0.5,
+    0.4
+   ],
+   "zoom": 1.0,
+   "sky": "ink"
+  },
+  {
+   "image": "wn6.jpg",
+   "focus": [
+    0.25,
+    0.37
+   ],
+   "zoom": 1.0,
+   "sky": "paper"
+  },
+  {
+   "image": "m1.jpg",
+   "focus": [
+    0.5,
+    0.57
+   ],
+   "zoom": 1.0,
+   "sky": "ink"
+  },
+  {
+   "image": "sales1.jpg",
+   "focus": [
+    0.5,
+    0.62
+   ],
+   "zoom": 1.0,
+   "sky": "paper"
+  },
+  {
+   "image": "card.jpg",
+   "focus": [
+    0.5,
+    0.4
+   ],
+   "zoom": 1.6,
+   "sky": "ink"
+  },
+  {
+   "fill": "accent",
+   "sky": "ink"
+  },
+  {
+   "image": "m1.jpg",
+   "focus": [
+    0.5,
+    0.44
+   ],
+   "zoom": 1.0,
+   "sky": "paper"
+  },
+  {
+   "image": "sales1.jpg",
+   "focus": [
+    0.78,
+    0.432
+   ],
+   "zoom": 2.2,
+   "sky": "ink"
+  },
+  {
+   "image": "tf1.jpg",
+   "focus": [
+    0.25,
+    0.4
+   ],
+   "zoom": 1.0,
+   "sky": "paper"
+  },
+  {
+   "image": "card.jpg",
+   "focus": [
+    0.5,
+    0.4
+   ],
+   "zoom": 1.2,
+   "sky": "ink"
+  },
+  {
+   "fill": "paper",
+   "sky": "ink"
+  },
+  {
+   "image": "status.jpg",
+   "focus": [
+    0.5,
+    0.55
+   ],
+   "zoom": 1.0,
+   "sky": "ink"
+  },
+  {
+   "image": "card.jpg",
+   "focus": [
+    0.5,
+    0.4
+   ],
+   "zoom": 1.0,
+   "sky": "paper"
+  },
+  {
+   "fill": "accent",
+   "sky": "paper"
+  },
+  {
+   "image": "m1.jpg",
+   "focus": [
+    0.5,
+    0.26
+   ],
+   "zoom": 1.0,
+   "sky": "ink"
+  },
+  {
+   "image": "sales1.jpg",
+   "focus": [
+    0.32,
+    0.43
+   ],
+   "zoom": 1.15,
+   "sky": "paper"
+  },
+  {
+   "fill": "ink",
+   "sky": "paper"
+  },
+  {
+   "image": "wn1.jpg",
+   "focus": [
+    0.3,
+    0.245
+   ],
+   "zoom": 1.1,
+   "sky": "ink"
+  },
+  {
+   "fill": "sky",
+   "sky": "ink"
+  },
+  {
+   "image": "card.jpg",
+   "focus": [
+    0.5,
+    0.68
+   ],
+   "zoom": 1.3,
+   "sky": "paper"
+  },
+  {
+   "fill": "accent",
+   "sky": "ink"
+  },
+  {
+   "image": "m1.jpg",
+   "focus": [
+    0.5,
+    0.57
+   ],
+   "zoom": 1.0,
+   "sky": "paper"
+  },
+  {
+   "fill": "paper",
+   "sky": "accent"
+  },
+  {
+   "image": "sales1.jpg",
+   "focus": [
+    0.78,
+    0.432
+   ],
+   "zoom": 1.7,
+   "sky": "ink"
+  },
+  {
+   "fill": "accent",
+   "sky": "paper"
+  }
+ ]
+}

@@ -3,3 +3,4 @@ build/
 dist/
 .claude/settings.local.json
 mcp/__pycache__/
+docs/ad/*.mp4
