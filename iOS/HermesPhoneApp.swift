@@ -1,4 +1,5 @@
 import CoreText
+import LocalAuthentication
 import Security
 import SwiftUI
 
@@ -65,6 +66,10 @@ struct PhoneRoot: View {
     @State private var fleet: Fleet?
     @State private var splashDone = false
     @AppStorage("onboarded") private var onboarded = false
+    @AppStorage("appLock") private var appLock = false
+    @AppStorage("appearance") private var appearance = "system"
+    @State private var locked = UserDefaults.standard.bool(forKey: "appLock")
+    @Environment(\.scenePhase) private var phase
 
     var body: some View {
         ZStack {
@@ -73,10 +78,13 @@ struct PhoneRoot: View {
                 else if !onboarded || qaScreen == "onboarding" { OnboardingView { withAnimation { onboarded = true } } }
                 else { KeyView { KeyStore.save($0); key = $0; fleet = Fleet(client: ASCClient(key: $0)) } }
             }
+            if appLock && locked && splashDone { LockView { locked = false }.zIndex(2) }
             if !splashDone {
                 SplashView { withAnimation(.easeOut(duration: 0.25)) { splashDone = true } }.transition(.opacity).zIndex(1)
             }
         }
+        .onChange(of: phase) { _, p in if p == .background { locked = true } }
+        .preferredColorScheme(appearance == "light" ? .light : appearance == "dark" ? .dark : nil)
         .tint(Theme.accent)
         .font(Theme.font(17))
         .onAppear { if let key, fleet == nil { fleet = Fleet(client: ASCClient(key: key)) } }
@@ -95,5 +103,31 @@ struct MainTabs: View {
             SettingsView(fleet: fleet, onDisconnect: onDisconnect).tabItem { Label("Settings", systemImage: "gearshape") }.tag(2)
         }
         .task { if fleet.apps.isEmpty { await fleet.load() } }
+    }
+}
+
+/// App Lock: Face ID, Touch ID or the device passcode before the app shows anything. Locks again when it leaves the screen.
+struct LockView: View {
+    var unlocked: () -> Void
+    @State private var failed = false
+
+    var body: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "lock.fill").font(.system(size: 44)).foregroundStyle(Theme.accent)
+            Text("Hermes is locked").font(Theme.font(22, .semibold))
+            Button("Unlock") { unlock() }.buttonStyle(.borderedProminent).controlSize(.large)
+            if failed { Text("Not unlocked. Try again.").font(Theme.font(15)).foregroundStyle(.secondary) }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Theme.bg)
+        .task { unlock() }
+    }
+
+    private func unlock() {
+        let context = LAContext()
+        guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil) else { unlocked(); return }
+        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Unlock Hermes") { ok, _ in
+            DispatchQueue.main.async { if ok { unlocked() } else { failed = true } }
+        }
     }
 }

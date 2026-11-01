@@ -100,3 +100,14 @@ Shipped: a running indicator for long writes like uploads, read-only mode (Setti
 Ideas that Helm does not have: rejection history in one place (shipped 0.9), release checklist from `asc validate`, price heat map by territory, Xcode Cloud status, analytics and sales from `asc analytics`.
 
 ## Ingested 2026-10-30
+
+## Ingested 2026-10-31
+Joshua: "Needs iOS app" and "Needs these features" (Helm iOS screenshots, notes/attachments/2026-10-31/hermes-1.png and hermes-2.png). Free, no Pro paywall (the $1 rule).
+- [x] App Lock with Face ID or the passcode, locks again when the app leaves the screen
+- [x] Appearance: System, Light, Dark
+- [ ] Accounts: more than one App Store Connect key, switch between them
+- [ ] Notifications: pick which app updates and TestFlight events notify you
+- [ ] Translations of app metadata, on the device
+- [ ] Text improvements for store copy, on the device (the Mac Writer)
+- [ ] Setup export: your Hermes settings as one file
+- [ ] Ship the iPhone app to the App Store

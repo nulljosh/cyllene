@@ -34,6 +34,7 @@ targets:
     info:
       path: iOS/Info.plist
       properties:
+        NSFaceIDUsageDescription: Hermes uses Face ID to unlock when App Lock is on.
         UILaunchScreen:
           UIColorName: LaunchBackground
           UIImageName: LaunchMark

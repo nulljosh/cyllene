@@ -135,6 +135,8 @@ struct SettingsView: View {
     var onDisconnect: () -> Void
     @AppStorage("onboarded") private var onboarded = true
     @AppStorage("signature") private var signature = ""
+    @AppStorage("appLock") private var appLock = false
+    @AppStorage("appearance") private var appearance = "system"
     @State private var confirm = false
 
     func masked(_ s: String) -> String { String(repeating: "•", count: max(0, min(s.count, 12) - 4)) + s.suffix(4) }
@@ -154,6 +156,12 @@ struct SettingsView: View {
                     LabeledContent("Version", value: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "")
                     Button("Show the intro again") { onboarded = false }
                 } header: { Text("Hermes") }
+                Section {
+                    Toggle("App Lock", isOn: $appLock)
+                    Picker("Appearance", selection: $appearance) {
+                        Text("System").tag("system"); Text("Light").tag("light"); Text("Dark").tag("dark")
+                    }
+                } header: { Text("Privacy and look") } footer: { Text("App Lock asks for Face ID or your passcode each time Hermes opens.") }
                 Section {
                     Link("Docs", destination: URL(string: "https://hermes.jaybulb.com/docs")!)
                     Link("Send feedback", destination: URL(string: "mailto:trommatic@icloud.com?subject=Hermes%20iOS")!)
