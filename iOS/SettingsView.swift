@@ -54,7 +54,7 @@ struct SettingsView: View {
                     Picker("Appearance", selection: $appearance) {
                         Text("System").tag("system"); Text("Light").tag("light"); Text("Dark").tag("dark")
                     }
-                } header: { Text("Privacy and look") } footer: { Text("App Lock asks for Face ID or your passcode each time Hermes opens. Review notifications tell you when an app is approved, rejected or moves in review; Hermes checks about every 15 minutes.") }
+                } header: { Text("Privacy and Appearance") } footer: { Text("App Lock asks for Face ID or your passcode each time Hermes opens. Review notifications tell you when an app is approved, rejected or moves in review; Hermes checks about every 15 minutes.") }
                 Section {
                     Link("Docs", destination: URL(string: "https://hermes.jaybulb.com/docs")!)
                     Link("Send feedback", destination: URL(string: "mailto:trommatic@icloud.com?subject=Hermes%20iOS")!)

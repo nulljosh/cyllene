@@ -148,7 +148,11 @@ struct LockView: View {
         VStack(spacing: 16) {
             Image(systemName: "lock.fill").font(.system(size: 44)).foregroundStyle(Theme.accent)
             Text("Hermes is locked").font(Theme.font(22, .semibold))
-            Button("Unlock") { unlock() }.buttonStyle(.borderedProminent).controlSize(.large)
+            Group {
+                if #available(iOS 26, *) { Button("Unlock") { unlock() }.buttonStyle(.glassProminent) }
+                else { Button("Unlock") { unlock() }.buttonStyle(.borderedProminent) }
+            }
+            .controlSize(.large)
             if failed { Text("Not unlocked. Try again.").font(Theme.font(15)).foregroundStyle(.secondary) }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

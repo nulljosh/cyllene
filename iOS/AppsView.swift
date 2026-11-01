@@ -51,7 +51,7 @@ struct AppsView: View {
     var stack: some View {
         NavigationStack(path: $path) {
             Group { if grid { gridView } else { listView } }
-            .toolbar { Button { grid.toggle() } label: { Image(systemName: grid ? "list.bullet" : "square.grid.2x2") } }
+            .toolbar { Button { grid.toggle() } label: { Label(grid ? "Show as List" : "Show as Grid", systemImage: grid ? "list.bullet" : "square.grid.2x2") } }
             .navigationTitle("Apps")
             .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search Apps")
             .refreshable { await fleet.load() }
@@ -105,7 +105,7 @@ struct AppsView: View {
                 if !top.isEmpty {
                     Section("Starred") { ForEach(top) { row($0) } }
                 }
-                Section(top.isEmpty ? "" : "All apps") { ForEach(rest) { row($0) } }
+                Section(top.isEmpty ? "" : "All Apps") { ForEach(rest) { row($0) } }
             }
             .overlay { if fleet.loading && fleet.apps.isEmpty { ProgressView() } }
             .scrollContentBackground(.hidden)
