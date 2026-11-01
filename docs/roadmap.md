@@ -113,7 +113,7 @@ From the App Store screens of Helm, Apple's App Store Connect, AppFigures and Te
 | Gap | Who has it | Size | Status |
 |---|---|---|---|
 | Ratings summary on Reviews: average, star histogram, newest first | App Store Connect, AppFigures | S | done 10.5 |
-| Star apps you care about, pinned to the top of Apps | App Store Connect | S | open |
+| Star apps you care about, pinned to the top of Apps | App Store Connect | S | done 10.6 |
 | Edit What's New on a version and save it as a draft (asks first) | Helm, App Store Connect | M | open |
 | Launch checklist per version: build, What's New, screenshots, review details | Helm | S | open |
 | TestFlight groups and testers, add a tester | App Store Connect, Helm | M | open |
