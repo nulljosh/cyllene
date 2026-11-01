@@ -43,3 +43,15 @@ Sent: Patois (asked Apple to approve now, Sign in with Apple fix next update; th
 ## Update (2026-10-31, night)
 
 Every rejection is now answered or resubmitted. Patois iOS build 202610312030 moves sign-in to jaybulb-api, which fixes the Sign in with Apple error (Google sign-in removed, same as the web). Mailbag Mac build 202610312000 fixes the crash in Apple's log: the window resized itself in a loop when sign-in switched to the inbox, so the window now has a fixed size. Scrounger iOS build 202610312040 carries the 10-28 features; the change note is in its review notes because the old thread no longer takes replies. Airwell, Blackcomb and Cyllene are in review. Next: the full Cyllene to Cyllene rename, then the iPhone Mobbin rows.
+
+## Update (2026-10-31, late): renamed, TestFlight on iPhone
+
+Hermes is now Cyllene everywhere (repo nulljosh/cyllene, folder ~/Documents/Code/cyllene, cyllene.jaybulb.com, Mac 10.9.1 DMG and the cyllene cask; bundle id, keychain services, cache folders and HERMES_* env vars keep the old name on purpose). iPhone 10.10.0 adds the TestFlight tab, QA'd in the simulator on the real account (HERMES_OPEN_APP, HERMES_TAB, HERMES_OPEN_GROUP). It ships once 10.9.0 clears review. Simulator QA helper: launch with SIMCTL_CHILD_HERMES_KEY_ID, _ISSUER_ID and _KEY_PEM_B64 read from ~/.asc/config.json, never printed.
+
+Next loop: toward 11.0.0. Rows left: translate What's New on the device, sales and downloads with a sparkline, a "new version out" share card. QA every feature with screenshots (iPhone, iPad, Mac where it applies), fix what looks wrong, then ask Joshua before calling it 11.0.0.
+
+Restart prompt:
+
+```
+/loop Cyllene to 11.0.0: build the open iPhone gap rows in docs/roadmap.md one minor at a time, QA every feature with simulator screenshots and fix anything below A+, send the screenshots, commit and push each
+```
