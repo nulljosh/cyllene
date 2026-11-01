@@ -263,7 +263,8 @@ struct AppDetail: View {
             Section {
                 switch tab {
                 case .versions:
-                    ForEach(versions.filter { LaunchChecklist.editable.contains($0.attributes.appVersionState ?? $0.attributes.appStoreState ?? "") }) {
+                    // QA: HERMES_ANY_VERSION=1 shows the checklist on the newest version too, for a read-only look at a locked one.
+                    ForEach(versions.filter { LaunchChecklist.editable.contains($0.attributes.appVersionState ?? $0.attributes.appStoreState ?? "") || (ProcessInfo.processInfo.environment["HERMES_ANY_VERSION"] != nil && $0.id == versions.first?.id) }) {
                         let v = $0
                         ChecklistView(client: client, version: v, first: !versions.contains { $0.id != v.id && $0.attributes.platform == v.attributes.platform })
                     }

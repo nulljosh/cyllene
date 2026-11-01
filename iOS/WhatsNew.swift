@@ -1,4 +1,5 @@
 import SwiftUI
+import Translation
 
 struct LocaleText: Decodable { let locale: String?; let whatsNew: String? }
 
@@ -33,8 +34,13 @@ struct WhatsNewEditor: View {
     static let limit = 4000
 
     var text: Binding<String> { Binding(get: { drafts[selected] ?? "" }, set: { drafts[selected] = $0 }) }
-    var current: Doc<LocaleText>.Item? { locales.first { $0.id == selected } }
-    var changed: Bool { (drafts[selected] ?? "") != (current?.attributes.whatsNew ?? "") }
+    /// Every language whose draft differs from what App Store Connect has.
+    var changedIDs: [String] { locales.filter { (drafts[$0.id] ?? "") != ($0.attributes.whatsNew ?? "") }.map(\.id) }
+    var tooLong: Bool { changedIDs.contains { (drafts[$0] ?? "").count > Self.limit } }
+    var english: Doc<LocaleText>.Item? { locales.first { $0.attributes.locale == "en-US" } ?? locales.first { $0.attributes.locale?.hasPrefix("en") == true } }
+    var englishText: String { english.map { drafts[$0.id] ?? "" } ?? "" }
+    @State private var translating = false
+    @State private var note: String?
 
     var body: some View {
         NavigationStack {
@@ -45,6 +51,15 @@ struct WhatsNewEditor: View {
                     }
                     .pickerStyle(.menu)
                 }
+                if #available(iOS 18, *), locales.count > 1, english != nil {
+                    Button(translating ? "Translating…" : "Translate English into every language", systemImage: "translate") { translating = true }
+                        .font(Theme.font(14, .semibold)).foregroundStyle(Theme.accent).buttonStyle(.borderless)
+                        .disabled(translating || englishText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                        .modifier(TranslateAll(run: $translating, source: englishText, targets: locales.filter { $0.id != english?.id }.map { ($0.id, $0.attributes.locale ?? "") }) { id, text in
+                            drafts[id] = text
+                        } done: { n in note = n })
+                }
+                if let note { Text(note).font(Theme.font(13)).foregroundStyle(Theme.muted) }
                 HStack {
                     Text("What's New").font(Theme.font(13, .semibold)).foregroundStyle(Theme.muted)
                     Spacer()
@@ -73,12 +88,12 @@ struct WhatsNewEditor: View {
                 ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save Draft") { confirm = true }
-                        .disabled(!changed || saving || text.wrappedValue.count > Self.limit)
+                        .disabled(changedIDs.isEmpty || saving || tooLong)
                 }
             }
-            .confirmationDialog("Save this What's New on App Store Connect?", isPresented: $confirm, titleVisibility: .visible) {
+            .confirmationDialog(changedIDs.count == 1 ? "Save this What's New on App Store Connect?" : "Save What's New in \(changedIDs.count) languages on App Store Connect?", isPresented: $confirm, titleVisibility: .visible) {
                 Button("Save Draft") { Task { await save() } }
-            } message: { Text("It replaces the text there for this language. Nothing is sent to App Review.") }
+            } message: { Text("It replaces the text there for \(changedIDs.count == 1 ? "this language" : "those languages"). Nothing is sent to App Review.") }
             .task { await load() }
         }
     }
@@ -88,16 +103,70 @@ struct WhatsNewEditor: View {
             locales = try await client.whatsNew(version: version.id)
             for l in locales { drafts[l.id] = l.attributes.whatsNew ?? "" }
             selected = locales.first { $0.attributes.locale == "en-US" }?.id ?? locales.first?.id ?? ""
+            // QA: HERMES_TRANSLATE=1 runs Translate on open.
+            if ProcessInfo.processInfo.environment["HERMES_TRANSLATE"] != nil { translating = true }
         } catch { self.error = error.localizedDescription }
     }
 
     private func save() async {
-        guard let current else { return }
         saving = true; defer { saving = false }
         do {
-            try await client.saveWhatsNew(localization: current.id, drafts[selected] ?? "")
-            saved = true; error = nil
+            for id in changedIDs { try await client.saveWhatsNew(localization: id, drafts[id] ?? "") }
+            saved = true; error = nil; note = nil
             await load()
         } catch { self.error = error.localizedDescription; saved = false }
     }
+}
+
+/// Translates the English What's New into each listing language with Apple's on-device models, one language at a time.
+/// English variants (en-GB, en-AU) get the English text as is; languages Apple cannot translate are skipped and named.
+@available(iOS 18, *)
+struct TranslateAll: ViewModifier {
+    @Binding var run: Bool
+    let source: String
+    let targets: [(id: String, locale: String)]
+    let fill: (String, String) -> Void
+    let done: (String) -> Void
+    @State private var queue: [(id: String, locale: String)] = []
+    @State private var config: TranslationSession.Configuration?
+    @State private var skipped: [String] = []
+    @State private var count = 0
+
+    static let en = Locale.Language(identifier: "en")
+
+    func body(content: Content) -> some View {
+        content
+            .onChange(of: run, initial: true) { _, on in if on { Task { await start() } } }
+            .translationTask(config) { session in
+                guard let t = queue.first else { return }
+                do { fill(t.id, try await session.translate(source).targetText); count += 1 }
+                catch { skipped.append(Self.name(t.locale)) }
+                queue.removeFirst()
+                await next()
+            }
+    }
+
+    private func start() async {
+        queue = []; skipped = []; count = 0
+        let avail = LanguageAvailability()
+        for t in targets {
+            if t.locale.hasPrefix("en") { fill(t.id, source); count += 1; continue }
+            if await avail.status(from: Self.en, to: Locale.Language(identifier: t.locale)) == .unsupported { skipped.append(Self.name(t.locale)) }
+            else { queue.append(t) }
+        }
+        await next()
+    }
+
+    private func next() async {
+        guard let t = queue.first else {
+            config = nil; run = false
+            let missed = skipped.joined(separator: ", ")
+            done(count == 0 ? "This iPhone could not translate into \(missed). Download them in the Translate app, then try again."
+                 : "Filled \(count) language\(count == 1 ? "" : "s"). Read them over, then Save Draft." + (skipped.isEmpty ? "" : " Skipped: \(missed)."))
+            return
+        }
+        config = .init(source: Self.en, target: Locale.Language(identifier: t.locale))
+    }
+
+    static func name(_ id: String) -> String { Locale.current.localizedString(forIdentifier: id) ?? id }
 }
