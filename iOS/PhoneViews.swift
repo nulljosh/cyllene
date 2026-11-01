@@ -292,14 +292,7 @@ struct AppDetail: View {
                 case .reviews:
                     if reviews.isEmpty { Text("No reviews here yet.").foregroundStyle(Theme.muted) }
                     else { RatingsSummary(ratings: reviews.compactMap(\.attributes.rating)) }
-                    ForEach(reviews) { r in
-                        let a = r.attributes
-                        Button { replying = r } label: { VStack(alignment: .leading, spacing: 4) {
-                            Text(String(repeating: "★", count: a.rating ?? 0) + " " + (a.title ?? "")).font(Theme.font(15, .semibold))
-                            Text(a.body ?? "").font(Theme.font(14)).foregroundStyle(Theme.muted)
-                            Text("\(a.reviewerNickname ?? "") · \(a.territory ?? "") · \(String((a.createdDate ?? "").prefix(10)))").font(Theme.font(12)).foregroundStyle(Theme.muted)
-                        } }.foregroundStyle(Theme.text)
-                    }
+                    ForEach(reviews) { r in ReviewRow(review: r) { replying = r } }
                 }
             }
             .listRowBackground(Theme.surface)

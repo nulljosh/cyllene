@@ -118,7 +118,7 @@ From the App Store screens of Helm, Apple's App Store Connect, AppFigures and Te
 | Launch checklist per version: build, What's New, screenshots, review details | Helm | S | done 10.7 |
 | TestFlight groups and testers, add a tester | App Store Connect, Helm | M | open |
 | Translate What's New into every listing language, on the device | Helm | M | open |
-| Reviews translated into your language, on the device | AppFigures | S | open |
+| Reviews translated into your language, on the device | AppFigures | S | done 10.8 |
 | Sales and downloads at a glance with a sparkline | AppFigures | M | open |
 | Share a "new version out" card | App Store Connect | S | open |
 Skipped: Helm Passport (social), ad networks (AppFigures, no data).
