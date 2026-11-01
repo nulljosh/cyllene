@@ -264,7 +264,8 @@ struct AppDetail: View {
                 switch tab {
                 case .versions:
                     ForEach(versions.filter { LaunchChecklist.editable.contains($0.attributes.appVersionState ?? $0.attributes.appStoreState ?? "") }) {
-                        ChecklistView(client: client, version: $0)
+                        let v = $0
+                        ChecklistView(client: client, version: v, first: !versions.contains { $0.id != v.id && $0.attributes.platform == v.attributes.platform })
                     }
                     if Set(monthly.map(\.month)).count > 1 {
                         // Versions per month by outcome (9.0 on the Mac).

@@ -41,8 +41,11 @@ extension ASCClient {
 struct ChecklistView: View {
     let client: ASCClient
     let version: Doc<VersionAttrs>.Item
+    /// Apple has no What's New on an app's first version for a platform.
+    var first = false
     @State private var list: LaunchChecklist?
     @State private var failed = false
+    @State private var editing = ProcessInfo.processInfo.environment["HERMES_EDIT_WHATSNEW"] != nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -51,10 +54,18 @@ struct ChecklistView: View {
             if let c = list {
                 item("Build attached", c.build)
                 item("Description" + langs(c.description), c.description.of > 0 && c.description.filled == c.description.of)
-                item("What's New" + langs(c.whatsNew), c.whatsNew.of > 0 && c.whatsNew.filled == c.whatsNew.of,
-                     note: c.whatsNew.filled == 0 ? "Not needed on a first version" : nil)
+                if first {
+                    HStack(alignment: .firstTextBaseline, spacing: 8) {
+                        Image(systemName: "minus.circle").foregroundStyle(Theme.muted)
+                        Text("What's New, not used on a first version").font(Theme.font(14)).foregroundStyle(Theme.muted)
+                    }
+                } else {
+                    item("What's New" + langs(c.whatsNew), c.whatsNew.of > 0 && c.whatsNew.filled == c.whatsNew.of)
+                }
                 item("Screenshots", c.screenshots)
                 item("Review contact", c.contact)
+                if !first { Button("Edit What's New", systemImage: "square.and.pencil") { editing = true }
+                    .font(Theme.font(14, .semibold)).foregroundStyle(Theme.accent).buttonStyle(.borderless).padding(.top, 4) }
             } else if failed {
                 Text("Could not read the checklist.").font(Theme.font(13)).foregroundStyle(Theme.muted)
             } else {
@@ -62,6 +73,9 @@ struct ChecklistView: View {
             }
         }
         .padding(.vertical, 4)
+        .sheet(isPresented: $editing, onDismiss: { Task { list = try? await client.checklist(version: version.id) } }) {
+            WhatsNewEditor(client: client, version: version)
+        }
         .task {
             do { list = try await client.checklist(version: version.id) } catch { failed = true }
         }
@@ -70,14 +84,11 @@ struct ChecklistView: View {
     /// "", or ", 2 of 3 languages" when a listing has more than one.
     private func langs(_ c: (filled: Int, of: Int)) -> String { c.of > 1 ? ", \(c.filled) of \(c.of) languages" : "" }
 
-    private func item(_ title: String, _ done: Bool, note: String? = nil) -> some View {
+    private func item(_ title: String, _ done: Bool) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
             Image(systemName: done ? "checkmark.circle.fill" : "circle")
                 .foregroundStyle(done ? Theme.live : Theme.muted)
-            VStack(alignment: .leading, spacing: 1) {
-                Text(title).font(Theme.font(14))
-                if let note, !done { Text(note).font(Theme.font(12)).foregroundStyle(Theme.muted) }
-            }
+            Text(title).font(Theme.font(14))
         }
         .accessibilityElement(children: .combine)
         .accessibilityValue(done ? "done" : "to do")
