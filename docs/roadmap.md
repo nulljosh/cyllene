@@ -134,3 +134,5 @@ From the App Store screens of Apple's App Store Connect, AppFigures and RevenueC
 | Home Screen widget with the account's downloads and newest review | RevenueCat | M | open |
 | More share card styles: version out, featured, milestone | App Store Connect | S | open |
 Skipped: AI chat over metrics (RevenueCat, cloud), paywall editing and subscriptions (no IAPs), ad networks (no data), stickers.
+
+- [ ] Landing screenshot `landing/shots/app-list.png` still shows "Welcome to Hermes" inside the app; retake it from the current Mac build (found in QA 2026-11-01)
