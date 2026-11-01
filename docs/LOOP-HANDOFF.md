@@ -22,6 +22,8 @@ Rules that bite:
 - Blackcomb iOS 1.0.0 was rejected 2026-10-31 evening, on top of the UNRESOLVED_ISSUES list below.
 - App Store Connect has review submissions in UNRESOLVED_ISSUES across about 9 apps: Patois iOS, Mailbag Mac, Oohaah Mac and iOS, Scrounger iOS, Cartons iOS, Horula Mac and iOS, Atlin iOS, Airwell iOS, Blackcomb iOS. Sidewise is retired (deletion is on blocked-on-joshua).
 
+- Rejection reasons read 2026-10-31 night (full text in the session scratchpad, re-read with `asc web review show --app ID --plain-text`): 4.3(a) spam on Oohaah, Scrounger, Cartons, Horula, Atlin, Blackcomb (answer with the nine answers, change the build where it is thin); 2.1(a) bugs on Patois and a crash on Mailbag (read the steps, fix, new build); 2.3.8 on Airwell, store name and home screen name differ (match CFBundleDisplayName to the listing, new build).
+
 ## Next, in order
 
 1. Goal: Resolve All actually works, and every app is resolved through it. Loop: read every open thread (`asc web review show --app ID`), draft each reply from the app's facts (Sources/Facts.swift, mcp/server.py app_facts), fix the app where the rejection is a real bug, then send through Resolve All. Joshua said yes to resolving all on 2026-10-31; still never resubmit an unchanged build and check the listing name first.
