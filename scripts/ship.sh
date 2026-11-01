@@ -11,7 +11,7 @@ SHA=$(shasum -a 256 dist/Cyllene.dmg | awk '{print $1}')
 # The cask must match what GitHub serves, not just the local file.
 [ "$(curl -sL "https://github.com/nulljosh/cyllene/releases/download/v$V/Cyllene.dmg" | shasum -a 256 | awk '{print $1}')" = "$SHA" ]
 TAP=../homebrew-tap
-sed -i '' -E "s/version \"[^\"]+\"/version \"$V\"/; s/sha256 \"[0-9a-f]+\"/sha256 \"$SHA\"/" "$TAP/Casks/hermes.rb"
-git -C "$TAP" commit -qm "hermes $V" Casks/hermes.rb && git -C "$TAP" push -q
+sed -i '' -E "s/version \"[^\"]+\"/version \"$V\"/; s/sha256 \"[0-9a-f]+\"/sha256 \"$SHA\"/" "$TAP/Casks/cyllene.rb"
+git -C "$TAP" commit -qm "cyllene $V" Casks/cyllene.rb && git -C "$TAP" push -q
 ./deploy.sh | tail -1
 echo "SHIPPED $V"
