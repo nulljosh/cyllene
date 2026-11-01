@@ -18,19 +18,18 @@ Rules that bite:
 ## Where things stand
 
 - The iPhone app is on the App Store as Cyllene (record 6829353117, bundle com.nulljosh.hermes). Version 10.9.0 is in Apple review.
-- iPhone 10.10.0 adds a TestFlight tab (groups, testers, public link, add a tester after asking). 10.11.0 translates What's New into every listing language on the device with Apple's Translation, and one yes saves all changed languages. Both are committed and not uploaded. They ship after 10.9.0 clears review.
+- iPhone 11.0.0 is committed and not uploaded. Since 10.9.0 it adds a TestFlight tab (10.10), What's New translated on the device into every listing language (10.11), sales and downloads for the last 30 days with a sparkline (10.12, needs a vendor number in Settings and a key with the Finance or Sales role; the default asc key lacks it, so QA used cached test reports), and a "new version out" share card on the newest live version (10.13). It ships after 10.9.0 clears review.
 - The Mac app is 10.9.1: a notarized DMG on GitHub, and the cyllene Homebrew cask.
-- Done in the iPhone gap matrix: TestFlight groups and testers (10.10), translate What's New (10.11), reviews translated (10.8).
-- Open rows: sales and downloads at a glance with a sparkline (AppFigures), and a "new version out" share card.
+- The iPhone gap matrix is empty.
 - Open roadmap items outside the matrix: translations of app metadata on the device, text improvements for store copy, setup export (mirrored as a GitHub issue on 2026-10-31), and shipping the iPhone app.
 - Every open App Store rejection was answered or resubmitted on 2026-10-31. Oohaah, Cartons, Horula and Atlin wait on Apple. Do not reply again without Joshua's yes.
-- Simulator QA helper: `qa/launch.sh` lives in the session scratchpad, not in this repo. It launches the iPhone app with `SIMCTL_CHILD_HERMES_*` hooks: `HERMES_OPEN_APP`, `HERMES_TAB`, `HERMES_OPEN_GROUP`, `HERMES_ANY_VERSION`, `HERMES_EDIT_WHATSNEW`, `HERMES_TRANSLATE`. The signing key values come from `~/.asc/config.json` and are never printed. If the script is gone, rebuild it from those hooks.
+- Simulator QA helper: `qa/launch.sh` lives in the session scratchpad, not in this repo. It launches the iPhone app with `SIMCTL_CHILD_HERMES_*` hooks: `HERMES_OPEN_APP`, `HERMES_TAB`, `HERMES_OPEN_GROUP`, `HERMES_ANY_VERSION`, `HERMES_EDIT_WHATSNEW`, `HERMES_TRANSLATE`, `HERMES_VENDOR`, `HERMES_SHARE` (writes the share card to Caches/card.png). The signing key values come from `~/.asc/config.json` and are never printed. If the script is gone, rebuild it from those hooks.
 
 ## Next, in order
 
-1. Sales and downloads at a glance with a sparkline. Build it, QA it in the simulator with screenshots on iPhone (and iPad where the layout changes), fix anything below A+, commit and push.
-2. A "new version out" share card. Same QA and push.
-3. Stop and ask Joshua before calling the set 11.0.0.
+1. The 11.0.0 major chores: a Mobbin pass (four or so competitor App Store sheets, a new gap table in docs/roadmap.md with one row per minor) and a launch film with the opus-ad skill. Held for the weekly usage reset.
+2. Upload iPhone 11.0.0 once 10.9.0 clears review, with What's New in three short lines.
+3. Then work the new gap table one minor at a time, same QA and push.
 
 ## Restart prompt
 

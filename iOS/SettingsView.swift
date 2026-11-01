@@ -38,7 +38,7 @@ struct SettingsView: View {
                     Button("Add account") { adding = true }
                 } header: { Text("Accounts") } footer: { Text("Each App Store Connect team needs its own key. Tap one to switch.") }
                 Section {
-                    TextField("Vendor number", text: $vendor).keyboardType(.numberPad)
+                    LabeledContent("Vendor number") { TextField("Not set", text: $vendor).keyboardType(.numberPad).multilineTextAlignment(.trailing) }
                 } header: { Text("Sales") } footer: { Text("Find it in App Store Connect under Payments and Financial Reports. Sales need a key with the Finance or Sales role.") }
                 Section {
                     LabeledContent("Changes", value: "Ask first")
