@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 1024 1024"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6f9a62"/><stop offset="1" stop-color="#3b6334"/></linearGradient></defs><rect width="1024" height="1024" rx="224" fill="url(#g)"/><g transform="translate(512 512) scale(0.84) translate(-513 -566)">
+  <g fill="#fff">
+    <path fill-rule="evenodd" d="M212 640C212 556 314 500 444 500C540 500 610 524 660 562L786 596C816 604 832 620 832 642C832 664 816 680 786 688L660 720C610 758 540 780 444 780C314 780 212 724 212 640ZM444 598a52 30 0 1 0 0.1 0Z"/>
+    <path d="M372 772H516L540 832H348Z"/>
+    <path d="M788 584C730 548 712 488 744 424C760 392 776 360 772 300C846 352 884 432 866 504C856 548 828 576 788 584Z"/>
+  </g>
+  <circle cx="200" cy="640" r="58" fill="none" stroke="#fff" stroke-width="40"/>
+</g></svg>
