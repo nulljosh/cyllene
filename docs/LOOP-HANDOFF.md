@@ -35,3 +35,7 @@ Rules that bite:
 ```
 /loop Hermes: read docs/LOOP-HANDOFF.md and docs/roadmap.md. If Joshua has not yet signed in inside Hermes, stop and ask him for that one sign-in. Otherwise do the next item as the next minor version (10.5.0 next). Versioning is honest semver: features are minors, fixes are patches, a major only on Joshua's call. QA each change on a real app, notarize the DMG for the GitHub release, and never mutate a live app or send an Apple reply without Joshua's yes.
 ```
+
+## Update (2026-10-31, evening)
+
+Sent: Patois (asked Apple to approve now, Sign in with Apple fix next update; the iPhone app still signs in through Supabase, move it to jaybulb-api), Blackcomb (nine answers, Mac 1.0.0 approved). Cyllene 10.9.0 iOS is waiting for review. Airwell iOS build 202610311930 (installed name Airwell) submitted for the 2.3.8 fix; the first try attached the old Windgate build and was cancelled, so check the attached build is 202610311930. Oohaah, Cartons, Horula and Atlin are waiting on Apple after our replies; do not reply again. Scrounger got Apple's closing note, so it needs real changes before any resubmit. Mailbag Mac: Release build with `-demo YES` opens a black window locally, which is likely the crash Apple saw; debug that before a new build.
