@@ -1,4 +1,3 @@
-import CoreText
 import LocalAuthentication
 import Security
 import SwiftUI
@@ -8,9 +7,6 @@ import SwiftUI
 @main
 struct CyllenePhoneApp: App {
     init() {
-        for url in Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil) ?? [] {
-            CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
-        }
         KeyStore.importDebugKey()
     }
 

@@ -12,9 +12,6 @@ targets:
       - Sources
       - Shared
       - Cyllene.icon
-      - path: fonts
-        buildPhase: resources
-        excludes: ["*.woff2"]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.nulljosh.hermes
@@ -45,9 +42,6 @@ targets:
       - iOS
       - Shared
       - Cyllene.icon
-      - path: fonts
-        buildPhase: resources
-        excludes: ["*.woff2"]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.nulljosh.hermes

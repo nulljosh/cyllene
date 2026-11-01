@@ -1,15 +1,8 @@
 import UserNotifications
-import CoreText
 import SwiftUI
 
 @main
 struct CylleneApp: App {
-    init() {
-        for url in Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil) ?? [] {
-            CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
-        }
-    }
-
     var body: some Scene {
         WindowGroup(id: "main") { RootView().task { await Watch.poll(Store.shared) } }
             .windowStyle(.hiddenTitleBar)
