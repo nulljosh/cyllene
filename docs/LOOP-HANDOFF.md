@@ -1,4 +1,4 @@
-# Hermes loop handoff (2026-10-31, evening)
+# Hermes loop handoff (2026-10-31, night)
 
 ## What the loop is
 
@@ -16,24 +16,17 @@ Rules that bite:
 
 ## Where things stand
 
-- 2026-10-31: the iPhone companion got App Lock (Face ID or the passcode, locks again when the app leaves the screen) and an Appearance setting (System, Light, Dark). Committed; the iPhone build ships with the next version. Both roadmap rows are pruned.
-- 2026-10-30: 10.4.0. Hermes keeps the Apple password in its own Keychain item and passes it to asc on every web command. asc ran with its keychain bypassed, so it could not see its own saved password, which is why web sessions kept dying. Resolve All also signs itself back in once when the session expires, reading the 2FA code from Messages. Released as a notarized DMG on GitHub (v10.4.0). Not yet tested live.
-- 2026-10-30: 10.3.0 (Add to New Submission on an in-app event), 10.2.0 (Liquid Glass on Resolve All, macOS 26 only, plain fallback below), 10.1.0 (app icon, name and version at the top of Settings, Mercury wallpapers). All notarized on GitHub. 21 of 21 unit tests pass.
-- Issues #1 (custom font, system font only), #2 (Liquid Glass, closed by 10.2.0) and #3 (Product Hunt price, stays Free for now) are closed. The repo has 4 open issues, mirrored from docs/roadmap.md, and no open PRs.
-- App Store Connect has 10 review submissions in UNRESOLVED_ISSUES across 8 apps: Patois iOS, Mailbag Mac, Oohaah Mac and iOS, Scrounger iOS, Cartons iOS, Sidewise iOS (retired), Horula Mac and iOS, Atlin iOS. None of the threads have been read, because the Apple web session expired. An earlier "0 rejections" reading was wrong.
-- Parked: the Apple sign-in. Joshua approved texting the 2FA code, but Apple returned a 503 throttle because the retry came 10 minutes after the last attempt. Nothing has been retried since. Lesson: wait at least 20 minutes between Apple sign-in attempts (asc-login's guard exists for this).
-- Next session starts with ONE sign-in, either Joshua in Hermes' Resolve All sheet (Sign In) or the code relay, then reads the 10 UNRESOLVED_ISSUES threads.
-- Known gap: the Dock icon would not open the app. Worked around by launching dist/Hermes.app directly. Root cause not confirmed.
-- The parity matrix still has open rows: in-app event assets (todo) and the event archive (kept on the Mac, since App Store Connect has no archive).
+- 2026-10-31 night: the iPhone app is on the App Store as **Cyllene** (Hermes was taken; record 6829353117, bundle com.nulljosh.hermes, SKU HERMESIOS). Free, Developer Tools, all territories, privacy "data not collected" published, age rating all none. 10.9.0 is uploaded and a background script uploads the renamed build, screenshots and review details, then submits. The iPhone already says Cyllene on screen; the repo, Mac app, landing (hermes.jaybulb.com) and fonts still say Hermes. The full rename to Cyllene is Joshua's ask and is next after Resolve All.
+- 10.5.0 to 10.9.0 shipped this evening on iPhone: ratings summary, starred apps, launch checklist, Translate on reviews, Liquid Glass pass, What's New editor (asks first). 10.9.0 Mac shipped: notarized DMG, GitHub release, cask, landing.
+- The Apple web session is fresh (signed in 2026-10-31 18:45 PDT). Do not run asc-login again; every attempt texts Joshua a code.
+- Blackcomb iOS 1.0.0 was rejected 2026-10-31 evening, on top of the UNRESOLVED_ISSUES list below.
+- App Store Connect has review submissions in UNRESOLVED_ISSUES across about 9 apps: Patois iOS, Mailbag Mac, Oohaah Mac and iOS, Scrounger iOS, Cartons iOS, Horula Mac and iOS, Atlin iOS, Airwell iOS, Blackcomb iOS. Sidewise is retired (deletion is on blocked-on-joshua).
 
 ## Next, in order
 
-1. Joshua signs in inside Hermes (Resolve All, then Sign In). Nothing runs before that.
-2. Read the 10 open threads, draft replies, and send only on Joshua's yes. Never send unchanged, and check the listing name before replying.
-3. 10.5.0: TestFlight aliases, which are Mac-only today. Bring them to the iPhone companion if Joshua wants it.
-4. In-app event assets, the last todo row in the events band.
-5. Side-by-side Helm QA of every tab on a real app, when Joshua is at the Mac. Declaring 1:1 waits on that.
-6. Review-time estimates wait for a decision date source. asc review history has the submit date only.
+1. Goal: Resolve All actually works, and every app is resolved through it. Loop: read every open thread (`asc web review show --app ID`), draft each reply from the app's facts (Sources/Facts.swift, mcp/server.py app_facts), fix the app where the rejection is a real bug, then send through Resolve All. Joshua said yes to resolving all on 2026-10-31; still never resubmit an unchanged build and check the listing name first.
+2. Full rename Hermes to Cyllene with the rename skill: repo, folder, Mac app, landing domain, fonts, docs.
+3. Remaining iPhone Mobbin rows in docs/roadmap.md: TestFlight groups and testers, translate What's New, sales at a glance, share card.
 
 ## Restart prompt
 
