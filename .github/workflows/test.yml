@@ -7,4 +7,4 @@ jobs:
       - uses: actions/checkout@v4
       - run: brew install xcodegen
       - run: xcodegen generate
-      - run: xcodebuild test -scheme Hermes -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
+      - run: xcodebuild test -scheme Cyllene -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO

@@ -17,7 +17,7 @@
     <rect x="660" y="290" width="200" height="60" rx="14"/>
   </g>
   <g fill="#1d1d1f" text-anchor="middle">
-    <text x="120" y="106" font-weight="600">Hermes.app</text><text x="120" y="126" fill="#6e6e73" font-size="12">SwiftUI window</text>
+    <text x="120" y="106" font-weight="600">Cyllene.app</text><text x="120" y="126" fill="#6e6e73" font-size="12">SwiftUI window</text>
     <text x="120" y="246" font-weight="600">Agents</text><text x="120" y="266" fill="#6e6e73" font-size="12">skills: status, ship, resolve</text>
     <text x="440" y="106" font-weight="600">PendingCommand</text><text x="440" y="126" fill="#6e6e73" font-size="12">shows the command, asks first</text>
     <text x="440" y="176" font-weight="600">asc CLI</text><text x="440" y="196" fill="#6e6e73" font-size="12">--read-only by default</text>

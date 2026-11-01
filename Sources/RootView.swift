@@ -48,19 +48,19 @@ struct Sidebar: View {
     var body: some View {
         VStack(spacing: 8) {
             Spacer()
-            // Hermes' own mark on the welcome screen; the open app's icon once one is picked.
+            // Cyllene' own mark on the welcome screen; the open app's icon once one is picked.
             if let app {
                 AppIcon(app: app, url: store.icons[app.id], size: 80)
             } else {
                 Image(nsImage: NSApp.applicationIconImage)
                     .resizable().scaledToFit().frame(width: 80, height: 80)
             }
-            Text(app.map { $0.name } ?? "Welcome to Hermes").font(Theme.font(17, .semibold))
+            Text(app.map { $0.name } ?? "Welcome to Cyllene").font(Theme.font(17, .semibold))
             Text(app == nil ? "Select an app to get started." : app!.bundleId)
                 .foregroundStyle(Theme.muted)
             Spacer()
             HStack {
-                Link("Send Feedback", destination: URL(string: "mailto:trommatic@icloud.com?subject=Hermes")!)
+                Link("Send Feedback", destination: URL(string: "mailto:trommatic@icloud.com?subject=Cyllene")!)
                     .foregroundStyle(Theme.accent)
                 Spacer()
                 AccountMenu()

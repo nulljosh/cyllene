@@ -1,12 +1,12 @@
-"""Hermes Sans: Inter (Rasmus Andersson, SIL Open Font License 1.1, no reserved name), renamed, with its curly
+"""Cyllene Sans: Inter (Rasmus Andersson, SIL Open Font License 1.1, no reserved name), renamed, with its curly
 quote marks redrawn as feathers from the Hermes wing, so every quote in the app wears the mark.
 Inter is drawn in the spirit of San Francisco and Helvetica: open shapes, even proportional spacing, built for screens.
 
 Same method as coda's Quip Sans and turing's Samantha Sans: pinned release, renamed, OFL shipped beside the fonts,
 original copyright kept in the name table, fixed timestamps so every build is the same bytes.
 
-    python3 scripts/gen_font.py            # writes fonts/HermesSans-{Regular,Medium,Semibold,Bold}.{ttf,woff2} + OFL.txt
-    python3 scripts/gen_font.py --check    # named Hermes Sans, OFL present, original copyright kept
+    python3 scripts/gen_font.py            # writes fonts/CylleneSans-{Regular,Medium,Semibold,Bold}.{ttf,woff2} + OFL.txt
+    python3 scripts/gen_font.py --check    # named Cyllene Sans, OFL present, original copyright kept
 Needs fonttools and brotli (uv run --with fonttools --with brotli).
 """
 import io
@@ -66,9 +66,9 @@ def redraw_quotes(font):
 
 
 def rename(font, style):
-    """Give the outlines the Hermes Sans name; copyright (0) and license (13, 14) stay as the authors wrote them."""
-    names = {1: "Hermes Sans", 2: style, 3: f"HermesSans-{style}", 4: f"Hermes Sans {style}", 5: "Version 1.000",
-             6: f"HermesSans-{style}", 16: "Hermes Sans", 17: style}
+    """Give the outlines the Cyllene Sans name; copyright (0) and license (13, 14) stay as the authors wrote them."""
+    names = {1: "Cyllene Sans", 2: style, 3: f"CylleneSans-{style}", 4: f"Cyllene Sans {style}", 5: "Version 1.000",
+             6: f"CylleneSans-{style}", 16: "Cyllene Sans", 17: style}
     table = font["name"]
     table.names = [n for n in table.names if n.nameID in (0, 13, 14)]
     for nid, text in names.items():
@@ -83,16 +83,16 @@ def check():
     assert os.path.exists(os.path.join(OUT, "OFL.txt")), "the OFL must ship with the fonts"
     for style in WEIGHTS:
         for ext in ("ttf", "woff2"):
-            f = TTFont(os.path.join(OUT, f"HermesSans-{style}.{ext}"))
-            assert f["name"].getDebugName(1) == "Hermes Sans", "family name"
-            assert f["name"].getDebugName(6) == f"HermesSans-{style}", "postscript name"
+            f = TTFont(os.path.join(OUT, f"CylleneSans-{style}.{ext}"))
+            assert f["name"].getDebugName(1) == "Cyllene Sans", "family name"
+            assert f["name"].getDebugName(6) == f"CylleneSans-{style}", "postscript name"
             assert f["name"].getDebugName(0), "the original copyright must stay in the name table"
             cmap, hmtx, glyf = f.getBestCmap(), f["hmtx"], f["glyf"]
             for cp, n in ((0x2019, 1), (0x201D, 2), (0x2018, 1), (0x201C, 2)):
                 g = glyf[cmap[cp]]
                 assert g.numberOfContours == n, f"U+{cp:04X} is not the feather"
                 assert 0 <= g.xMin and g.xMax <= hmtx[cmap[cp]][0], f"U+{cp:04X} spills out of its advance"
-    print(f"font ok: Hermes Sans (Inter, OFL), {len(WEIGHTS)} weights, quotes are feathers")
+    print(f"font ok: Cyllene Sans (Inter, OFL), {len(WEIGHTS)} weights, quotes are feathers")
 
 
 def main():
@@ -107,8 +107,8 @@ def main():
         rename(font, style)
         for ext, flavor in (("ttf", None), ("woff2", "woff2")):
             font.flavor = flavor
-            font.save(os.path.join(OUT, f"HermesSans-{style}.{ext}"), reorderTables=False)
-        print(f"HermesSans-{style}: Inter {weight}")
+            font.save(os.path.join(OUT, f"CylleneSans-{style}.{ext}"), reorderTables=False)
+        print(f"CylleneSans-{style}: Inter {weight}")
 
 
 if __name__ == "__main__":

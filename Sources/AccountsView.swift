@@ -39,7 +39,7 @@ struct AddAccount: View {
 
     var body: some View {
         Form {
-            Text("Make a key at App Store Connect, Users and Access, Integrations. Hermes hands it to asc; it never stores it itself.")
+            Text("Make a key at App Store Connect, Users and Access, Integrations. Cyllene hands it to asc; it never stores it itself.")
                 .font(.caption).foregroundStyle(.secondary)
             TextField("Name", text: $name, prompt: Text("Work"))
             TextField("Key ID", text: $keyID)

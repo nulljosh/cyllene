@@ -16,7 +16,7 @@ struct Orbit: GeometryEffect {
     }
 }
 
-/// Launch: the wing flips in, Hermes' six things burst out of it and orbit, the name drops in letter by letter,
+/// Launch: the wing flips in, Cyllene' six things burst out of it and orbit, the name drops in letter by letter,
 /// then everything is pulled back into the wing and lifts away.
 struct SplashView: View {
     var done: () -> Void

@@ -1,5 +1,5 @@
 # Draws the Hermes wing: feathers hung from a curved leading edge, cut apart by thin gaps, white on a clrs.cc blue tile.
-# Writes Hermes.icon/Assets/glyph.png, icon.svg, favicon.svg, favicon-32.png, apple-touch-icon.png,
+# Writes Cyllene.icon/Assets/glyph.png, icon.svg, favicon.svg, favicon-32.png, apple-touch-icon.png,
 # brand/icon-1024.png, brand/icon-tile.svg and brand/mark.svg. Run from the repo root.
 import math, re, subprocess, tempfile
 
@@ -49,7 +49,7 @@ open('icon.svg', 'w').write(tile(200, 224))
 open('favicon.svg', 'w').write(tile(64, 224, small=True))
 open('brand/icon-tile.svg', 'w').write(tile(1024, 0))
 open('brand/mark.svg', 'w').write(f'<svg {NS} viewBox="0 0 1024 1024" color="inherit">{glyph("currentColor")}</svg>\n')
-png(f'<svg {NS} width="1024" height="1024" viewBox="0 0 1024 1024">{glyph()}</svg>', 'Hermes.icon/Assets/glyph.png', 1024)
+png(f'<svg {NS} width="1024" height="1024" viewBox="0 0 1024 1024">{glyph()}</svg>', 'Cyllene.icon/Assets/glyph.png', 1024)
 png(tile(1024, 0), 'brand/icon-1024.png', 1024)
 subprocess.run(['magick', 'brand/icon-1024.png', '-background', DEEP, '-alpha', 'remove', '-alpha', 'off', 'brand/icon-1024.png'], check=True)
 png(tile(1024, 224, small=True), 'favicon-32.png', 32)

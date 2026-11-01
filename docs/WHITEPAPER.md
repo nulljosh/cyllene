@@ -1,8 +1,8 @@
-# Hermes Technical Whitepaper
+# Cyllene Technical Whitepaper
 
 **v10.0.0** | October 2026
 
-Hermes is a native Mac app for App Store Connect. It shows every app on an account in one window, with the state of each platform's newest version, and lets you edit versions, store text, screenshots, builds, TestFlight groups, review replies and submissions without opening Apple's website. It holds no API client of its own. Every screen is a call to the open source `asc` command line tool, so the key stays on the Mac and anything the window does is a command a script or an agent can run.
+Cyllene is a native Mac app for App Store Connect. It shows every app on an account in one window, with the state of each platform's newest version, and lets you edit versions, store text, screenshots, builds, TestFlight groups, review replies and submissions without opening Apple's website. It holds no API client of its own. Every screen is a call to the open source `asc` command line tool, so the key stays on the Mac and anything the window does is a command a script or an agent can run.
 
 ## The core idea: a window over a command line
 
@@ -14,17 +14,17 @@ Read-only mode is on by default. It passes `--read-only` to every call, and `asc
 
 ## Resolve All
 
-Rejections live in Resolution Center threads, which only Apple's web session can read, so Hermes reads them with `asc web review show`. For each app it builds a fact sheet before any model sees the letter: the version history and which versions App Review already approved, the builds uploaded and when, and from GitHub the app's own Swift files and how many are byte-identical to files in the other apps on the account (git blob SHAs, one tree call per repo, cached a day). In a monorepo the app is only its own folders, found from the bundle id in each project.yml.
+Rejections live in Resolution Center threads, which only Apple's web session can read, so Cyllene reads them with `asc web review show`. For each app it builds a fact sheet before any model sees the letter: the version history and which versions App Review already approved, the builds uploaded and when, and from GitHub the app's own Swift files and how many are byte-identical to files in the other apps on the account (git blob SHAs, one tree call per repo, cached a day). In a monorepo the app is only its own folders, found from the bundle id in each project.yml.
 
 `Sources/Writer.swift` writes the reply on Apple's on-device model (Foundation Models), or a local Ollama model when Apple Intelligence is off. Nothing leaves the Mac and no child process runs. The model's context is about 4,000 tokens, so it gets one task at a time. Apple's nine-question 4.3 follow-up is split into its questions, and each one is pointed at the fact that answers it. A plain 4.3(a) gets the house reply: the model's two sentences on what the app is, then the checked facts word for word, then a question about which apps were found similar. Sentences that repeat an earlier answer, or claim a change nobody made, are cut. Send stays off until Joshua confirms, and a send is never retried.
 
 ## Menu bar, notifications and Shortcuts
 
-One shared store feeds the window, the menu bar and Shortcuts, so they never disagree. While Hermes runs it reloads every 15 minutes. After each load it compares every app's state per platform with the last load and, if the Settings toggle is on, posts a notification for each real move (a version seen for the first time is not a move). Permission to notify is asked for only when that toggle is turned on. Two App Intents, Get App Store Status and Get One App's Status, return the same read as text for Shortcuts and Siri.
+One shared store feeds the window, the menu bar and Shortcuts, so they never disagree. While Cyllene runs it reloads every 15 minutes. After each load it compares every app's state per platform with the last load and, if the Settings toggle is on, posts a notification for each real move (a version seen for the first time is not a move). Permission to notify is asked for only when that toggle is turned on. Two App Intents, Get App Store Status and Get One App's Status, return the same read as text for Shortcuts and Siri.
 
 ## iPhone and iPad
 
-The companion (target HermesPhone) calls the App Store Connect API directly with an ES256 token signed by the user's key, kept in the Keychain. Since 10.0 a regular-width screen, an iPad or a wide window, shows the app list beside the open app in a split view, the iPhone list flips to the same grid as the Mac, each app's Versions tab charts versions per month by outcome, and the iPad turns to any orientation.
+The companion (target CyllenePhone) calls the App Store Connect API directly with an ES256 token signed by the user's key, kept in the Keychain. Since 10.0 a regular-width screen, an iPad or a wide window, shows the app list beside the open app in a split view, the iPhone list flips to the same grid as the Mac, each app's Versions tab charts versions per month by outcome, and the iPad turns to any orientation.
 
 ## Charts over time
 
@@ -32,7 +32,7 @@ Swift Charts draws two histories. Timeline stacks each month's versions by how t
 
 ## Screenshot framing
 
-Frame, in the Media tab, puts a raw PNG into an Apple device frame with an optional title and subtitle through `asc screenshots frame`, which drives Koubou. The background is a solid brand navy, because asc's default behind text is a gradient. The framed file lands in Caches and nothing reaches App Store Connect until it is uploaded. Koubou is a Python tool on the user's PATH, which an app opened from Finder does not inherit, so Hermes passes ~/.local/bin and Homebrew's bin itself, and says how to install Koubou when asc cannot find it.
+Frame, in the Media tab, puts a raw PNG into an Apple device frame with an optional title and subtitle through `asc screenshots frame`, which drives Koubou. The background is a solid brand navy, because asc's default behind text is a gradient. The framed file lands in Caches and nothing reaches App Store Connect until it is uploaded. Koubou is a Python tool on the user's PATH, which an app opened from Finder does not inherit, so Cyllene passes ~/.local/bin and Homebrew's bin itself, and says how to install Koubou when asc cannot find it.
 
 ## Keywords
 
@@ -56,11 +56,11 @@ Live apps use their App Store artwork from the iTunes lookup. Apps that are not 
 
 ## Agents
 
-`mcp/server.py` exposes the same reads as MCP tools, plus Resolve All (`open_rejections`, `app_facts`, `saved_drafts`) and three writes (reply to a customer review, submit for review, send a Resolution Center reply), read-only unless `HERMES_ALLOW_WRITES=1`. It runs over stdio, or with `--http` on 127.0.0.1:8787 as MCP at `/mcp` and a JSON API at `/api/<tool>`. Three skills, `hermes-status`, `hermes-ship` and `hermes-resolve`, describe the release report, the path from build to App Review, and answering rejections.
+`mcp/server.py` exposes the same reads as MCP tools, plus Resolve All (`open_rejections`, `app_facts`, `saved_drafts`) and three writes (reply to a customer review, submit for review, send a Resolution Center reply), read-only unless `HERMES_ALLOW_WRITES=1`. It runs over stdio, or with `--http` on 127.0.0.1:8787 as MCP at `/mcp` and a JSON API at `/api/<tool>`. Three skills, `cyllene-status`, `cyllene-ship` and `cyllene-resolve`, describe the release report, the path from build to App Review, and answering rejections.
 
 ## Brand
 
-A wing from Hermes' sandals on a blue tile (clrs.cc), built as an Icon Composer bundle. The type is Hermes Sans, Inter renamed under the SIL Open Font License. Colours and spacing live in `brand/tokens.css` and are mirrored in `Sources/Theme.swift`.
+A wing from Cyllene' sandals on a blue tile (clrs.cc), built as an Icon Composer bundle. The type is Cyllene Sans, Inter renamed under the SIL Open Font License. Colours and spacing live in `brand/tokens.css` and are mirrored in `Sources/Theme.swift`.
 
 ## Distribution
 

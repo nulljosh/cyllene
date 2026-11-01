@@ -3,10 +3,10 @@ import LocalAuthentication
 import Security
 import SwiftUI
 
-// Hermes on iPhone: the app list and one app's versions, builds and reviews, read only, straight from Apple's API.
+// Cyllene on iPhone: the app list and one app's versions, builds and reviews, read only, straight from Apple's API.
 
 @main
-struct HermesPhoneApp: App {
+struct CyllenePhoneApp: App {
     init() {
         for url in Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil) ?? [] {
             CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)

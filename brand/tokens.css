@@ -1,9 +1,9 @@
-/* Hermes design tokens. One source for the landing and the Mac app (Sources/Theme.swift mirrors these).
-   Shared system: 8 point grid, one radius set, 48 point capsule controls. The accent is the only colour Hermes owns. */
-@font-face { font-family: "Hermes Sans"; src: url("fonts/HermesSans-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
-@font-face { font-family: "Hermes Sans"; src: url("fonts/HermesSans-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
-@font-face { font-family: "Hermes Sans"; src: url("fonts/HermesSans-Semibold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
-@font-face { font-family: "Hermes Sans"; src: url("fonts/HermesSans-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+/* Cyllene design tokens. One source for the landing and the Mac app (Sources/Theme.swift mirrors these).
+   Shared system: 8 point grid, one radius set, 48 point capsule controls. The accent is the only colour Cyllene owns. */
+@font-face { font-family: "Cyllene Sans"; src: url("fonts/CylleneSans-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Cyllene Sans"; src: url("fonts/CylleneSans-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Cyllene Sans"; src: url("fonts/CylleneSans-Semibold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Cyllene Sans"; src: url("fonts/CylleneSans-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
 
 :root {
   /* colour */
@@ -28,8 +28,8 @@
   --idle: #8a8d99;            /* preparing, unknown */
 
   /* type */
-  --display: var(--font);  /* one face: headlines are Hermes Sans bold, tracked tight */
-  --font: "Hermes Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --display: var(--font);  /* one face: headlines are Cyllene Sans bold, tracked tight */
+  --font: "Cyllene Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --size-display: 64px;       /* hero: 64 line, -0.01em */
   --size-title: 34px;         /* section heads: 40 line */
   --size-headline: 20px;      /* card heads: 28 line */

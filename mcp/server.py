@@ -2,14 +2,14 @@
 # requires-python = ">=3.11"
 # dependencies = ["mcp>=2"]
 # ///
-"""Hermes MCP: the Hermes window as tools an agent can call, over the same `asc` CLI the Mac app drives.
+"""Cyllene MCP: the Cyllene window as tools an agent can call, over the same `asc` CLI the Mac app drives.
 
 Read-only by default, like the app: every call gets `--read-only`, so asc refuses writes before they are sent.
 Set HERMES_ALLOW_WRITES=1 to let the write tools through.
 
     uv run mcp/server.py            # stdio server
     uv run mcp/server.py --http     # the same tools over HTTP on 127.0.0.1:8787: /mcp, plus GET /api/<tool>?arg=value
-    claude mcp add hermes -- uv run https://raw.githubusercontent.com/nulljosh/hermes/main/mcp/server.py
+    claude mcp add cyllene -- uv run https://raw.githubusercontent.com/nulljosh/cyllene/main/mcp/server.py
 """
 import json
 import os
@@ -24,7 +24,7 @@ from mcp.server.mcpserver import MCPServer
 
 ASC = shutil.which("asc") or "/opt/homebrew/bin/asc"
 WRITES = os.environ.get("HERMES_ALLOW_WRITES") == "1"
-mcp = MCPServer("hermes")
+mcp = MCPServer("cyllene")
 
 
 def asc(*args: str, write: bool = False) -> object:

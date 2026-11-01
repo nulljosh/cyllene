@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Draw the Hermes wallpapers into brand/wallpapers/ (desktop 5120x2880, phone 1320x2868), dressed like the landing:
+"""Draw the Cyllene wallpapers into brand/wallpapers/ (desktop 5120x2880, phone 1320x2868), dressed like the landing:
 the blue band, Giambologna's Mercury as a halftone mask in scanlines, film grain, a thin frame, tiny caps.
   python3 scripts/wallpapers.py"""
 import io, subprocess
@@ -34,7 +34,7 @@ def mark_png(px):
 
 
 def caps(d, xy, text, size, fill, track=.22, weight="Medium"):
-    f = ImageFont.truetype(str(FONTS / f"HermesSans-{weight}.ttf"), size); x, y = xy
+    f = ImageFont.truetype(str(FONTS / f"CylleneSans-{weight}.ttf"), size); x, y = xy
     for ch in text:   # tiny caps with wide tracking, the Nous label
         d.text((x, y), ch, font=f, fill=fill); x += f.getlength(ch) + size * track
     return x
@@ -63,8 +63,8 @@ def wallpaper(kind):
         left, base, big, small, mk = 220, H - 300, 420, 44, 200
     else:
         left, base, big, small, mk = 92, H - 300, 210, 26, 120
-    f = ImageFont.truetype(str(FONTS / "HermesSans-Bold.ttf"), big)
-    d.text((left - big * .06, base - big), "Hermes", font=f, fill=(255, 255, 255, 255))
+    f = ImageFont.truetype(str(FONTS / "CylleneSans-Bold.ttf"), big)
+    d.text((left - big * .06, base - big), "Cyllene", font=f, fill=(255, 255, 255, 255))
     caps(d, (left, base - big - small * 2.6), "MESSENGER OF THE GODS", small, SUB + (255,))
     img.alpha_composite(mark_png(mk), (int(left - mk * .12), int(base - big - small * 2.6 - mk - small * 1.2)))
     caps(d, (left, base + small * 1.4), "APP STORE CONNECT, ON YOUR MAC", small, SUB + (200,))
@@ -77,5 +77,5 @@ def wallpaper(kind):
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     for kind in ("desktop", "phone"):
-        wallpaper(kind).save(OUT / f"hermes-{kind}.png", optimize=True)
+        wallpaper(kind).save(OUT / f"cyllene-{kind}.png", optimize=True)
     print("\n".join(str(p) for p in sorted(OUT.glob("*.png"))))

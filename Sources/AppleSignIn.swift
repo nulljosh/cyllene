@@ -4,7 +4,7 @@ import Security
 
 // Apple web sign-in for the asc web commands (Resolve All, Resolution Center replies).
 // asc asks for the 2FA code by running TwoFactor.script, which leaves a marker file and waits;
-// Hermes sees the marker, asks for the code, and writes it back. Hermes never stores the code or the password.
+// Cyllene sees the marker, asks for the code, and writes it back. Cyllene never stores the code or the password.
 enum TwoFactor {
     static let dir = URL.cachesDirectory.appendingPathComponent("Hermes/2fa")
     static var waiting: URL { dir.appendingPathComponent("waiting") }
@@ -16,7 +16,7 @@ enum TwoFactor {
         let d = dir.path.replacingOccurrences(of: "'", with: "'\\''")
         let body = """
         #!/bin/sh
-        # Written by Hermes. asc runs this when Apple asks for a 2FA code.
+        # Written by Cyllene. asc runs this when Apple asks for a 2FA code.
         d='\(d)'
         rm -f "$d/code"; touch "$d/waiting"
         # A code Apple texts to a phone that forwards to Messages fills itself in; the prompt covers the rest.
@@ -72,8 +72,8 @@ enum TwoFactor {
     }
 }
 
-// Hermes' own Keychain item for the Apple password. asc runs here with its keychain bypassed (no popups),
-// so it cannot see its own saved password; Hermes hands this one over on every web command instead.
+// Cyllene' own Keychain item for the Apple password. asc runs here with its keychain bypassed (no popups),
+// so it cannot see its own saved password; Cyllene hands this one over on every web command instead.
 enum Vault {
     private static let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                                kSecAttrService as String: "com.nulljosh.hermes.apple-password"]
@@ -133,7 +133,7 @@ struct AppleSignInSheet: View {
 
     var body: some View {
         Form {
-            Text("Resolve All and Resolution Center replies use your Apple Account. Hermes asks for the two-factor code when Apple sends one, and keeps neither the code nor the password.")
+            Text("Resolve All and Resolution Center replies use your Apple Account. Cyllene asks for the two-factor code when Apple sends one, and keeps neither the code nor the password.")
                 .font(Theme.font(11)).foregroundStyle(Theme.muted)
             TextField("Apple Account", text: $appleID, prompt: Text("name@icloud.com"))
             SecureField(stored ? "Password (saved, leave empty)" : "Password", text: $password)

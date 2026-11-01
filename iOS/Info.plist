@@ -23,7 +23,7 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Hermes uses Face ID to unlock when App Lock is on.</string>
+	<string>Cyllene uses Face ID to unlock when App Lock is on.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

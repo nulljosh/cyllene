@@ -1,17 +1,17 @@
-# Hermes roadmap
+# Cyllene roadmap
 
-Goal: a native Mac app for App Store Connect that matches Helm 2.3.9 feature for feature, with its own brand and code. Hermes drives the `asc` CLI, so auth and API coverage come from there.
+Goal: a native Mac app for App Store Connect that matches Helm 2.3.9 feature for feature, with its own brand and code. Cyllene drives the `asc` CLI, so auth and API coverage come from there.
 
 Reference: `/Applications/Helm.app` (bundle id com.modumhq.Helm). Re-check the matrix every version. The truth for Helm's surface is its `helm-asc` command map in `Contents/Resources/AgentSkill_AgentSkill.bundle`.
 
 ## Parity matrix (v2.7.0)
 
-| Area | Helm | Hermes | Status |
+| Area | Helm | Cyllene | Status |
 |---|---|---|---|
 | App list, icons, search, refresh | yes | yes | done |
 | Per-platform version and state dot | yes | yes | done |
 | Two-pane welcome window | yes | yes | done |
-| Release status and next action | yes | yes | done (Hermes adds blockers) |
+| Release status and next action | yes | yes | done (Cyllene adds blockers) |
 | Version list | yes | yes | done |
 | Create version, edit version, ship, reject | yes | create, edit, submit, release, delete, cancel submission | done |
 | Review info (notes, demo account, attachments) | yes | contact, notes, demo account, attachments | done |
@@ -21,7 +21,7 @@ Reference: `/Applications/Helm.app` (bundle id com.modumhq.Helm). Re-check the m
 | Builds list | yes | yes | done |
 | Build upload, expire, attach to version, submit for beta review | yes | upload .ipa/.pkg, expire, attach, add to group, What to Test, beta review | done |
 | TestFlight groups | yes | yes | done |
-| TestFlight group create, edit, testers, add builds, aliases | yes | create, edit, delete, testers, invite, add builds, copy public link | done (3.1: aliases are Hermes nicknames kept on the Mac; App Store Connect has no alias field) |
+| TestFlight group create, edit, testers, add builds, aliases | yes | create, edit, delete, testers, invite, add builds, copy public link | done (3.1: aliases are Cyllene nicknames kept on the Mac; App Store Connect has no alias field) |
 | Customer reviews | yes | yes, with rating summary and filters | done |
 | Review reply, reply signature, review link | yes | yes | done |
 | Submissions: create, add version or event, submit, cancel | yes | create with version, submit, cancel, full history | done (10.3: Add to New Submission on an event) |
@@ -35,24 +35,24 @@ Reference: `/Applications/Helm.app` (bundle id com.modumhq.Helm). Re-check the m
 | Account setup flow (API key, issuer) | yes | Add Account sheet, offered on first run | done |
 | Setup export and import file (.helm-setup) | yes | no, on purpose | skip: it would copy a private key around; `asc auth export-to-config` moves a key |
 | Command line tool for agents (helm-asc) | yes | MCP server over asc | done (MCP instead of a CLI; asc is the CLI) |
-| Agent skill pack | yes | hermes-status, hermes-ship | done |
+| Agent skill pack | yes | cyllene-status, cyllene-ship | done |
 | App intents and Shortcuts | yes | Get App Store Status, Get One App's Status | done (3.0) |
 | Menu bar status and notifications on state change | yes | menu bar list of every app not live yet, a notification on each review-state move, 15-minute refresh | done (3.0) |
 | Agreement banner (Apple license updated) | yes | banner on the app list from asc web agreements status | done (3.1) |
 | Datasets and charts | yes | last month's downloads, redownloads and proceeds per app from the sales summary | done (9.0: monthly charts on Timeline and Sales) |
-| Free tier counter and Pro license | yes | n/a | skip, Hermes is free or $1 |
+| Free tier counter and Pro license | yes | n/a | skip, Cyllene is free or $1 |
 
 ## Version plan
 
 Each version closes a block of rows above and refreshes the matrix.
 
-- 0.2 landing, brand kit, design system, font, icon (done: hermes.jaybulb.com, Hermes Sans, Hermes.icon, row hover)
+- 0.2 landing, brand kit, design system, font, icon (done: cyllene.jaybulb.com, Cyllene Sans, Cyllene.icon, row hover)
 - 0.3 version detail: edit, create, ship, reject, review info (done: all writes confirm the exact asc command; read-only mode on by default)
 - 0.4 localizations editor with bulk upload and download (done: Metadata tab, .strings export, import validated by --dry-run first)
 - 0.5 screenshots and previews (done: Media tab, thumbnails from Apple's CDN, hover delete, uploads checked with --dry-run)
 - 0.6 builds and TestFlight write actions (done)
 - 0.6.1 app icons for unreleased apps from the latest build's iconAssetToken (done)
-- 0.7 rename to Hermes (done)
+- 0.7 rename to Cyllene (done)
 - 0.8 reviews: reply and signature (done)
 - 0.9 submissions (done: Submissions tab, outcomes, rejections-only filter, two-step create)
 - 1.0 first major (done: every tab QA'd, 4 bugs fixed, 5 tests and CI, notarized DMG, MCP server, two skills, whitepaper, security, architecture)
@@ -63,12 +63,12 @@ Each version closes a block of rows above and refreshes the matrix.
 - 1.5 availability (done)
 - 1.6 offer codes and promoted purchases (done)
 - 2.3 light mode and Appearance setting (done)
-- 2.4 brand polish (done): feather quotes in Hermes Sans, thicker wing, a two-feather favicon for 16 px
+- 2.4 brand polish (done): feather quotes in Cyllene Sans, thicker wing, a two-feather favicon for 16 px
 - 2.5 subscription prices for every country, introductory, promotional and win-back offers, grace period (done)
 - 2.6 blue brand from clrs.cc and a detailed wing icon with Icon Composer glass (done)
-- 2.7 Hermes Sans rebuilt on Inter for SF-like proportional spacing, AA contrast accent, amber review state, brand kit page, 1878 Hermes engraving in a parallax hero (done)
+- 2.7 Cyllene Sans rebuilt on Inter for SF-like proportional spacing, AA contrast accent, amber review state, brand kit page, 1878 Cyllene engraving in a parallax hero (done)
 - 2.0 multiple accounts and setup flow (done; full QA passed, 5 tests green)
-- 3.0 menu bar, notifications, Shortcuts, agent skills (done: menu bar extra, review-state notifications behind a Settings toggle, two Shortcuts actions, hermes-resolve skill, MCP over HTTP)
+- 3.0 menu bar, notifications, Shortcuts, agent skills (done: menu bar extra, review-state notifications behind a Settings toggle, two Shortcuts actions, cyllene-resolve skill, MCP over HTTP)
 - 4.0 release checklist and sales (done: asc validate for every version not live yet, its fix steps in order, on the Status tab; last month's downloads, redownloads and proceeds per app). Parity read against the matrix: everything Helm does is here except event assets, adding an event to a submission, and charts over time. A visual side-by-side with Helm is still to do when Joshua is at the Mac.
 - 5.0 fleet grid and release timeline (done: grid toggle on the app list, Timeline tab). Review-time estimates wait for a decision date: asc review history has the submit date only.
 - 6.0 Xcode Cloud runs (done: workflows, last five runs, Start Build behind a confirm)
@@ -102,10 +102,10 @@ Ideas that Helm does not have: rejection history in one place (shipped 0.9), rel
 ## Ingested 2026-10-30
 
 ## Ingested 2026-10-31
-Joshua: "Needs iOS app" and "Needs these features" (Helm iOS screenshots, notes/attachments/2026-10-31/hermes-1.png and hermes-2.png). Free, no Pro paywall (the $1 rule).
+Joshua: "Needs iOS app" and "Needs these features" (Helm iOS screenshots, notes/attachments/2026-10-31/cyllene-1.png and cyllene-2.png). Free, no Pro paywall (the $1 rule).
 - [ ] Translations of app metadata, on the device
 - [ ] Text improvements for store copy, on the device (the Mac Writer)
-- [ ] Setup export: your Hermes settings as one file
+- [ ] Setup export: your Cyllene settings as one file
 - [ ] Ship the iPhone app to the App Store
 
 ## iPhone gap matrix (Mobbin pass 2026-10-31)

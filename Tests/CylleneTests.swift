@@ -1,10 +1,10 @@
 import CryptoKit
 import SwiftUI
 import XCTest
-@testable import Hermes
+@testable import Cyllene
 
 // The logic the UI leans on: state colours, the confirm-dialog command line, lossy decoding, CDN thumbnails.
-final class HermesTests: XCTestCase {
+final class CylleneTests: XCTestCase {
     func testStateColors() {
         XCTAssertEqual(Theme.stateColor("READY_FOR_DISTRIBUTION"), Theme.live)
         XCTAssertEqual(Theme.stateColor("WAITING_FOR_REVIEW"), Theme.pending)

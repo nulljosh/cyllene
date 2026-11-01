@@ -1,4 +1,4 @@
-/* Hermes landing, dressed after Nous Research: a navy-black page in a thin blue frame, giant thin condensed caps,
+/* Cyllene landing, dressed after Nous Research: a navy-black page in a thin blue frame, giant thin condensed caps,
    tiny caps labels, small square buttons, and one full-bleed blue band where the 1878 engraving sits in scanlines.
    Every colour, both faces and the radii come from tokens.css (copied from brand/ at deploy, shared with the app). */
 :root {
@@ -104,7 +104,7 @@ h3 { font-size: 28px; line-height: 32px; font-weight: 600; letter-spacing: -.02e
 .plat-row b { font-weight: 700; font-size: 36px; line-height: 44px; letter-spacing: -.03em; }
 .plat-row p { color: var(--sub); font-size: 15px; line-height: 22px; margin-bottom: var(--sp-3); }
 
-/* Footer: brand and link columns, the engraved band of Hermes' things, one fine line */
+/* Footer: brand and link columns, the engraved band of Cyllene' things, one fine line */
 .foot { text-align: center; padding: var(--sp-8) var(--sp-4) var(--sp-5); background: var(--bg); overflow: hidden; border-top: 1px solid var(--line); }
 .foot-top { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--sp-4); display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-7); text-align: left; }
 .foot-brand { display: grid; gap: var(--sp-2); align-content: start; }

@@ -1,4 +1,4 @@
-1/ Hermes is live. App Store Connect, on your Mac. https://hermes.jaybulb.com/?ref=x
+1/ Cyllene is live. App Store Connect, on your Mac. https://cyllene.jaybulb.com/?ref=x
 
 2/ Every app, every platform and every review state in one window. Versions, builds, TestFlight, reviews and purchases without the dashboard. Every change shows the exact command and asks first.
 

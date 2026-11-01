@@ -1,7 +1,7 @@
 import Foundation
 
 // Real facts per app for Resolve All: review history from ASC, and from GitHub what the code is and whether any of it is shared.
-// The drafter writes from these only, so a reply never needs a [placeholder] for something Hermes can read for itself.
+// The drafter writes from these only, so a reply never needs a [placeholder] for something Cyllene can read for itself.
 
 enum Facts {
     struct Repo: Codable { var name: String; var files: [String: String]; var readme: String; var ids: [String: String] }

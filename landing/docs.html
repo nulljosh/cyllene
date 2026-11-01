@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Hermes Docs</title>
-<meta name="description" content="Install Hermes, connect your App Store Connect key, and give your agents the Hermes MCP server.">
+<title>Cyllene Docs</title>
+<meta name="description" content="Install Cyllene, connect your App Store Connect key, and give your agents the Cyllene MCP server.">
 <meta name="theme-color" content="#fdfdfd" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0a0e19" media="(prefers-color-scheme: dark)">
-<link rel="canonical" href="https://hermes.jaybulb.com/docs">
+<link rel="canonical" href="https://cyllene.jaybulb.com/docs">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="tokens.css">
@@ -20,10 +20,10 @@
     <a href="/#features">Features</a>
     <a href="/#agents">Agents</a>
   </nav>
-  <a class="nav-brand" href="/" aria-label="Hermes home"><img src="icon.svg" alt="" width="28" height="28"><span>Hermes</span></a>
+  <a class="nav-brand" href="/" aria-label="Cyllene home"><img src="icon.svg" alt="" width="28" height="28"><span>Cyllene</span></a>
   <div class="nav-end">
     <a class="nav-get" href="docs" aria-current="page">Docs</a>
-    <a class="btn btn-solid" href="https://github.com/nulljosh/hermes/releases/latest/download/Hermes.dmg">Download</a>
+    <a class="btn btn-solid" href="https://github.com/nulljosh/cyllene/releases/latest/download/Cyllene.dmg">Download</a>
   </div>
 </header>
 
@@ -32,7 +32,7 @@
 <section class="band docs-head">
   <div class="art docs-art" style="--img: url(art/prax.png)" aria-hidden="true"></div>
   <div class="docs-title">
-    <p class="label">Hermes</p>
+    <p class="label">Cyllene</p>
     <h1>Docs</h1>
     <p>Install it, connect your key, hand it to your agents.</p>
   </div>
@@ -53,9 +53,9 @@
     <section id="install">
       <p class="label">01</p>
       <h2>Install</h2>
-      <p>Download the disk image and drag Hermes to Applications. It runs on macOS 14 and up, Apple silicon and Intel, signed and notarized.</p>
-      <a class="btn btn-solid" href="https://github.com/nulljosh/hermes/releases/latest/download/Hermes.dmg">Download Hermes.dmg</a>
-      <p>Hermes drives the open source <a href="https://github.com/rorkai/App-Store-Connect-CLI">asc</a> command line tool. Install it with Homebrew:</p>
+      <p>Download the disk image and drag Cyllene to Applications. It runs on macOS 14 and up, Apple silicon and Intel, signed and notarized.</p>
+      <a class="btn btn-solid" href="https://github.com/nulljosh/cyllene/releases/latest/download/Cyllene.dmg">Download Cyllene.dmg</a>
+      <p>Cyllene drives the open source <a href="https://github.com/rorkai/App-Store-Connect-CLI">asc</a> command line tool. Install it with Homebrew:</p>
       <pre class="code">brew install asc</pre>
     </section>
 
@@ -64,7 +64,7 @@
       <h2>Your key</h2>
       <p>Make an API key in App Store Connect under Users and Access, Integrations. Download the .p8 file once, then hand it to asc:</p>
       <pre class="code">asc auth login --name MyKey --key-id KEY_ID --issuer-id ISSUER_ID --private-key AuthKey.p8</pre>
-      <p>Open Hermes and every app on the account shows up. The key stays on your Mac. There is no Hermes account and no server in between.</p>
+      <p>Open Cyllene and every app on the account shows up. The key stays on your Mac. There is no Cyllene account and no server in between.</p>
     </section>
 
     <section id="window">
@@ -89,8 +89,8 @@
     <section id="mcp">
       <p class="label">04</p>
       <h2>MCP</h2>
-      <p>The Hermes MCP server gives Claude and other agents the same view. One line, no clone. It needs <a href="https://docs.astral.sh/uv/">uv</a> and a signed in asc.</p>
-      <pre class="code">claude mcp add hermes -- uv run https://raw.githubusercontent.com/nulljosh/hermes/main/mcp/server.py</pre>
+      <p>The Cyllene MCP server gives Claude and other agents the same view. One line, no clone. It needs <a href="https://docs.astral.sh/uv/">uv</a> and a signed in asc.</p>
+      <pre class="code">claude mcp add cyllene -- uv run https://raw.githubusercontent.com/nulljosh/cyllene/main/mcp/server.py</pre>
       <p>Read only unless you set <code>HERMES_ALLOW_WRITES=1</code>. Add <code>--http</code> to serve the same tools on 127.0.0.1:8787, as MCP at <code>/mcp</code> and plain JSON at <code>/api/&lt;tool&gt;</code>.</p>
       <dl class="defs">
         <dt>fleet_status</dt><dd>Newest version on each platform for every app, with its state.</dd>
@@ -112,9 +112,9 @@
     <section id="skills">
       <p class="label">05</p>
       <h2>Skills</h2>
-      <p>Three Claude Code skills ride on the MCP. <code>hermes-status</code> reads the whole fleet and leads with what is rejected. <code>hermes-ship</code> walks one version from build to App Review and confirms before every write. <code>hermes-resolve</code> answers rejections from checked facts and sends only on your yes.</p>
-      <pre class="code">git clone https://github.com/nulljosh/hermes
-cp -R hermes/skills/* ~/.claude/skills/</pre>
+      <p>Three Claude Code skills ride on the MCP. <code>cyllene-status</code> reads the whole fleet and leads with what is rejected. <code>cyllene-ship</code> walks one version from build to App Review and confirms before every write. <code>cyllene-resolve</code> answers rejections from checked facts and sends only on your yes.</p>
+      <pre class="code">git clone https://github.com/nulljosh/cyllene
+cp -R cyllene/skills/* ~/.claude/skills/</pre>
     </section>
 
     <section id="build">
@@ -122,18 +122,18 @@ cp -R hermes/skills/* ~/.claude/skills/</pre>
       <h2>Build</h2>
       <p>SwiftUI, MIT licensed.</p>
       <pre class="code">brew install xcodegen asc
-xcodegen generate &amp;&amp; open Hermes.xcodeproj</pre>
-      <p>How it works is in the <a href="https://github.com/nulljosh/hermes/blob/main/docs/WHITEPAPER.md">whitepaper</a>.</p>
+xcodegen generate &amp;&amp; open Cyllene.xcodeproj</pre>
+      <p>How it works is in the <a href="https://github.com/nulljosh/cyllene/blob/main/docs/WHITEPAPER.md">whitepaper</a>.</p>
     </section>
 
     <section id="faq">
       <p class="label">07</p>
       <h2>FAQ</h2>
       <dl class="defs faq">
-        <dt>Does it cost anything?</dt><dd>No. Hermes is free and open source.</dd>
-        <dt>Where does my key go?</dt><dd>Nowhere. asc keeps it on your Mac, and Hermes only talks to Apple.</dd>
+        <dt>Does it cost anything?</dt><dd>No. Cyllene is free and open source.</dd>
+        <dt>Where does my key go?</dt><dd>Nowhere. asc keeps it on your Mac, and Cyllene only talks to Apple.</dd>
         <dt>Can it break a live app?</dt><dd>Not by accident. Read only is on until you turn it off, and every write asks first.</dd>
-        <dt>Something wrong?</dt><dd><a href="mailto:trommatic@icloud.com?subject=Hermes">Send feedback</a> or open an issue on <a href="https://github.com/nulljosh/hermes/issues">GitHub</a>.</dd>
+        <dt>Something wrong?</dt><dd><a href="mailto:trommatic@icloud.com?subject=Cyllene">Send feedback</a> or open an issue on <a href="https://github.com/nulljosh/cyllene/issues">GitHub</a>.</dd>
       </dl>
     </section>
   </article>

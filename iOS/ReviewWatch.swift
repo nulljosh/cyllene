@@ -2,7 +2,7 @@ import BackgroundTasks
 import UserNotifications
 
 /// A notification when one of your apps moves in App Review: submitted, in review, approved, rejected.
-/// iOS wakes Hermes about every 15 minutes in the background to check; there is no server.
+/// iOS wakes Cyllene about every 15 minutes in the background to check; there is no server.
 enum ReviewWatch {
     static let task = "com.nulljosh.hermes.refresh"
 

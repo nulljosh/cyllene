@@ -1,8 +1,8 @@
-# Hermes loop handoff (2026-10-31, night)
+# Cyllene loop handoff (2026-10-31, night)
 
 ## What the loop is
 
-Hermes is a native SwiftUI Mac app for App Store Connect, driven by the `asc` CLI. The loop works through the open rows of the parity matrix in docs/roadmap.md, one item at a time, toward a one-to-one clone of Helm 2.3.9 with its own brand and code. Each tick takes the next item, checks the real `asc` flags with `--help` first, builds it, QAs it with launch arguments and screenshots, bumps the version, and pushes with a tag.
+Cyllene is a native SwiftUI Mac app for App Store Connect, driven by the `asc` CLI. The loop works through the open rows of the parity matrix in docs/roadmap.md, one item at a time, toward a one-to-one clone of Helm 2.3.9 with its own brand and code. Each tick takes the next item, checks the real `asc` flags with `--help` first, builds it, QAs it with launch arguments and screenshots, bumps the version, and pushes with a tag.
 
 Versioning is honest semver. A feature is a minor bump, a fix is a patch, and a major only on Joshua's call. The loop does not aim at any version number.
 
@@ -16,7 +16,7 @@ Rules that bite:
 
 ## Where things stand
 
-- 2026-10-31 night: the iPhone app is on the App Store as **Cyllene** (Hermes was taken; record 6829353117, bundle com.nulljosh.hermes, SKU HERMESIOS). Free, Developer Tools, all territories, privacy "data not collected" published, age rating all none. 10.9.0 is uploaded and a background script uploads the renamed build, screenshots and review details, then submits. The iPhone already says Cyllene on screen; the repo, Mac app, landing (hermes.jaybulb.com) and fonts still say Hermes. The full rename to Cyllene is Joshua's ask and is next after Resolve All.
+- 2026-10-31 night: the iPhone app is on the App Store as **Cyllene** (Hermes was taken; record 6829353117, bundle com.nulljosh.hermes, SKU CYLLENEIOS). Free, Developer Tools, all territories, privacy "data not collected" published, age rating all none. 10.9.0 is uploaded and a background script uploads the renamed build, screenshots and review details, then submits. The iPhone already says Cyllene on screen; the repo, Mac app, landing (cyllene.jaybulb.com) and fonts still say Cyllene. The full rename to Cyllene is Joshua's ask and is next after Resolve All.
 - 10.5.0 to 10.9.0 shipped this evening on iPhone: ratings summary, starred apps, launch checklist, Translate on reviews, Liquid Glass pass, What's New editor (asks first). 10.9.0 Mac shipped: notarized DMG, GitHub release, cask, landing.
 - The Apple web session is fresh (signed in 2026-10-31 18:45 PDT). Do not run asc-login again; every attempt texts Joshua a code.
 - Blackcomb iOS 1.0.0 was rejected 2026-10-31 evening, on top of the UNRESOLVED_ISSUES list below.
@@ -27,13 +27,13 @@ Rules that bite:
 ## Next, in order
 
 1. Goal: Resolve All actually works, and every app is resolved through it. Loop: read every open thread (`asc web review show --app ID`), draft each reply from the app's facts (Sources/Facts.swift, mcp/server.py app_facts), fix the app where the rejection is a real bug, then send through Resolve All. Joshua said yes to resolving all on 2026-10-31; still never resubmit an unchanged build and check the listing name first.
-2. Full rename Hermes to Cyllene with the rename skill: repo, folder, Mac app, landing domain, fonts, docs.
+2. Full rename Cyllene to Cyllene with the rename skill: repo, folder, Mac app, landing domain, fonts, docs.
 3. Remaining iPhone Mobbin rows in docs/roadmap.md: TestFlight groups and testers, translate What's New, sales at a glance, share card.
 
 ## Restart prompt
 
 ```
-/loop Hermes: read docs/LOOP-HANDOFF.md and docs/roadmap.md. If Joshua has not yet signed in inside Hermes, stop and ask him for that one sign-in. Otherwise do the next item as the next minor version (10.5.0 next). Versioning is honest semver: features are minors, fixes are patches, a major only on Joshua's call. QA each change on a real app, notarize the DMG for the GitHub release, and never mutate a live app or send an Apple reply without Joshua's yes.
+/loop Cyllene: read docs/LOOP-HANDOFF.md and docs/roadmap.md. If Joshua has not yet signed in inside Cyllene, stop and ask him for that one sign-in. Otherwise do the next item as the next minor version (10.5.0 next). Versioning is honest semver: features are minors, fixes are patches, a major only on Joshua's call. QA each change on a real app, notarize the DMG for the GitHub release, and never mutate a live app or send an Apple reply without Joshua's yes.
 ```
 
 ## Update (2026-10-31, evening)
@@ -42,4 +42,4 @@ Sent: Patois (asked Apple to approve now, Sign in with Apple fix next update; th
 
 ## Update (2026-10-31, night)
 
-Every rejection is now answered or resubmitted. Patois iOS build 202610312030 moves sign-in to jaybulb-api, which fixes the Sign in with Apple error (Google sign-in removed, same as the web). Mailbag Mac build 202610312000 fixes the crash in Apple's log: the window resized itself in a loop when sign-in switched to the inbox, so the window now has a fixed size. Scrounger iOS build 202610312040 carries the 10-28 features; the change note is in its review notes because the old thread no longer takes replies. Airwell, Blackcomb and Cyllene are in review. Next: the full Hermes to Cyllene rename, then the iPhone Mobbin rows.
+Every rejection is now answered or resubmitted. Patois iOS build 202610312030 moves sign-in to jaybulb-api, which fixes the Sign in with Apple error (Google sign-in removed, same as the web). Mailbag Mac build 202610312000 fixes the crash in Apple's log: the window resized itself in a loop when sign-in switched to the inbox, so the window now has a fixed size. Scrounger iOS build 202610312040 carries the 10-28 features; the change note is in its review notes because the old thread no longer takes replies. Airwell, Blackcomb and Cyllene are in review. Next: the full Cyllene to Cyllene rename, then the iPhone Mobbin rows.

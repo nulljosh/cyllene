@@ -1,17 +1,17 @@
-name: Hermes
+name: Cyllene
 options:
   bundleIdPrefix: com.nulljosh
   deploymentTarget:
     macOS: "14.0"
     iOS: "17.0"
 targets:
-  Hermes:
+  Cyllene:
     type: application
     platform: macOS
     sources:
       - Sources
       - Shared
-      - Hermes.icon
+      - Cyllene.icon
       - path: fonts
         buildPhase: resources
         excludes: ["*.woff2"]
@@ -19,22 +19,22 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.nulljosh.hermes
         GENERATE_INFOPLIST_FILE: YES
-        INFOPLIST_KEY_CFBundleDisplayName: Hermes
+        INFOPLIST_KEY_CFBundleDisplayName: Cyllene
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.developer-tools
         ENABLE_APP_SANDBOX: NO
         ENABLE_HARDENED_RUNTIME: YES
-        ASSETCATALOG_COMPILER_APPICON_NAME: Hermes
+        ASSETCATALOG_COMPILER_APPICON_NAME: Cyllene
         MARKETING_VERSION: 10.9.0
         CURRENT_PROJECT_VERSION: 2
     scheme:
-      testTargets: [HermesTests]
-  HermesPhone:
+      testTargets: [CylleneTests]
+  CyllenePhone:
     type: application
     platform: iOS
     info:
       path: iOS/Info.plist
       properties:
-        NSFaceIDUsageDescription: Hermes uses Face ID to unlock when App Lock is on.
+        NSFaceIDUsageDescription: Cyllene uses Face ID to unlock when App Lock is on.
         UIBackgroundModes: [fetch]
         BGTaskSchedulerPermittedIdentifiers: [com.nulljosh.hermes.refresh]
         UILaunchScreen:
@@ -44,14 +44,14 @@ targets:
     sources:
       - iOS
       - Shared
-      - Hermes.icon
+      - Cyllene.icon
       - path: fonts
         buildPhase: resources
         excludes: ["*.woff2"]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.nulljosh.hermes
-        PRODUCT_NAME: Hermes
+        PRODUCT_NAME: Cyllene
         GENERATE_INFOPLIST_FILE: YES
         DEVELOPMENT_TEAM: QMM486NPYC
         CODE_SIGN_STYLE: Automatic
@@ -60,16 +60,16 @@ targets:
         INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
         INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
-        ASSETCATALOG_COMPILER_APPICON_NAME: Hermes
+        ASSETCATALOG_COMPILER_APPICON_NAME: Cyllene
         TARGETED_DEVICE_FAMILY: "1,2"
         MARKETING_VERSION: 10.9.0
         CURRENT_PROJECT_VERSION: 2
-  HermesTests:
+  CylleneTests:
     type: bundle.unit-test
     platform: macOS
     sources: [Tests]
     dependencies:
-      - target: Hermes
+      - target: Cyllene
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES

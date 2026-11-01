@@ -2,7 +2,7 @@ import AppIntents
 import SwiftUI
 import UserNotifications
 
-// Hermes 3.0: the fleet from the menu bar, a notification when an app's review state changes, and Shortcuts.
+// Cyllene 3.0: the fleet from the menu bar, a notification when an app's review state changes, and Shortcuts.
 
 enum Watch {
     /// "appId|platform" to state, for every version the list knows.
@@ -39,8 +39,8 @@ enum Watch {
         }
     }
 
-    /// Reload every 15 minutes while Hermes runs, so the menu bar and notifications stay current without a click.
-    /// ponytail: a plain timer loop; App Store Connect webhooks replace it when Hermes has a server to receive them.
+    /// Reload every 15 minutes while Cyllene runs, so the menu bar and notifications stay current without a click.
+    /// ponytail: a plain timer loop; App Store Connect webhooks replace it when Cyllene has a server to receive them.
     static func poll(_ store: Store) async {
         while !Task.isCancelled {
             try? await Task.sleep(for: .seconds(900))
@@ -74,7 +74,7 @@ struct MenuBarView: View {
             }
             Divider()
             HStack {
-                Button("Open Hermes") { openWindow(id: "main"); NSApp.activate() }
+                Button("Open Cyllene") { openWindow(id: "main"); NSApp.activate() }
                 Button("Refresh") { Task { await store.load() } }.disabled(store.loading)
                 Spacer()
                 Button("Quit") { NSApp.terminate(nil) }
@@ -112,7 +112,7 @@ struct AppStatusIntent: AppIntent {
     }
 }
 
-struct HermesShortcuts: AppShortcutsProvider {
+struct CylleneShortcuts: AppShortcutsProvider {
     static var appShortcuts: [AppShortcut] {
         AppShortcut(intent: FleetStatusIntent(), phrases: ["App Store status in \(.applicationName)", "What is in review in \(.applicationName)"],
                     shortTitle: "App Store Status", systemImageName: "checklist")

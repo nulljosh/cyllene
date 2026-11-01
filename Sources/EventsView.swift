@@ -11,7 +11,7 @@ struct EventsView: View {
     @State private var showArchived = false
     @AppStorage("archivedEvents") private var archivedRaw = ""
 
-    // Archive is Hermes' own: App Store Connect has no archive for events, so archived ids are kept on this Mac.
+    // Archive is Cyllene' own: App Store Connect has no archive for events, so archived ids are kept on this Mac.
     var archived: Set<String> { Set(archivedRaw.split(separator: ",").map(String.init)) }
     func toggleArchive(_ e: Item) {
         var a = archived

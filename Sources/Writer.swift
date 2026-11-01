@@ -13,7 +13,7 @@ enum Writer {
         struct R: Decodable { struct M: Decodable { let name: String }; let models: [M] }
         guard let (d, _) = try? await URLSession.shared.data(from: URL(string: "http://localhost:11434/api/tags")!),
               let names = (try? JSONDecoder().decode(R.self, from: d))?.models.map(\.name).filter({ !$0.contains("embed") }) else { return nil }
-        return ["qwen3:8b", "llama3.1:8b", "hermes3:latest"].first(where: names.contains) ?? names.first
+        return ["qwen3:8b", "llama3.1:8b", "cyllene3:latest"].first(where: names.contains) ?? names.first
     }
 
     /// Apple Intelligence's on-device model: free, private, already on the Mac when Apple Intelligence is on.
@@ -64,7 +64,7 @@ enum Writer {
             .map { String($0.output.2).replacingOccurrences(of: "\n", with: " ") }
     }
 
-    /// Fixes Hermes already knows, matched on Apple's own wording. Each one was a real rejection and a real fix,
+    /// Fixes Cyllene already knows, matched on Apple's own wording. Each one was a real rejection and a real fix,
     /// so the issue leads with it instead of a small model's guess (the on-device model cannot write these patches).
     static let recipes: [(match: [String], fix: String)] = [
         (["bypass the keychain"], "Store keychain items in the data protection keychain: add kSecUseDataProtectionKeychain: true to every SecItem query. On the Mac the default login keychain asks for a password, and App Review stops there. (Machaon 2.3.5, 2026-10-25)"),

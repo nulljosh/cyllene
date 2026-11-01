@@ -23,7 +23,7 @@ enum Theme {
 
     // Falls back to the system face if the bundled one is missing.
     static func font(_ size: CGFloat, _ weight: Font.Weight = .regular) -> Font {
-        .custom("Hermes Sans", size: size).weight(weight)
+        .custom("Cyllene Sans", size: size).weight(weight)
     }
 
     /// Big titles: the same face, bold. One family everywhere.

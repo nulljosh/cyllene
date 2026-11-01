@@ -1,9 +1,9 @@
 #!/bin/sh
-# Run Hermes' Writer (Apple's on-device model, else Ollama) on one rejection from the terminal, without the app.
+# Run Cyllene' Writer (Apple's on-device model, else Ollama) on one rejection from the terminal, without the app.
 #   scripts/try-writer.sh <app name> <reasons> <facts.txt> <apple.txt> [replied]
 set -e
 cd "$(dirname "$0")/.."
-out="${TMPDIR:-/tmp}/hermes-writer"; mkdir -p "$out"
+out="${TMPDIR:-/tmp}/cyllene-writer"; mkdir -p "$out"
 cat > "$out/main.swift" <<'SWIFT'
 import Foundation
 let a = CommandLine.arguments

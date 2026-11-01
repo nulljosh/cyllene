@@ -43,7 +43,7 @@ struct TestFlightView: View {
                 aliasing = nil; Task { await load() }
             }
             Button("Cancel", role: .cancel) { aliasing = nil }
-        } message: { Text("A name only Hermes shows. App Store Connect keeps the real one.") }
+        } message: { Text("A name only Cyllene shows. App Store Connect keeps the real one.") }
         .task { await load() }
     }
 
@@ -52,7 +52,7 @@ struct TestFlightView: View {
         do { groups = try await ASC.items(["testflight", "groups", "list", "--app", app.id]) } catch { self.error = error.localizedDescription }
     }
 
-    // Aliases are Hermes' own nicknames for groups, kept on this Mac; App Store Connect has no alias field.
+    // Aliases are Cyllene' own nicknames for groups, kept on this Mac; App Store Connect has no alias field.
     func alias(_ g: Item) -> String? { UserDefaults.standard.string(forKey: "groupAlias." + g.id).flatMap { $0.isEmpty ? nil : $0 } }
 
     func row(_ g: Item) -> some View {

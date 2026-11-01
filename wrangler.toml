@@ -2,7 +2,7 @@ name = "hermes"
 compatibility_date = "2025-07-01"
 
 workers_dev = false
-routes = [{ pattern = "hermes.jaybulb.com", custom_domain = true }]
+routes = [{ pattern = "cyllene.jaybulb.com", custom_domain = true }, { pattern = "hermes.jaybulb.com", custom_domain = true }]
 
 [assets]
 directory = "landing"

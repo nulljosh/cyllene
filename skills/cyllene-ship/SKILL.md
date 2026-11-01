@@ -1,9 +1,9 @@
 ---
-name: hermes-ship
-description: Walk one app version from build to App Review with Hermes and asc, checking each step and confirming before any write. Use when Joshua says "ship <app>", "submit <app> for review", "send it to Apple", or invokes /hermes-ship.
+name: cyllene-ship
+description: Walk one app version from build to App Review with Cyllene and asc, checking each step and confirming before any write. Use when Joshua says "ship <app>", "submit <app> for review", "send it to Apple", or invokes /cyllene-ship.
 ---
 
-# Hermes ship
+# Cyllene ship
 
 Every step reads first. Every write is confirmed with Joshua before it runs, with the exact command shown.
 

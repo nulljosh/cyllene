@@ -42,7 +42,7 @@ enum Sales {
         struct C: Decodable { let vendor_number: String? }
         let config = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".asc/config.json")
         guard let vendor = (try? JSONDecoder().decode(C.self, from: Data(contentsOf: config)))?.vendor_number else {
-            throw NSError(domain: "Hermes", code: 1, userInfo: [NSLocalizedDescriptionKey: "No vendor number in asc's config. Add it from Payments and Financial Reports."])
+            throw NSError(domain: "Cyllene", code: 1, userInfo: [NSLocalizedDescriptionKey: "No vendor number in asc's config. Add it from Payments and Financial Reports."])
         }
         // --output is the report file here, so the JSON flag asc.run adds would be wrong: build the call by hand.
         _ = try await ASC.run(["analytics", "sales", "--vendor", vendor, "--type", "SALES", "--subtype", "SUMMARY", "--frequency", "MONTHLY",

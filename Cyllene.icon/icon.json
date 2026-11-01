@@ -24,11 +24,11 @@
         {
           "glass": true,
           "image-name": "glyph.png",
-          "name": "Hermes"
+          "name": "Cyllene"
         }
       ],
       "lighting": "individual",
-      "name": "Hermes",
+      "name": "Cyllene",
       "shadow": {
         "kind": "neutral",
         "opacity": 0.3
