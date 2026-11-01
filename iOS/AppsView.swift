@@ -79,7 +79,7 @@ struct AppsView: View {
                             ForEach(app.versions, id: \.platform) { StateLine(state: $0.state, text: "\(Theme.platform($0.platform)) \($0.version)") }
                         }
                         .padding(12).frame(maxWidth: .infinity, minHeight: 90, alignment: .topLeading)
-                        .background(Theme.surface, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        .background(Theme.surface, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
                     }
                     .buttonStyle(.plain)
                     .contextMenu { starButton(app) }
