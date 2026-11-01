@@ -41,6 +41,11 @@ struct AppsView: View {
                     .navigationTitle("Apps")
                     .searchable(text: $query, prompt: "Search Apps")
                     .refreshable { await fleet.load() }
+                    .onChange(of: fleet.apps) {
+                        #if DEBUG
+                        if selected == nil, let name = ProcessInfo.processInfo.environment["HERMES_OPEN_APP"], let app = fleet.apps.first(where: { $0.name == name }), app.icon != nil { selected = app }
+                        #endif
+                    }
             } detail: {
                 if let selected { AppDetail(client: fleet.client, app: selected).id(selected.id) }
                 else { Text("Pick an app.").foregroundStyle(Theme.muted).frame(maxWidth: .infinity, maxHeight: .infinity).background(Theme.bg) }
