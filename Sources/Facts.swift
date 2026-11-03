@@ -70,7 +70,8 @@ enum Facts {
         }
         let mine = fleet.first { "\(owner)/\($0.name)" == saved }
             ?? fleet.first { $0.ids[app.bundleId] != nil } ?? fleet.first { $0.ids.keys.contains { app.bundleId.hasPrefix($0) || $0.hasPrefix(app.bundleId) } }
-        let repo = saved.isEmpty ? (mine.map { "\(owner)/\($0.name)" } ?? "") : saved
+        // A saved name that is no longer in the fleet (the repo was renamed) gives way to the bundle id match.
+        let repo = mine.map { "\(owner)/\($0.name)" } ?? saved
         guard let me = mine ?? fleet.first(where: { "\(owner)/\($0.name)" == repo }) else {
             return (repo, lines.joined(separator: "\n") + "\nSource repo: not found, so say nothing about the code.")
         }
