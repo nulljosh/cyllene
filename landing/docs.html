@@ -43,6 +43,7 @@
     <a href="#install">Install</a>
     <a href="#key">Your key</a>
     <a href="#window">The window</a>
+    <a href="#iphone">iPhone</a>
     <a href="#mcp">MCP</a>
     <a href="#skills">Skills</a>
     <a href="#build">Build</a>
@@ -84,10 +85,19 @@
         <dt>Purchases</dt><dd>In-app purchases, subscriptions, prices and offers.</dd>
       </dl>
       <p>Read only is on by default. Every change shows the exact asc command and asks first.</p>
+      <p>Resolve All answers your rejections in one go. It lists every rejected app with a checkbox, all checked. Uncheck any you want to skip, then press Resolve N. To do just one, right-click a rejected app and choose Resolve and its name. Cyllene drafts each reply with Apple's on-device model, or Ollama if that is not available. You read and edit every draft. Nothing is sent until you confirm.</p>
+    </section>
+
+    <section id="iphone">
+      <p class="label">04</p>
+      <h2>iPhone</h2>
+      <p>Cyllene is on the App Store for iPhone too. Add the same key and your apps show up in a list. Open one for Versions, Builds, TestFlight and Reviews. Status gives you the whole fleet at a glance.</p>
+      <p>Sales show as a sparkline of the last 30 days of downloads. They need a key with the Finance or Sales role, and your vendor number in Settings. You find it in App Store Connect under Payments and Financial Reports.</p>
+      <p>Turn on review notifications in Settings and Cyllene tells you when an app is approved, rejected or moves in review. Your key lives in the Keychain and syncs only through iCloud Keychain.</p>
     </section>
 
     <section id="mcp">
-      <p class="label">04</p>
+      <p class="label">05</p>
       <h2>MCP</h2>
       <p>The Cyllene MCP server gives Claude and other agents the same view. One line, no clone. It needs <a href="https://docs.astral.sh/uv/">uv</a> and a signed in asc.</p>
       <pre class="code">claude mcp add cyllene -- uv run https://raw.githubusercontent.com/nulljosh/cyllene/main/mcp/server.py</pre>
@@ -110,7 +120,7 @@
     </section>
 
     <section id="skills">
-      <p class="label">05</p>
+      <p class="label">06</p>
       <h2>Skills</h2>
       <p>Three Claude Code skills ride on the MCP. <code>cyllene-status</code> reads the whole fleet and leads with what is rejected. <code>cyllene-ship</code> walks one version from build to App Review and confirms before every write. <code>cyllene-resolve</code> answers rejections from checked facts and sends only on your yes.</p>
       <pre class="code">git clone https://github.com/nulljosh/cyllene
@@ -118,7 +128,7 @@ cp -R cyllene/skills/* ~/.claude/skills/</pre>
     </section>
 
     <section id="build">
-      <p class="label">06</p>
+      <p class="label">07</p>
       <h2>Build</h2>
       <p>SwiftUI, MIT licensed.</p>
       <pre class="code">brew install xcodegen asc
@@ -127,7 +137,7 @@ xcodegen generate &amp;&amp; open Cyllene.xcodeproj</pre>
     </section>
 
     <section id="faq">
-      <p class="label">07</p>
+      <p class="label">08</p>
       <h2>FAQ</h2>
       <dl class="defs faq">
         <dt>Does it cost anything?</dt><dd>No. Cyllene is free and open source.</dd>
