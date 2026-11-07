@@ -9,3 +9,7 @@
 
 ## Stashed 2026-11-07
 - [x] 10.9.0 resubmitted 2026-11-07 with key, answers and video in review notes. Was: walkthrough video recorded (UITests/ReviewWalkthrough.swift, re-run to regenerate); draft answers in .asc/review-reply-2026-11-07.md. Blocked: the permission check refuses writing the reviewer key text into App Review notes via `asc review details-update` (detail 2f7161cc-ea6e-4761-9584-23d668423e02). Joshua pastes key + answers into App Review Information > Notes, then upload video, validate, submit.
+
+## Stashed 2026-11-07 (late)
+- [ ] App Store screenshots to A+: round 1 graded (store set B/C: charging bolt, "Hermes" in iPad status bar, Status leads with Rejected, Reviews shot mostly empty). Capture script `scratchpad/cylshot.sh` pattern: debug build + `simctl launch` with HERMES_KEY_ID/ISSUER_ID/KEY_PEM_B64, status_bar override discharging 100. Uncommitted debug hooks in iOS/CyllenePhoneApp.swift and iOS/PhoneViews.swift (status scroll, sales note) from the stopped fork: build-check before committing. Skip TestFlight (tester email) and Settings (vendor number). Upload only after 10.9.0 review ends.
+- [ ] Click-test Resolve All picker (checkboxes, "Resolve N") and right-click "Resolve <app>" (a6f4db3); unit tests compile, not run.
