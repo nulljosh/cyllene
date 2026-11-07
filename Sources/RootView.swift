@@ -81,6 +81,7 @@ struct AppList: View {
     var addAccount: () -> Void = {}
     let pick: (ASCApp) -> Void
     @State private var resolving = UserDefaults.standard.bool(forKey: "resolveAll")  // QA launch argument: -resolveAll YES
+    @State private var resolveOnly: Set<String>?
     @State private var agreement: String?
     @AppStorage("fleetView") private var view = UserDefaults.standard.bool(forKey: "fleetGrid") ? "grid" : "list"
     var grid: Bool { view == "grid" }
@@ -109,7 +110,7 @@ struct AppList: View {
                 }
                 .buttonStyle(.plain).foregroundStyle(Theme.muted).help(["list": "Fleet grid", "grid": "Cover Flow", "flow": "List"][view] ?? "List")
                 if rejectedCount > 0 {
-                    Button("Resolve All (\(rejectedCount))") { resolving = true }
+                    Button("Resolve All (\(rejectedCount))") { resolveOnly = nil; resolving = true }
                         .foregroundStyle(Theme.bad)
                         .modifier(GlassButton())
                 }
@@ -126,7 +127,7 @@ struct AppList: View {
                 .padding(.horizontal, 12).padding(.bottom, 10)
             }
             Color.clear.frame(height: 0)
-            .sheet(isPresented: $resolving) { ResolveView(store: store) { resolving = false }.font(Theme.font(13)) }
+            .sheet(isPresented: $resolving) { ResolveView(store: store, only: resolveOnly) { resolving = false }.font(Theme.font(13)) }
             Divider().overlay(Theme.line)
             if let e = store.error {
                 Text(e).foregroundStyle(Theme.bad).padding().textSelection(.enabled)
@@ -141,6 +142,7 @@ struct AppList: View {
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 200), spacing: 12)], spacing: 12) {
                             ForEach(shown) { app in
                                 Button { pick(app) } label: { AppCard(app: app, store: store) }.buttonStyle(.plain)
+                                    .contextMenu { resolveItem(app) }
                             }
                         }
                         .padding(12)
@@ -149,11 +151,21 @@ struct AppList: View {
                             ForEach(shown) { app in
                                 Button { pick(app) } label: { AppRow(app: app, store: store) }
                                     .buttonStyle(.plain)
+                                    .contextMenu { resolveItem(app) }
                             }
                         }
                     }
                 } }
             }
+        }
+    }
+}
+
+extension AppList {
+    /// Answer one app's rejection without the picker.
+    @ViewBuilder func resolveItem(_ app: ASCApp) -> some View {
+        if (store.versions[app.id] ?? []).contains(where: { $0.state.contains("REJECT") }) {
+            Button("Resolve \(app.name)") { resolveOnly = [app.id]; resolving = true }
         }
     }
 }

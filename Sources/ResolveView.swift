@@ -56,7 +56,11 @@ struct Resolution: Identifiable {
 
 struct ResolveView: View {
     let store: Store
+    /// Start from these apps and skip the picker (one app's context menu). nil shows the picker with every rejected app checked.
+    var only: Set<String>? = nil
     var close: () -> Void
+    @State private var picks: Set<String> = []
+    @State private var picking = false
     @State private var rows: [Resolution] = []
     @State private var waiting: [String] = []
     @State private var unread: [String] = []
@@ -70,10 +74,13 @@ struct ResolveView: View {
     var rejected: [ASCApp] { store.apps.filter { (store.versions[$0.id] ?? []).contains { $0.state.contains("REJECT") } } }
     var sending: [Resolution] { rows.filter { $0.include && (!$0.reply.isEmpty || !$0.issueTitle.isEmpty) } }
 
+    /// The rejected apps to read, in list order: one, a few, or all of them.
+    static func targets(_ rejected: [ASCApp], picked: Set<String>) -> [ASCApp] { rejected.filter { picked.contains($0.id) } }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .firstTextBaseline) {
-                Text("Resolve All").font(Theme.display(28))
+                Text(only == nil && !picking && picks.count == rejected.count ? "Resolve All" : "Resolve").font(Theme.display(28))
                 Spacer()
                 if busy { ProgressView().controlSize(.small) }
                 Text(phase).foregroundStyle(Theme.muted)
@@ -82,6 +89,19 @@ struct ResolveView: View {
             Divider().overlay(Theme.line)
             ScrollView {
                 VStack(spacing: 12) {
+                    if picking {
+                        ForEach(rejected) { app in
+                            Toggle(isOn: Binding(get: { picks.contains(app.id) },
+                                                 set: { on in if on { picks.insert(app.id) } else { picks.remove(app.id) } })) {
+                                HStack(spacing: 10) {
+                                    AppIcon(app: app, url: store.icons[app.id], size: 28)
+                                    Text(app.name).font(Theme.font(14, .semibold))
+                                }
+                            }
+                            .toggleStyle(.checkbox)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                    }
                     ForEach($rows) { $r in ResolutionCard(r: $r, icon: store.icons[r.app.id]) }
                     if !waiting.isEmpty {
                         Text("Waiting on Apple: " + waiting.joined(separator: ", ")).foregroundStyle(Theme.muted)
@@ -105,15 +125,28 @@ struct ResolveView: View {
                 else if sending.contains(where: \.unfilled) { Text("Fill in the [brackets] first.").foregroundStyle(Theme.pending) }
                 Spacer()
                 Button("Close", action: close).keyboardShortcut(.cancelAction)
-                Button("Send All (\(sending.count))") { confirming = true }
-                    .keyboardShortcut(.defaultAction)
-                    .disabled(busy || ASC.readOnly || sending.isEmpty || sending.contains(where: \.unfilled))
+                if picking {
+                    Button(picks.count == rejected.count ? "Select None" : "Select All") {
+                        picks = picks.count == rejected.count ? [] : Set(rejected.map(\.id))
+                    }
+                    Button("Resolve \(picks.count)") { picking = false; Task { await scan() } }
+                        .keyboardShortcut(.defaultAction)
+                        .disabled(picks.isEmpty)
+                } else {
+                    Button("Send All (\(sending.count))") { confirming = true }
+                        .keyboardShortcut(.defaultAction)
+                        .disabled(busy || ASC.readOnly || sending.isEmpty || sending.contains(where: \.unfilled))
+                }
             }
             .padding(16)
         }
         .frame(width: 760, height: 640)
         .background(Theme.bg)
-        .task { await scan() }
+        .task {
+            await waitForList()
+            if let only { picks = only; await scan() }
+            else { picks = Set(rejected.map(\.id)); picking = true; busy = false; phase = "Pick the apps to answer" }
+        }
         .onDisappear { SavedDrafts.save(rows) }
         .sheet(isPresented: $signingIn, onDismiss: { Task { await scan() } }) { AppleSignInSheet { signingIn = false }.font(Theme.font(13)) }
         .confirmationDialog("Send \(sending.count) to Apple and GitHub?", isPresented: $confirming, titleVisibility: .visible) {
@@ -128,14 +161,18 @@ struct ResolveView: View {
         }
     }
 
+    /// Opened at launch, the list may still be loading; rejections are read off it.
+    func waitForList() async {
+        for _ in 0..<200 where store.loading || (store.apps.isEmpty && store.error == nil) { try? await Task.sleep(for: .milliseconds(300)) }
+    }
+
     func scan() async {
         // asc refuses to follow symlinks, and the temp folder sits behind /var -> /private/var. Caches has none.
         let dir = URL.cachesDirectory.appendingPathComponent("Hermes/review")
         var found: [Resolution] = []
         busy = true; signInNeeded = false; unread = []; waiting = []
-        // Opened at launch, the list may still be loading; rejections are read off it.
-        for _ in 0..<200 where store.loading || (store.apps.isEmpty && store.error == nil) { try? await Task.sleep(for: .milliseconds(300)) }
-        let apps = rejected
+        await waitForList()
+        let apps = Self.targets(rejected, picked: picks)
         var i = 0, pauses = 0, healed = false
         while i < apps.count, !Task.isCancelled {
             let app = apps[i]

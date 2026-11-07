@@ -124,6 +124,15 @@ final class CylleneTests: XCTestCase {
         XCTAssertFalse(r.unfilled)
     }
 
+    // Resolve reads only the picked apps, in list order: one, two, or all.
+    func testResolvePicksOneTwoOrAll() {
+        let apps = ["a", "b", "c"].map { ASCApp(id: $0, name: $0.uppercased(), bundleId: $0) }
+        XCTAssertEqual(ResolveView.targets(apps, picked: ["b"]).map(\.id), ["b"])
+        XCTAssertEqual(ResolveView.targets(apps, picked: ["c", "a"]).map(\.id), ["a", "c"])
+        XCTAssertEqual(ResolveView.targets(apps, picked: Set(apps.map(\.id))).map(\.id), ["a", "b", "c"])
+        XCTAssertTrue(ResolveView.targets(apps, picked: ["gone"]).isEmpty)
+    }
+
     // A drafted reply never claims a change nobody made: the claim becomes a placeholder, which blocks Send.
     func testDraftClaimsAreDropped() {
         let d = Drafter.unclaim("Thank you for the review. We have revised the app to add features. We've also fixed the crash. Please take another look.")
