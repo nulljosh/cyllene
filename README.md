@@ -1,6 +1,6 @@
 <img src="icon.svg" width="80" alt="Cyllene">
 
-![version](https://img.shields.io/badge/version-10.0.0-0074D9) ![license](https://img.shields.io/badge/license-MIT-0074D9) ![tests](https://github.com/nulljosh/cyllene/actions/workflows/test.yml/badge.svg)
+![version](https://img.shields.io/badge/version-10.9.1-0074D9) ![license](https://img.shields.io/badge/license-MIT-0074D9) ![tests](https://github.com/nulljosh/cyllene/actions/workflows/test.yml/badge.svg)
 
 App Store Connect is a website built for one app at a time. Cyllene is a Mac app built for all of them at once.
 
