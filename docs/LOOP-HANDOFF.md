@@ -1,4 +1,4 @@
-# Cyllene loop handoff (2026-11-08)
+# Cyllene loop handoff (2026-11-09, morning, state checked against asc)
 
 ## What the loop is
 
