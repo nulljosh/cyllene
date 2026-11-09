@@ -11,6 +11,7 @@ struct KeyView: View {
     @State private var issuerID = ""
     @State private var pem = ""
     @State private var importing = false
+    @State private var loggingIn = false
     @State private var checking = false
     @State private var error: String?
 
@@ -18,9 +19,12 @@ struct KeyView: View {
         NavigationStack {
             Form {
                 Section {
+                    Button("Log in with Apple") { loggingIn = true }
+                } footer: { Text("Sign in on Apple's own page. Cyllene picks up the rest. You need the Account Holder or Admin role.") }
+                Section("Or enter a key") {
                     TextField("Key ID", text: $keyID).textInputAutocapitalization(.characters).autocorrectionDisabled()
                     TextField("Issuer ID", text: $issuerID).textInputAutocapitalization(.never).autocorrectionDisabled()
-                } footer: { Text("App Store Connect, Users and Access, Integrations.") }
+                }
                 Section {
                     Button(pem.isEmpty ? "Import .p8 file" : "Key file loaded") { importing = true }
                 } footer: { Text("Your key stays in your Keychain. Cyllene has no server.") }
@@ -35,6 +39,12 @@ struct KeyView: View {
             .scrollContentBackground(.hidden)
             .background(Theme.bg)
             .navigationTitle("Cyllene")
+            .sheet(isPresented: $loggingIn) {
+                AppleLoginSheet { id, issuer, key in
+                    keyID = id; issuerID = issuer; pem = key
+                    Task { await check() }
+                }
+            }
             .fileImporter(isPresented: $importing, allowedContentTypes: [.data, .plainText]) { result in
                 guard let url = try? result.get(), url.startAccessingSecurityScopedResource() else { return }
                 defer { url.stopAccessingSecurityScopedResource() }
