@@ -1,4 +1,4 @@
-# Cyllene loop handoff (2026-11-01, evening)
+# Cyllene loop handoff (2026-11-08)
 
 ## What the loop is
 
@@ -17,9 +17,9 @@ Rules that bite:
 
 ## Where things stand
 
-- The iPhone app is on the App Store as Cyllene (record 6829353117, bundle com.nulljosh.hermes). Version 10.9.0 is in Apple review.
-- iPhone 10.10 through 11.0.0 are committed and not uploaded. They add a TestFlight tab, What's New translated on the device into every listing language, sales and downloads for the last 30 days with a sparkline (needs a vendor number and a Finance or Sales key; QA used cached test reports), and a "new version out" share card. 11.0.0 closes the first gap matrix and adds on-device edit and translate for description, promo text and keywords, settings export and import that never touches keys, and the launch film specs (the rim cut ships; the field cut is kept for reference).
-- All of them wait behind 10.9.0 clearing review. Upload 11.0.0 only on Joshua's yes, with What's New in three short lines.
+- The iPhone app is on the App Store as Cyllene (record 6829353117, bundle com.nulljosh.hermes). iPhone 11.0.0 was submitted 2026-11-08 and is waiting for Apple review. Version 10.9.0 is on sale.
+- iPhone 10.10 through 11.0.0 are committed. 11.0.0 is the submitted build, and the rest rode in with it. They add a TestFlight tab, What's New translated on the device into every listing language, sales and downloads for the last 30 days with a sparkline (needs a vendor number and a Finance or Sales key; QA used cached test reports), and a "new version out" share card. 11.0.0 closes the first gap matrix and adds on-device edit and translate for description, promo text and keywords, settings export and import that never touches keys, and the launch film specs (the rim cut ships; the field cut is kept for reference).
+- Commit 525f3ac onboards with four real screens over the halftone art, and sign-in leads with Apple's own button; the API key sits behind a link. Tested in the simulator in light and dark. A real Apple login is not tested, and it ships in the next build after 11.0.0 clears.
 - The Mac app is 10.9.1: a notarized DMG on GitHub, and the cyllene Homebrew cask in homebrew-tap.
 - Gap matrix 11 (eight rows in docs/roadmap.md) is the open work: review filters, versions grouped by platform, add a build to a TestFlight group (asks first), an account dashboard with sparklines, a 7, 30 and 90 day downloads chart, a notice when yesterday's sales report is in, a Home Screen widget, and more share card styles.
 - Open roadmap items outside the matrix: text improvements for store copy on the device, and shipping the iPhone app.
@@ -28,12 +28,12 @@ Rules that bite:
 
 ## Next, in order
 
-1. Wait for 10.9.0 to clear review, then ask Joshua for the yes to upload 11.0.0.
+1. Wait for 11.0.0 to clear review. The onboarding in 525f3ac ships in the next build after that, on Joshua's yes.
 2. Work gap matrix 11 one minor at a time, starting at 11.1.0, same QA and push.
 3. Ship-to-store copy text improvements on the device, when Joshua asks.
 
 ## Restart prompt
 
 ```
-/loop Cyllene: build the open iPhone gap matrix 11 rows in docs/roadmap.md one minor at a time, starting at 11.1.0 (11.0.0 is committed and waits for Joshua's yes); QA every feature with simulator screenshots and fix anything below A+, send the screenshots, commit and push each
+/loop Cyllene: build the open iPhone gap matrix 11 rows in docs/roadmap.md one minor at a time, starting at 11.1.0 (11.0.0 is waiting for Apple review); QA every feature with simulator screenshots and fix anything below A+, send the screenshots, commit and push each
 ```
