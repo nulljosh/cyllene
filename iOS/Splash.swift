@@ -82,7 +82,7 @@ struct SplashView: View {
     }
 }
 
-/// Four pages. The halftone art drifts against the swipe, and each page's glyph spins in as it arrives.
+/// Four pages, one real screen each, saying how to use it. The halftone art drifts behind the screen as you swipe.
 struct OnboardingView: View {
     var finish: () -> Void
     @State private var page: Int? = {
@@ -93,12 +93,12 @@ struct OnboardingView: View {
         #endif
     }()
 
-    struct Page { let art: String, glyph: String, title: String, body: String }
+    struct Page { let art: String, shot: String, title: String, body: String }
     let pages = [
-        Page(art: "art-prax", glyph: "wing", title: "CYLLENE", body: "App Store Connect, on your iPhone."),
-        Page(art: "art-goltzius", glyph: "caduceus", title: "EVERY APP", body: "Every version, build and review on your account, in one list."),
-        Page(art: "art-carceri8", glyph: "letter", title: "ASKS FIRST", body: "Reply, submit and ship. Every change shows what it will do and waits for your yes."),
-        Page(art: "art-ludovisi", glyph: "purse", title: "YOUR KEY", body: "Your API key stays in your Keychain. No server, no account."),
+        Page(art: "art-prax", shot: "onboard-apps", title: "Every app, one list", body: "Green is live, yellow is waiting on Apple, red needs you. Tap an app to open it."),
+        Page(art: "art-goltzius", shot: "onboard-status", title: "See what needs you", body: "The Status tab sorts your whole account by where each version stands."),
+        Page(art: "art-carceri8", shot: "onboard-detail", title: "Everything about an app", body: "Versions, builds, TestFlight and reviews. Switch between them at the top."),
+        Page(art: "art-ludovisi", shot: "onboard-reviews", title: "Nothing ships without you", body: "Reply to reviews and submit from here. Every change shows what it will do and waits for your yes."),
     ]
 
     var body: some View {
@@ -107,7 +107,7 @@ struct OnboardingView: View {
             ScrollView(.horizontal) {
                 LazyHStack(spacing: 0) {
                     ForEach(pages.indices, id: \.self) { i in
-                        pageView(pages[i]).containerRelativeFrame(.horizontal).id(i)
+                        pageView(pages[i]).containerRelativeFrame([.horizontal, .vertical]).id(i)
                     }
                 }
                 .scrollTargetLayout()
@@ -125,47 +125,71 @@ struct OnboardingView: View {
                     }
                 }
                 .animation(.spring(response: 0.35), value: page)
-                Button {
-                    if (page ?? 0) < pages.count - 1 { withAnimation(.spring) { page = (page ?? 0) + 1 } } else { finish() }
-                } label: {
-                    Text((page ?? 0) < pages.count - 1 ? "NEXT" : "CONNECT YOUR KEY")
-                        .font(Theme.display(17, medium: true)).tracking(1.5)
-                        .frame(maxWidth: .infinity).frame(height: 52)
-                        .background(.white, in: RoundedRectangle(cornerRadius: 4))
-                        .foregroundStyle(Color("LaunchBackground"))
-                }
+                cta
                 .padding(.horizontal, 24)
             }
             .padding(.bottom, 24)
         }
         .overlay(alignment: .topTrailing) {
-            Button("Skip", action: finish).font(Theme.font(15, .semibold)).foregroundStyle(.white.opacity(0.8)).padding(20)
+            Group {
+                if #available(iOS 26, *) { Button("Skip", action: finish).buttonStyle(.glass) }
+                else { Button("Skip", action: finish) }
+            }
+            .font(Theme.font(15, .semibold))
+            .foregroundStyle(.white)
+            .padding(.trailing, 16)
+            .padding(.top, 6)
+        }
+    }
+
+    private func advance() {
+        if (page ?? 0) < pages.count - 1 { withAnimation(.spring) { page = (page ?? 0) + 1 } } else { finish() }
+    }
+
+    @ViewBuilder private var cta: some View {
+        let title = Text((page ?? 0) < pages.count - 1 ? "NEXT" : "CONNECT YOUR ACCOUNT")
+            .font(Theme.display(17, medium: true)).tracking(1.5)
+            .foregroundStyle(Color("LaunchBackground"))
+            .frame(maxWidth: .infinity).frame(height: 44)
+        if #available(iOS 26, *) {
+            Button(action: advance) { title }.buttonStyle(.glassProminent).tint(.white)
+        } else {
+            Button(action: advance) { title.frame(height: 52).background(.white, in: Capsule()) }
         }
     }
 
     private func pageView(_ p: Page) -> some View {
-        VStack(spacing: 0) {
-            Image(p.art).resizable().scaledToFill()
-                .foregroundStyle(Theme.bandArt)
-                .frame(maxWidth: .infinity).frame(height: 440)
-                .clipped()
-                .scrollTransition(axis: .horizontal) { c, phase in
-                    c.offset(x: phase.value * -140).scaleEffect(1 + abs(phase.value) * 0.15)
+        GeometryReader { geo in
+            let top: CGFloat = 112   // clears the status bar and Skip
+            let shotWidth = min(geo.size.width - 88, 330)
+            let shotHeight = max(geo.size.height - top - 290, 180)   // room below for the headline, the text and the button
+            VStack(spacing: 12) {
+                ZStack(alignment: .top) {
+                    Image(p.art).resizable().scaledToFill()
+                        .foregroundStyle(Theme.bandArt)
+                        .opacity(0.5)
+                        .frame(width: geo.size.width, height: shotHeight + top + 8)
+                        .clipped()
+                        .scrollTransition(axis: .horizontal) { c, phase in c.offset(x: phase.value * -140) }
+                    Image(p.shot).resizable().scaledToFill()
+                        .frame(width: shotWidth, height: shotHeight, alignment: .top)
+                        .clipShape(RoundedRectangle(cornerRadius: 26, style: .continuous))
+                        .shadow(color: .black.opacity(0.3), radius: 20, y: 8)
+                        .padding(.top, top)
+                        .accessibilityHidden(true)
+                        .scrollTransition(axis: .horizontal) { c, phase in c.scaleEffect(1 - abs(phase.value) * 0.08).opacity(1 - abs(phase.value) * 0.5) }
                 }
-            VStack(spacing: 14) {
-                Image("glyph-\(p.glyph)").resizable().scaledToFit().frame(width: 48, height: 48)
-                    .foregroundStyle(.white)
-                    .scrollTransition(axis: .horizontal) { c, phase in
-                        c.rotationEffect(.degrees(phase.value * 180)).scaleEffect(1 - abs(phase.value) * 0.6).opacity(1 - abs(phase.value))
-                    }
-                Text(p.title).font(Theme.display(64)).foregroundStyle(.white)
+                .frame(width: geo.size.width, height: shotHeight + top + 8)
+                .clipped()
+                Text(p.title).font(Theme.display(30)).foregroundStyle(.white).multilineTextAlignment(.center)
+                    .lineLimit(2).minimumScaleFactor(0.7).padding(.horizontal, 28)
                     .scrollTransition(axis: .horizontal) { c, phase in c.offset(x: phase.value * 90).opacity(1 - abs(phase.value) * 0.8) }
-                Text(p.body).font(Theme.font(17)).foregroundStyle(.white.opacity(0.85)).multilineTextAlignment(.center)
-                    .padding(.horizontal, 36)
+                Text(p.body).font(Theme.font(16)).foregroundStyle(.white.opacity(0.85)).multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
+                    .fixedSize(horizontal: false, vertical: true)
                     .scrollTransition(axis: .horizontal) { c, phase in c.offset(x: phase.value * 40).opacity(1 - abs(phase.value)) }
+                Spacer(minLength: 0)
             }
-            .padding(.top, -40)
-            Spacer()
         }
     }
 }

@@ -104,7 +104,6 @@ Ideas that Helm does not have: rejection history in one place (shipped 0.9), rel
 ## Ingested 2026-10-31
 Joshua: "Needs iOS app" and "Needs these features" (Helm iOS screenshots, notes/attachments/2026-10-31/cyllene-1.png and cyllene-2.png). Free, no Pro paywall (the $1 rule).
 - [ ] Text improvements for store copy, on the device (the Mac Writer)
-- [ ] Ship the iPhone app to the App Store
 
 ## iPhone gap matrix (Mobbin pass 2026-10-31)
 From the App Store screens of Helm, Apple's App Store Connect, AppFigures and TestFlight. One row per minor version, daily use first.
@@ -135,4 +134,3 @@ From the App Store screens of Apple's App Store Connect, AppFigures and RevenueC
 | More share card styles: version out, featured, milestone | App Store Connect | S | open |
 Skipped: AI chat over metrics (RevenueCat, cloud), paywall editing and subscriptions (no IAPs), ad networks (no data), stickers.
 
-- [ ] Landing screenshot `landing/shots/app-list.png` still shows "Welcome to Hermes" inside the app; retake it from the current Mac build (found in QA 2026-11-01)

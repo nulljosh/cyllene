@@ -1,4 +1,5 @@
 import Charts
+import AuthenticationServices
 import SwiftUI
 import UniformTypeIdentifiers
 import UserNotifications
@@ -12,19 +13,59 @@ struct KeyView: View {
     @State private var pem = ""
     @State private var importing = false
     @State private var loggingIn = false
+    @State private var showKey = false
     @State private var checking = false
     @State private var error: String?
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
+        VStack(spacing: 14) {
+            Spacer()
+            Image("LaunchMark").resizable().scaledToFit().frame(width: 52, height: 52)
+                .padding(18)
+                .background(Color("LaunchBackground"), in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+            Text("Connect your account").font(Theme.display(30)).multilineTextAlignment(.center)
+            Text("Sign in on Apple's own page and Cyllene sets itself up. Your key stays in your Keychain. There is no server.")
+                .font(Theme.font(16)).foregroundStyle(Theme.muted).multilineTextAlignment(.center)
+            Spacer()
+            if let error, !showKey { Text(error).font(Theme.font(14)).foregroundStyle(Theme.bad).multilineTextAlignment(.center) }
+            if checking && !showKey { ProgressView() }
+            // Apple's own button, drawn only: App Store Connect has no Sign in with Apple, so the tap opens Apple's page.
+            Button { loggingIn = true } label: {
+                SignInWithAppleButton(.signIn, onRequest: { _ in }, onCompletion: { _ in })
+                    .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
+                    .frame(height: 52)
+                    .clipShape(Capsule())
+                    .allowsHitTesting(false)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Sign in with Apple")
+            Button("Use an API key instead") { showKey = true }
+                .font(Theme.font(16, .semibold)).foregroundStyle(Theme.accent).frame(minHeight: 44)
+            Text("You need the Account Holder or Admin role.").font(Theme.font(13)).foregroundStyle(Theme.muted)
+        }
+        .padding(.horizontal, 24)
+        .padding(.bottom, 16)
+        .frame(maxWidth: 480)
+        .frame(maxWidth: .infinity)
+        .background(Theme.bg)
+        .sheet(isPresented: $loggingIn) {
+            AppleLoginSheet { id, issuer, key in
+                keyID = id; issuerID = issuer; pem = key
+                Task { await check() }
+            }
+        }
+        .sheet(isPresented: $showKey) { keyForm }
+    }
+
+    private var keyForm: some View {
         NavigationStack {
             Form {
                 Section {
-                    Button("Log in with Apple") { loggingIn = true }
-                } footer: { Text("Sign in on Apple's own page. Cyllene picks up the rest. You need the Account Holder or Admin role.") }
-                Section("Or enter a key") {
                     TextField("Key ID", text: $keyID).textInputAutocapitalization(.characters).autocorrectionDisabled()
                     TextField("Issuer ID", text: $issuerID).textInputAutocapitalization(.never).autocorrectionDisabled()
-                }
+                } footer: { Text("Make one in App Store Connect under Users and Access, Integrations.") }
                 Section {
                     Button(pem.isEmpty ? "Import .p8 file" : "Key file loaded") { importing = true }
                 } footer: { Text("Your key stays in your Keychain. Cyllene has no server.") }
@@ -38,13 +79,9 @@ struct KeyView: View {
             }
             .scrollContentBackground(.hidden)
             .background(Theme.bg)
-            .navigationTitle("Cyllene")
-            .sheet(isPresented: $loggingIn) {
-                AppleLoginSheet { id, issuer, key in
-                    keyID = id; issuerID = issuer; pem = key
-                    Task { await check() }
-                }
-            }
+            .navigationTitle("API Key")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { showKey = false } } }
             .fileImporter(isPresented: $importing, allowedContentTypes: [.data, .plainText]) { result in
                 guard let url = try? result.get(), url.startAccessingSecurityScopedResource() else { return }
                 defer { url.stopAccessingSecurityScopedResource() }

@@ -28,7 +28,7 @@ struct AppleLoginSheet: View {
                     .multilineTextAlignment(.center)
                     .padding(16)
             }
-            .navigationTitle("Log in with Apple")
+            .navigationTitle("Sign in with Apple")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
