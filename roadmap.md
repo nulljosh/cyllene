@@ -12,6 +12,6 @@
 - [ ] Click-test Resolve All picker (checkboxes, "Resolve N") and right-click "Resolve <app>" (a6f4db3); unit tests compile, not run.
 
 ## Ingested 2026-11-08
-- [ ] Splash screen shows title without ending E lol (`notes/attachments/2026-11-08/cyllene-3.png`: wordmark reads CYLLEN mid-animation).
+- [x] Splash screen shows title without ending E lol (`notes/attachments/2026-11-08/cyllene-3.png`: wordmark reads CYLLEN mid-animation). Fixed in code 2026-11-08 (the letter loop counted to 6, left from the Hermes name). Reaches users with the next iOS build.
 - [ ] Shouldn't ask user for keys, instead should ask user for their login id and help them login that way. Don't ask for keys, ask for login with Apple (`notes/attachments/2026-11-08/cyllene-2.png`: first screen is Key ID, Issuer ID, Import .p8 file, Connect).
 - [ ] Needs animated hero banner like other apps (`notes/attachments/2026-11-08/cyllene-1.png`: the App Store page).

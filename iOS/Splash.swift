@@ -16,7 +16,7 @@ struct Orbit: GeometryEffect {
     }
 }
 
-/// Launch: the wing flips in, Cyllene' six things burst out of it and orbit, the name drops in letter by letter,
+/// Launch: the wing flips in, Cyllene's six things burst out of it and orbit, the name drops in letter by letter,
 /// then everything is pulled back into the wing and lifts away.
 struct SplashView: View {
     var done: () -> Void
@@ -71,7 +71,7 @@ struct SplashView: View {
             burst = true
             withAnimation(.easeInOut(duration: 2.0)) { spin = .pi * 0.9 }
             try? await Task.sleep(for: .milliseconds(350))
-            for i in 1...6 { letters = i; try? await Task.sleep(for: .milliseconds(70)) }
+            for i in 1..."CYLLENE".count { letters = i; try? await Task.sleep(for: .milliseconds(70)) }
             try? await Task.sleep(for: .milliseconds(800))
             gather = true
             try? await Task.sleep(for: .milliseconds(380))
