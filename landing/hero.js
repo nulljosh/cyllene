@@ -1,9 +1,9 @@
-// Hero wall: Cyllene's app list on the real fleet (the apps' own icons). Each platform walks through App Store
+// Hero list: Cyllene's app list on the real fleet (the apps' own icons). Each platform walks through App Store
 // Connect's states the way a release does, and the dot changes colour with it.
 (function () {
   var wall = document.getElementById('fwall'); if (!wall) return;
   var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var n = innerWidth <= 560 ? 6 : innerWidth <= 900 ? 8 : 12;
+  var n = innerWidth <= 560 ? 8 : 10;
   var APPS = [['Airwell', 'airwell', '2.1.0'], ['Blackcomb', 'blackcomb', '1.0.0'], ['Bugle News', 'bugle', '6.1.0'], ['Echo', 'echo', '3.0.0'],
               ['Elah', 'elah', '2.1.0'], ['Epiphany', 'epiphany', '6.3.0'], ['Kernel', 'kernel', '20.0.1'], ['Melete', 'melete', '3.2.0'],
               ['Pan', 'pan', '4.0.0'], ['Patois', 'patois', '1.1.5'], ['Scrounger', 'scrounger', '1.0.0'], ['Talli', 'talli', '5.0.0']];
