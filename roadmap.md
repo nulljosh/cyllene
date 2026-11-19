@@ -14,3 +14,10 @@
 ## Ingested 2026-11-08
 - [ ] Shouldn't ask user for keys, instead should ask user for their login id and help them login that way. Don't ask for keys, ask for login with Apple (`notes/attachments/2026-11-08/cyllene-2.png`: first screen is Key ID, Issuer ID, Import .p8 file, Connect). Built 2026-11-08 and compiled, not yet tried with a real Apple sign-in (needs your login on a device), ships after 11.0.0. App Store Connect has no Sign in with Apple or OAuth for third-party apps: its API only takes a key made in Users and Access. Plan: a Log in with Apple button opens Apple's own Integrations page in an in-app browser, you sign in there with your Apple ID, then Cyllene picks up the Key ID, Issuer ID and the one-time .p8 download so nothing gets typed. Keep the manual form as the fallback. Needs a real Apple sign-in on a device to QA, and App Review may push back on it.
 - [ ] Needs animated hero banner like other apps (`notes/attachments/2026-11-08/cyllene-1.png`: the App Store page). Started 2026-11-08, not built. Read as an App Preview video at the top of the App Store page, since the screenshot is that page. Cyllene has none. docs/ad/cyllene-11-field.mp4 and eleven.mp4 are 20 s, 1920x1080 launch films, and Apple wants previews cut from real app footage at iPhone preview size, so this needs a fresh screen capture and goes on the next iOS version.
+
+## Ingested 2026-11-18
+- [ ] Did we fix this yet? Sign-in should just ask for Sign in with Apple, not for Key ID / Issuer ID / .p8 import (notes/attachments/2026-11-18/22243-1.png).
+- [ ] Love the splash screen animation. Any way we can improve it?
+- [ ] GitHub README is way too wordy and spammy.
+- [ ] Landing page should show screenshots with scan-like effects instead of Greek gods.
+- [ ] Footer needs a scrolling animation.
