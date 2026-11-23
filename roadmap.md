@@ -21,3 +21,19 @@
 - [ ] GitHub README is way too wordy and spammy.
 - [ ] Landing page should show screenshots with scan-like effects instead of Greek gods.
 - [ ] Footer needs a scrolling animation.
+
+## Ingested 2026-11-23
+
+- [ ] **Cyllene**: macOS needs semi translucent  / Liquid Glass top bar
+  - And onboarding slide should be screenshots and tutorial of app
+  - Not a bunch of greek gods
+  - But keep the styling (scan lines and dither effects).
+  - Do not require users to import keys manually.
+  - Should have “login with apple” etc and import automatically.
+  - Screenshots (not yet read): `notes/attachments/2026-11-23/22685-1.png`, `notes/attachments/2026-11-23/22685-2.png`
+- [ ] **Cyllene**: Needs better simpler name
+  - How does it stay updated
+  - Where’s authentication and keys settings?
+  - Any way we can improve UI/UX?
+  - App is too blue lmfao
+  - Should just be Liquid Glass .
