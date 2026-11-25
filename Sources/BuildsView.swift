@@ -79,7 +79,7 @@ struct BuildsView: View {
                     pending = PendingCommand(title: "Expire Build", args: ["builds", "expire", "--build-id", b.id, "--confirm"])
                 }
                 .disabled(expired)
-            } label: { Image(systemName: "ellipsis.circle") }
+            } label: { Image(systemName: "ellipsis.circle").accessibilityLabel("More") }
             .menuStyle(.borderlessButton).menuIndicator(.hidden).fixedSize()
         }
         .padding(.horizontal, 8).padding(.vertical, 10)

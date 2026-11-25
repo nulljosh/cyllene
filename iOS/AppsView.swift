@@ -79,7 +79,7 @@ struct AppsView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             HStack(spacing: 8) {
                                 Tile(name: app.name, icon: app.icon, size: 32); Text(app.name).font(Theme.font(14, .semibold)).foregroundStyle(Theme.text).lineLimit(1)
-                                if starred.contains(app.id) { Spacer(minLength: 0); Image(systemName: "star.fill").font(.system(size: 11)).foregroundStyle(Theme.pending) }
+                                if starred.contains(app.id) { Spacer(minLength: 0); Image(systemName: "star.fill").font(.caption2).foregroundStyle(Theme.pending) }
                             }
                             ForEach(app.versions, id: \.platform) { StateLine(state: $0.state, text: "\(Theme.platform($0.platform)) \($0.version)") }
                         }

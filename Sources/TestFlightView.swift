@@ -73,7 +73,7 @@ struct TestFlightView: View {
                 Button("Delete", role: .destructive) {
                     pending = PendingCommand(title: "Delete \(g.text("name") ?? "Group")", args: ["testflight", "groups", "delete", "--id", g.id, "--confirm"])
                 }
-            } label: { Image(systemName: "ellipsis.circle") }
+            } label: { Image(systemName: "ellipsis.circle").accessibilityLabel("More") }
             .menuStyle(.borderlessButton).menuIndicator(.hidden).fixedSize()
         }
         .padding(.horizontal, 8).padding(.vertical, 10)

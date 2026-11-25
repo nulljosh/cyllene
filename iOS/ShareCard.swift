@@ -29,7 +29,7 @@ struct ShareVersionButton: View {
             if let card {
                 ShareLink(item: card, message: Text("\(name) \(version) is out: https://apps.apple.com/app/id\(appID)"),
                           preview: SharePreview("\(name) \(version)", image: card)) {
-                    Image(systemName: "square.and.arrow.up").font(.system(size: 17, weight: .semibold)).foregroundStyle(Theme.accent)
+                    Image(systemName: "square.and.arrow.up").font(.system(.body, weight: .semibold)).foregroundStyle(Theme.accent)
                 }
                 .buttonStyle(.borderless)
                 .accessibilityLabel("Share \(name) \(version)")
