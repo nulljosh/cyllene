@@ -145,6 +145,7 @@ struct ResolveView: View {
         .task {
             await waitForList()
             if let only { picks = only; await scan() }
+            else if UserDefaults.standard.bool(forKey: "resolveGo") { picks = Set(rejected.map(\.id)); await scan() }  // QA launch argument: -resolveAll YES -resolveGo YES, skips the picker
             else { picks = Set(rejected.map(\.id)); picking = true; busy = false; phase = "Pick the apps to answer" }
         }
         .onDisappear { SavedDrafts.save(rows) }

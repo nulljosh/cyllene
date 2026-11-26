@@ -1,0 +1,33 @@
+{
+  "2.1": [
+    {
+      "words": ["bypass the keychain"],
+      "fix": "Store keychain items in the data protection keychain: add kSecUseDataProtectionKeychain: true to every SecItem query. On the Mac the default login keychain asks for a password, and App Review stops there. (Machaon 2.3.5, 2026-10-25)",
+      "reply": "The Mac app now stores its keychain items in the data protection keychain, so it no longer asks for a password at launch. This is in build [build number]."
+    }
+  ],
+  "5.1.1(ix)": [
+    {
+      "words": [],
+      "fix": "Apple wants an organization developer account. If the submission carries bug fixes, reply and ask for approval now under Apple's bug-fix provision, then plan the account before the next update. (Talli 4.0.0, 2026-10-25)",
+      "reply": "This update only contains bug fixes. Could you approve it under the bug-fix provision? We will move the app to an organization account before the next feature update."
+    }
+  ],
+  "*": [
+    {
+      "words": ["sign in with apple", "error"],
+      "fix": "Check the Mac target's entitlements for com.apple.developer.applesignin. An iOS-only entitlement makes the Mac sign-in fail with an error. (Melete 3.1, 2026-10-25)",
+      "reply": "Sign in with Apple now works on the Mac: the Mac target carries the Sign in with Apple entitlement. This is in build [build number]."
+    },
+    {
+      "words": ["lsapplicationcategorytype"],
+      "fix": "Add LSApplicationCategoryType to the Mac target's Info.plist properties in project.yml.",
+      "reply": "The Mac build now declares its App Store category in Info.plist (LSApplicationCategoryType). This is in build [build number]."
+    },
+    {
+      "words": ["cut off"],
+      "fix": "Find the sheet or view whose content is taller than a 13-inch screen and put it in a ScrollView or give it a maximum height. Check the screenshots Apple attached.",
+      "reply": "The screen Apple flagged now scrolls, so no content is cut off on a 13-inch display. This is in build [build number]."
+    }
+  ]
+}

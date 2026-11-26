@@ -104,19 +104,22 @@ enum Writer {
             .map { String($0.output.2).replacingOccurrences(of: "\n", with: " ") }
     }
 
-    /// Fixes Cyllene already knows, matched on Apple's own wording. Each one was a real rejection and a real fix,
-    /// so the issue leads with it instead of a small model's guess (the on-device model cannot write these patches).
-    static let recipes: [(match: [String], fix: String)] = [
-        (["bypass the keychain"], "Store keychain items in the data protection keychain: add kSecUseDataProtectionKeychain: true to every SecItem query. On the Mac the default login keychain asks for a password, and App Review stops there. (Machaon 2.3.5, 2026-10-25)"),
-        (["sign in with apple", "error"], "Check the Mac target's entitlements for com.apple.developer.applesignin. An iOS-only entitlement makes the Mac sign-in fail with an error. (Melete 3.1, 2026-10-25)"),
-        (["lsapplicationcategorytype"], "Add LSApplicationCategoryType to the Mac target's Info.plist properties in project.yml."),
-        (["cut off"], "Find the sheet or view whose content is taller than a 13-inch screen and put it in a ScrollView or give it a maximum height. Check the screenshots Apple attached."),
-        (["5.1.1(ix)"], "Apple wants an organization developer account. If the submission carries bug fixes, reply and ask for approval now under Apple's bug-fix provision, then plan the account before the next update. (Talli 4.0.0, 2026-10-25)"),
-    ]
+    /// The rejection index, `fixes.json`, keyed by guideline ("2.1", "5.1.1(ix)"); "*" holds fixes matched on Apple's wording alone.
+    /// One hash map shared with mcp/server.py. Each fix is a real rejection and a real patch; add a row after every new one.
+    /// `reply` is what to tell Apple, with a [build number] left open until the fixed build exists.
+    struct Fix: Decodable { let words: [String]; let fix: String; let reply: String? }
+    static let index: [String: [Fix]] = {
+        let url = Bundle.main.url(forResource: "fixes", withExtension: "json") ?? URL(fileURLWithPath: "Sources/fixes.json")  // the second is scripts/try-writer.sh
+        return (try? JSONDecoder().decode([String: [Fix]].self, from: Data(contentsOf: url))) ?? [:]
+    }()
 
-    static func knownFixes(_ apple: String) -> [String] {
-        let a = apple.lowercased()
-        return recipes.filter { $0.match.allSatisfy(a.contains) }.map(\.fix)
+    /// The fixes that fit one rejection: look up each guideline Apple cites (O(1)), add the wording-only ones, keep those whose words all appear.
+    static func knownFixes(_ apple: String, reasons: String = "") -> [Fix] {
+        let text = apple.lowercased()
+        let cited = (apple + " " + reasons).matches(of: /\b\d\.\d{1,2}(?:\.\d{1,2})?(?:\([ivx]+\))?/).map { String($0.output) }
+        var seen = Set<String>()
+        return (cited.flatMap { index[$0] ?? [] } + (index["*"] ?? []))
+            .filter { f in f.words.allSatisfy(text.contains) && seen.insert(f.fix).inserted }
     }
 
     /// Apple's 4.3 follow-up asks the same nine questions every time. Each gets pointed at the one fact that answers it.
@@ -158,7 +161,11 @@ enum Writer {
         var reply = ""
         if !replied || !reasons.contains("4.3") {
             let qs = questions(apple)
-            if qs.isEmpty && reasons.contains("4.3") {
+            let known = knownFixes(apple, reasons: reasons)
+            if qs.isEmpty, !reasons.contains("4.3"), known.contains(where: { $0.reply != nil }) {
+                // A rejection we have fixed before: tell Apple the solution. The [build number] gate holds it until the build exists.
+                reply = "Thank you for the review. " + known.compactMap(\.reply).joined(separator: " ")
+            } else if qs.isEmpty && reasons.contains("4.3") {
                 // The house 4.3 reply: what the app is in the model's words, then the checked facts word for word, then the question.
                 let what = try await complete(voice, """
                 \(context)
@@ -198,8 +205,8 @@ enum Writer {
         """)
         let title = try await complete(voice, "\(context)\nIssue body:\n\(body)\nWrite a GitHub issue title for this, under 80 characters, one line, no quotes.")
         let line = title.split(separator: "\n").first.map(String.init) ?? ""
-        let known = knownFixes(apple)
-        let full = known.isEmpty ? body : "Known fix:\n" + known.map { "- " + $0 }.joined(separator: "\n") + "\n\n" + body
+        let known = knownFixes(apple, reasons: reasons)
+        let full = known.isEmpty ? body : "Known fix:\n" + known.map { "- " + $0.fix }.joined(separator: "\n") + "\n\n" + body
         return (reply, line.count > 80 ? String(line.prefix(77)) + "..." : line, full)
     }
 }

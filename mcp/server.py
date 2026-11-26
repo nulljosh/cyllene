@@ -209,6 +209,20 @@ def open_rejections(app_id: str) -> dict:
 
 
 @mcp.tool()
+def known_fixes(apple_text: str, reasons: str = "") -> list[dict]:
+    """The rejection index (Sources/fixes.json, the same file the app reads): fixes already proven for the guidelines
+    and wording in Apple's message. Each has `fix` (what to change) and `reply` (what to tell Apple; fill [build number] first)."""
+    import re
+    idx = json.loads((Path(__file__).resolve().parent.parent / "Sources/fixes.json").read_text())
+    text, seen, out = apple_text.lower(), set(), []
+    cited = re.findall(r"\b\d\.\d{1,2}(?:\.\d{1,2})?(?:\([ivx]+\))?", apple_text + " " + reasons)
+    for f in [f for g in cited for f in idx.get(g, [])] + idx.get("*", []):
+        if all(w in text for w in f["words"]) and f["fix"] not in seen:
+            seen.add(f["fix"]); out.append(f)
+    return out
+
+
+@mcp.tool()
 def saved_drafts() -> dict:
     """The drafts from the last Resolve All run, in the app or here, and dry-run.md: the whole run on one page."""
     d, md = REVIEW / "drafts.json", REVIEW / "dry-run.md"
