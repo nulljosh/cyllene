@@ -9,7 +9,10 @@ targets:
     type: application
     platform: macOS
     sources:
-      - Sources
+      - path: Sources
+        excludes: [fixes.json]
+      - path: Sources/fixes.json
+        buildPhase: resources
       - Shared
       - Cyllene.icon
     settings:
