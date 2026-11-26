@@ -3,17 +3,56 @@ import Foundation
 import FoundationModels
 #endif
 
-// The model calls behind Resolve All: Apple's on-device model first, a local Ollama model second.
-// Nothing leaves the Mac and no child process runs, so there is no privacy prompt.
+// The model calls behind Resolve All: Apple's on-device model first, a local Ollama model second (started if it is off),
+// and Claude through the Mac's own `claude` sign-in (the subscription) last. Only that last one leaves the Mac.
 // Kept free of app types so scripts/try-writer.sh can run it from the terminal.
 
 enum Writer {
-    /// A local Ollama model, if one is running.
+    /// A local Ollama model. If the server is off and Ollama is installed, start it and wait a few seconds.
     static func ollama() async -> String? {
         struct R: Decodable { struct M: Decodable { let name: String }; let models: [M] }
-        guard let (d, _) = try? await URLSession.shared.data(from: URL(string: "http://localhost:11434/api/tags")!),
-              let names = (try? JSONDecoder().decode(R.self, from: d))?.models.map(\.name).filter({ !$0.contains("embed") }) else { return nil }
+        func tags() async -> [String]? {
+            guard let (d, _) = try? await URLSession.shared.data(from: URL(string: "http://localhost:11434/api/tags")!) else { return nil }
+            return (try? JSONDecoder().decode(R.self, from: d))?.models.map(\.name).filter { !$0.contains("embed") }
+        }
+        var names = await tags()
+        if names == nil, FileManager.default.isExecutableFile(atPath: "/opt/homebrew/bin/ollama") {
+            let p = Process()
+            p.executableURL = URL(fileURLWithPath: "/opt/homebrew/bin/ollama"); p.arguments = ["serve"]
+            p.standardOutput = FileHandle.nullDevice; p.standardError = FileHandle.nullDevice; p.standardInput = FileHandle.nullDevice
+            if (try? p.run()) != nil {
+                for _ in 0..<16 { try? await Task.sleep(for: .milliseconds(500)); if let n = await tags() { names = n; break } }
+            }
+        }
+        guard let names else { return nil }
         return ["qwen3:8b", "llama3.1:8b", "cyllene3:latest"].first(where: names.contains) ?? names.first
+    }
+
+    /// The Mac's own Claude sign-in. Run from an empty folder with no settings, hooks or tools, so only the prompt goes in.
+    static var claudePath: String? {
+        [NSHomeDirectory() + "/.local/bin/claude", "/opt/homebrew/bin/claude", "/usr/local/bin/claude"]
+            .first(where: FileManager.default.isExecutableFile)
+    }
+
+    static func claude(_ instructions: String, _ prompt: String) async throws -> String {
+        guard let path = claudePath else { return "" }
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("cyllene-claude")
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let out = try await Task.detached { () -> Data in
+            let p = Process()
+            p.executableURL = URL(fileURLWithPath: path)
+            p.arguments = ["-p", "--model", "haiku", "--tools", "", "--setting-sources", "", "--disable-slash-commands",
+                           "--strict-mcp-config", "--no-session-persistence", "--system-prompt", instructions, prompt]
+            p.currentDirectoryURL = dir
+            let pipe = Pipe()
+            p.standardOutput = pipe; p.standardError = FileHandle.nullDevice; p.standardInput = FileHandle.nullDevice
+            try p.run()
+            DispatchQueue.global().asyncAfter(deadline: .now() + 180) { if p.isRunning { p.terminate() } }
+            let data = pipe.fileHandleForReading.readDataToEndOfFile()
+            p.waitUntilExit()
+            return data
+        }.value
+        return String(decoding: out, as: UTF8.self).trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     /// Apple Intelligence's on-device model: free, private, already on the Mac when Apple Intelligence is on.
@@ -24,22 +63,23 @@ enum Writer {
         return false
     }
 
-    static var available: Bool { get async { if onDevice { return true }; return await ollama() != nil } }
+    static var available: Bool { get async { if onDevice || claudePath != nil { return true }; return await ollama() != nil } }
 
     /// One short completion. The on-device context is about 4,000 tokens, so every call carries one task.
     static func complete(_ instructions: String, _ prompt: String) async throws -> String {
+        if ProcessInfo.processInfo.environment["CYLLENE_WRITER"] == "claude" { return try await claude(instructions, prompt) }  // test hook
         #if canImport(FoundationModels)
         if #available(macOS 26, *), SystemLanguageModel.default.isAvailable {
             do {
                 return try await LanguageModelSession(instructions: instructions).respond(to: prompt).content
                     .trimmingCharacters(in: .whitespacesAndNewlines)
             } catch {
-                // Too long for the context, or a guardrail on Apple's own wording: hand it to Ollama if there is one.
-                guard await ollama() != nil else { throw error }
+                // Too long for the context, or a guardrail on Apple's own wording: hand it on.
+                if await ollama() == nil, claudePath == nil { throw error }
             }
         }
         #endif
-        guard let model = await ollama() else { return "" }
+        guard let model = await ollama() else { return try await claude(instructions, prompt) }
         var req = URLRequest(url: URL(string: "http://localhost:11434/api/chat")!, timeoutInterval: 600)
         req.httpMethod = "POST"
         req.httpBody = try JSONSerialization.data(withJSONObject: ["model": model, "stream": false, "think": false,
