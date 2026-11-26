@@ -118,6 +118,12 @@ enum Writer {
     /// The rejection index, `fixes.json`, keyed by guideline ("2.1", "5.1.1(ix)"); "*" holds fixes matched on Apple's wording alone.
     /// One hash map shared with mcp/server.py. Each fix is a real rejection and a real patch; add a row after every new one.
     /// `reply` is what to tell Apple, with a [build number] left open until the fixed build exists.
+    /// Names the writer's prompts and the index, so SavedDrafts never serves a draft an older writer made. Bump `v` when a prompt or hint changes.
+    static let revision: String = {
+        let v = 5
+        let url = Bundle.main.url(forResource: "fixes", withExtension: "json") ?? URL(fileURLWithPath: "Sources/fixes.json")
+        return "w\(v).\((try? Data(contentsOf: url).count) ?? 0)"
+    }()
     struct Fix: Decodable { let words: [String]; let fix: String; let reply: String? }
     static let index: [String: [Fix]] = {
         let url = Bundle.main.url(forResource: "fixes", withExtension: "json") ?? URL(fileURLWithPath: "Sources/fixes.json")  // the second is scripts/try-writer.sh
@@ -139,10 +145,8 @@ enum Writer {
         let hints: [(String, String)] = [
             ("screen recording", "Write exactly: A screen recording captured on a physical device is at [recording link]. Nothing else."),
             ("target audience", "Describe the people who would use it and the problem it solves, from what the README says it does."),
-            ("instructions for setting up", "Say how to reach the main features from launch, using the README. Say no login is needed only if the README says so."),
-            ("external services", "List only the services the README or facts name. If none are named, write [list the services] and nothing else."),
-            ("regional differences", "Say it works the same in every region unless the README names a limit. Do not invent regions."),
-            ("regulated", "Say it is not in a regulated industry and includes no protected third-party material, unless the README says otherwise."),
+            ("instructions for setting up", "In two or three sentences, name the first screen and the main features in the README and how to reach them from launch. Say no login is needed only if the README says so."),
+            ("regional differences", "Apple means countries and App Store territories, not areas inside the app. Say it works the same in every country it is sold in unless the README names a limit. Never mention the app's own map regions or areas."),
             ("beta", "Say only how many builds went through App Store Connect and TestFlight and since when, using those numbers exactly. Do not say whether testing happened or who tested."),
             ("intended user", "Describe the people who would use it, from what the README says it does."),
             ("gap in the market", "Name the one or two things it does that a plain app in its category does not, from the README."),
@@ -153,24 +157,27 @@ enum Writer {
             ("client", "Say who holds the copyright from the facts, and that the developer made it under their own account."),
             ("describe in detail", "Describe what it does and the problem it solves, in your own words, not the store description."),
         ]
-        let readme = ["intended user", "gap in the market", "describe in detail", "target audience", "instructions for setting up", "external services", "regional differences", "regulated"].contains { q.contains($0) }
+        let readme = ["intended user", "gap in the market", "describe in detail", "target audience", "instructions for setting up", "regional differences"].contains { q.contains($0) }
         return (hints.first { q.contains($0.0) }?.1 ?? "", readme)
     }
 
     /// Small models retell the same sentence in every answer. A sentence whose words mostly appeared already is dropped.
-    /// ponytail: word-overlap at 60%, no embeddings; the first sentence always stays so an answer is never empty.
+    /// ponytail: word-overlap at 60%, no embeddings; an answer with nothing left becomes a blank to fill, so it can never send as is.
     static func fresh(_ answer: String, after earlier: [String]) -> String {
-        func words(_ s: String) -> Set<String> { Set(s.lowercased().split { !$0.isLetter && !$0.isNumber }.map(String.init).filter { $0.count > 3 }) }
         var seen = earlier.map(words)
         var kept: [String] = []
         answer.enumerateSubstrings(in: answer.startIndex..., options: .bySentences) { s, _, _, _ in
             guard let s = s?.trimmingCharacters(in: .whitespaces), !s.isEmpty else { return }
+            if s.localizedCaseInsensitiveContains("readme") { return }  // an answer speaks about the app, never about the facts it was given
             let w = words(s)
             let repeated = seen.contains { !w.isEmpty && Double(w.intersection($0).count) / Double(w.count) > 0.6 }
-            if !repeated || kept.isEmpty { kept.append(s); seen.append(w) }
+            if !repeated { kept.append(s); seen.append(w) }
         }
-        return kept.joined(separator: " ")
+        // Nothing new left: the model had nothing to ground this one on. A blank for the developer beats a retold pitch.
+        return kept.isEmpty ? "[Answer this one yourself.]" : kept.joined(separator: " ")
     }
+
+    static func words(_ s: String) -> Set<String> { Set(s.lowercased().split { !$0.isLetter && !$0.isNumber }.map(String.init).filter { $0.count > 3 }) }
 
     /// The reply and the issue for one rejection. Numbered questions get one answer each, written one at a time.
     static func write(app: String, reasons: String, replied: Bool, facts: String, apple: String) async throws -> (reply: String, title: String, body: String) {
@@ -198,6 +205,16 @@ enum Writer {
                 for (i, q) in qs.enumerated() {
                     if q.lowercased().contains("screen recording") {
                         answers.append("\(i + 1). A screen recording captured on a physical device is at [recording link].")
+                        continue
+                    }
+                    if q.lowercased().contains("external services") {
+                        // The model invents service lists ("[web] and [iPhone]"). Only the developer knows what the app calls out to.
+                        answers.append("\(i + 1). [List the external services the app uses, or say it uses none.]")
+                        continue
+                    }
+                    if q.lowercased().contains("regulated") {
+                        // Never let a model tell Apple "no protected third-party material": only the developer knows, so it stays a blank.
+                        answers.append("\(i + 1). [State whether the app is in a regulated industry or uses protected third-party material, and attach any permission.]")
                         continue
                     }
                     let (hint, readme) = focus(q)

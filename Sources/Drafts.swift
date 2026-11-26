@@ -40,8 +40,9 @@ enum SavedDrafts {
     struct Draft: Codable { var reply, issueTitle, issueBody: String }
     static let dir = URL.cachesDirectory.appendingPathComponent("Hermes/review")
     static var url: URL { dir.appendingPathComponent("drafts.json") }
-    // ponytail: a new Apple message in the same thread changes the length, which retires the old draft.
-    static func key(_ r: Resolution) -> String { "\(r.thread)|\(r.apple.utf8.count)" }
+    // ponytail: a new Apple message in the same thread changes the length, which retires the old draft. So does a new Writer.revision
+    // or an edit to fixes.json: the old draft stays in drafts.json, it just stops matching.
+    static func key(_ r: Resolution) -> String { "\(r.thread)|\(r.apple.utf8.count)|\(Writer.revision)" }
     static func load() -> [String: Draft] { (try? JSONDecoder().decode([String: Draft].self, from: Data(contentsOf: url))) ?? [:] }
 
     static func apply(_ rows: [Resolution]) -> [Resolution] {
