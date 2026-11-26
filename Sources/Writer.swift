@@ -100,8 +100,19 @@ enum Writer {
 
     /// Apple's numbered questions ("1. Describe in detail..."), in order. Their 4.3 follow-up asks nine.
     static func questions(_ apple: String) -> [String] {
-        apple.matches(of: /(?m)^\s*(\d{1,2})\.\s+(.+(?:\n(?!\s*\d{1,2}\.\s)(?!Resources)(?!Next Steps)[^\n]+)*)/)
+        var text = apple
+        if let r = text.range(of: "Prevent Common Issues") { text = String(text[..<r.lowerBound]) }  // Apple's tips after the asks
+        let lined = text.matches(of: /(?m)^\s*(\d{1,2})\.\s+(.+(?:\n(?!\s*\d{1,2}\.\s)(?!Resources)(?!Next Steps)[^\n]+)*)/)
             .map { String($0.output.2).replacingOccurrences(of: "\n", with: " ") }
+        if !lined.isEmpty { return lined }
+        // The web session often hands the message back as one line: " 1. ask 2. ask 3. ask". Count up from 1 so "2.3.3" never splits.
+        var marks: [Range<String.Index>] = []
+        var from = text.startIndex
+        while let r = text.range(of: " \(marks.count + 1). ", range: from..<text.endIndex) { marks.append(r); from = r.upperBound }
+        guard marks.count >= 2 else { return [] }
+        return marks.indices.map { i in
+            String(text[marks[i].upperBound..<(i + 1 < marks.count ? marks[i + 1].lowerBound : text.endIndex)]).trimmingCharacters(in: .whitespacesAndNewlines)
+        }
     }
 
     /// The rejection index, `fixes.json`, keyed by guideline ("2.1", "5.1.1(ix)"); "*" holds fixes matched on Apple's wording alone.
@@ -126,6 +137,12 @@ enum Writer {
     static func focus(_ q: String) -> (hint: String, readme: Bool) {
         let q = q.lowercased()
         let hints: [(String, String)] = [
+            ("screen recording", "Write exactly: A screen recording captured on a physical device is at [recording link]. Nothing else."),
+            ("target audience", "Describe the people who would use it and the problem it solves, from what the README says it does."),
+            ("instructions for setting up", "Say how to reach the main features from launch, using the README. Say no login is needed only if the README says so."),
+            ("external services", "List only the services the README or facts name. If none are named, write [list the services] and nothing else."),
+            ("regional differences", "Say it works the same in every region unless the README names a limit. Do not invent regions."),
+            ("regulated", "Say it is not in a regulated industry and includes no protected third-party material, unless the README says otherwise."),
             ("beta", "Say only how many builds went through App Store Connect and TestFlight and since when, using those numbers exactly. Do not say whether testing happened or who tested."),
             ("intended user", "Describe the people who would use it, from what the README says it does."),
             ("gap in the market", "Name the one or two things it does that a plain app in its category does not, from the README."),
@@ -136,7 +153,7 @@ enum Writer {
             ("client", "Say who holds the copyright from the facts, and that the developer made it under their own account."),
             ("describe in detail", "Describe what it does and the problem it solves, in your own words, not the store description."),
         ]
-        let readme = ["intended user", "gap in the market", "describe in detail"].contains { q.contains($0) }
+        let readme = ["intended user", "gap in the market", "describe in detail", "target audience", "instructions for setting up", "external services", "regional differences", "regulated"].contains { q.contains($0) }
         return (hints.first { q.contains($0.0) }?.1 ?? "", readme)
     }
 
@@ -179,6 +196,10 @@ enum Writer {
                 // Only the questions about what the app is see the README; the rest get the numbers, so they stop retelling the pitch.
                 let numbers = facts.split(separator: "\n").filter { !$0.hasPrefix("README:") }.joined(separator: "\n")
                 for (i, q) in qs.enumerated() {
+                    if q.lowercased().contains("screen recording") {
+                        answers.append("\(i + 1). A screen recording captured on a physical device is at [recording link].")
+                        continue
+                    }
                     let (hint, readme) = focus(q)
                     let a = try await complete(voice, """
                     App: \(app)
