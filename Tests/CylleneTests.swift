@@ -180,9 +180,10 @@ final class CylleneTests: XCTestCase {
     }
 
     func testKnownFixesMatchApplesWording() {
-        XCTAssertEqual(Writer.knownFixes("We were unable to access the app because we were unable to bypass the keychain request.").count, 1)
+        XCTAssertEqual(Writer.knownFixes("Guideline 2.1 - Performance\nWe were unable to access the app because we were unable to bypass the keychain request.").count, 1)
         XCTAssertEqual(Writer.knownFixes("the app displayed an error message when we attempted to create an account using Sign in with Apple").count, 1)
         XCTAssertTrue(Writer.knownFixes("Guideline 4.3(a) - Design - Spam").isEmpty)
+        XCTAssertTrue(Writer.knownFixes("We were unable to bypass the keychain request.").isEmpty, "a guideline-keyed fix needs its guideline cited")
     }
 
     func testWatchOnlyReportsRealMoves() {
